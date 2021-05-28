@@ -99,8 +99,6 @@ namespace Lurgle.Logging
                 .Enrich.WithProcessName()
                 .Enrich.WithExceptionDetails()
                 .Enrich.WithMemoryUsage()
-                .Enrich.WithClientAgent()
-                .Enrich.WithClientIp()
                 .Enrich.WithProperty(AppName, Config.AppName)
                 .Enrich.WithProperty(AppVersion, Config.AppVersion);
 

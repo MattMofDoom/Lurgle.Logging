@@ -5,8 +5,15 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Matt Marlor</Authors>
     <Company>Matt Marlor</Company>
-    <Description>Log library that accelerates getting projects up and running with Serilog. Log to Console., File, Event Log, and Seq!</Description>
+    <Description>Log library that accelerates getting projects up and running with Serilog. Log to Console, File, Event Log, and Seq!</Description>
     <Copyright>Matt Marlor</Copyright>
+    <PackageProjectUrl>https://github.com/MattMofDoom/Lurgle.Logging</PackageProjectUrl>
+    <PackageIcon>Lurgle.png</PackageIcon>
+    <RepositoryUrl>https://github.com/MattMofDoom/Lurgle.Logging</RepositoryUrl>
+    <RepositoryType>Github</RepositoryType>
+    <PackageTags>Serilog,Logging,Seq,File,Event Log,Console</PackageTags>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -15,7 +22,6 @@
 
   <ItemGroup>
     <PackageReference Include="Serilog" Version="2.10.0" />
-    <PackageReference Include="Serilog.Enrichers.ClientInfo" Version="1.1.3" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="2.1.3" />
     <PackageReference Include="Serilog.Enrichers.Memory" Version="1.0.4" />
     <PackageReference Include="Serilog.Enrichers.Process" Version="2.0.1" />
@@ -26,6 +32,17 @@
     <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="5.0.1" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\Lurgle.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

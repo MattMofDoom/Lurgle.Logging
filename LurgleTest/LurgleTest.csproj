@@ -6,6 +6,7 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>Matt Marlor</Authors>
     <Company>Matt Marlor</Company>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
