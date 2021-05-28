@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31313.79
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lurgle.Logging", "Lurgle.Logging\Lurgle.Logging.csproj", "{12937241-A3BA-400D-A78A-10D3C75EEA4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LurgleTest", "LurgleTest\LurgleTest.csproj", "{F56C14FC-4D82-4464-B04F-3934993B3978}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12937241-A3BA-400D-A78A-10D3C75EEA4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12937241-A3BA-400D-A78A-10D3C75EEA4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12937241-A3BA-400D-A78A-10D3C75EEA4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12937241-A3BA-400D-A78A-10D3C75EEA4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F56C14FC-4D82-4464-B04F-3934993B3978}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F56C14FC-4D82-4464-B04F-3934993B3978}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F56C14FC-4D82-4464-B04F-3934993B3978}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F56C14FC-4D82-4464-B04F-3934993B3978}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {40F9BCA5-2D95-466A-9A5A-2B9761CFCF5C}
+	EndGlobalSection
+EndGlobal
