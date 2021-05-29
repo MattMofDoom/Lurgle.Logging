@@ -16,29 +16,33 @@ namespace Lurgle.Logging
 
         private Log(LogLevel logLevel, string correlationId, bool showMethod, string methodName, string sourceFilePath, int sourceLineNumber)
         {
-            this.LogLevel = logLevel;
-            this.IsMethod = showMethod;
-            this.CorrelationId = correlationId;
-            this.MethodName = methodName;
-            this.SourceFilePath = sourceFilePath;
-            this.SourceLineNumber = sourceLineNumber;
+            LogLevel = logLevel;
+            IsMethod = showMethod;
+            CorrelationId = correlationId;
+            MethodName = methodName;
+            SourceFilePath = sourceFilePath;
+            SourceLineNumber = sourceLineNumber;
 
             if (Logging.LogWriter == null)
+            {
                 Logging.Init(correlationId, methodName, sourceFilePath, sourceLineNumber);
+            }
         }
 
         private Log(Exception ex, LogLevel logLevel, string correlationId, bool showMethod, string methodName, string sourceFilePath, int sourceLineNumber)
         {
-            this.ErrorInfo = ex;
-            this.LogLevel = logLevel;
-            this.IsMethod = showMethod;
-            this.CorrelationId = correlationId;
-            this.MethodName = methodName;
-            this.SourceFilePath = sourceFilePath;
-            this.SourceLineNumber = sourceLineNumber;
+            ErrorInfo = ex;
+            LogLevel = logLevel;
+            IsMethod = showMethod;
+            CorrelationId = correlationId;
+            MethodName = methodName;
+            SourceFilePath = sourceFilePath;
+            SourceLineNumber = sourceLineNumber;
 
             if (Logging.LogWriter == null)
+            {
                 Logging.Init(correlationId, methodName, sourceFilePath, sourceLineNumber);
+            }
         }
         /// <summary>
         /// Log an event with the specified level. Defaults to Information. 
@@ -54,9 +58,11 @@ namespace Lurgle.Logging
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
         /// <returns></returns>
-        public static ILogging Level(LogLevel logLevel = LogLevel.Information, string correlationId = null, bool showMethod = false,  
+        public static ILogging Level(LogLevel logLevel = LogLevel.Information, string correlationId = null, bool showMethod = false,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "", [CallerLineNumber] int sourceLineNumber = 0)
-            => new Log(logLevel, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber);
+        {
+            return new Log(logLevel, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber);
+        }
 
         /// <summary>
         /// Log an Exception with the specified level. Defaults to Error. 
@@ -73,9 +79,11 @@ namespace Lurgle.Logging
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
         /// <returns></returns>
-        public static ILogging Exception(Exception ex, LogLevel logLevel = LogLevel.Error, string correlationId = null, bool showMethod = false, 
+        public static ILogging Exception(Exception ex, LogLevel logLevel = LogLevel.Error, string correlationId = null, bool showMethod = false,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "", [CallerLineNumber] int sourceLineNumber = 0)
-            => new Log(ex, logLevel, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber);
+        {
+            return new Log(ex, logLevel, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber);
+        }
 
         /// <summary>
         /// Add a new log entry and apply parameters to the supplied log template
@@ -86,43 +94,55 @@ namespace Lurgle.Logging
         {
             string logText;
             if (IsMethod)
+            {
                 logText = string.Format(Logging.LogMethod, MethodName, logTemplate);
+            }
             else
+            {
                 logText = logTemplate;
+            }
 
             if (Logging.LogWriter != null)
             {
                 if (ErrorInfo != null)
                 {
                     if (!string.IsNullOrEmpty(CorrelationId))
+                    {
                         Logging.LogWriter
                             .ForContext(Logging.CorrelationId, CorrelationId)
                             .ForContext(Logging.MethodName, MethodName)
                             .ForContext(Logging.LineNumber, SourceLineNumber)
                             .ForContext(Logging.SourceFile, SourceFilePath)
                             .Write((LogEventLevel)LogLevel, ErrorInfo, logText, args);
+                    }
                     else
+                    {
                         Logging.LogWriter
                             .ForContext(Logging.MethodName, MethodName)
                             .ForContext(Logging.LineNumber, SourceLineNumber)
                             .ForContext(Logging.SourceFile, SourceFilePath)
                             .Write((LogEventLevel)LogLevel, ErrorInfo, logText, args);
+                    }
                 }
                 else
                 {
                     if (!string.IsNullOrEmpty(CorrelationId))
+                    {
                         Logging.LogWriter
                             .ForContext(Logging.CorrelationId, CorrelationId)
                             .ForContext(Logging.MethodName, MethodName)
                             .ForContext(Logging.LineNumber, SourceLineNumber)
                             .ForContext(Logging.SourceFile, SourceFilePath)
                             .Write((LogEventLevel)LogLevel, logText, args);
+                    }
                     else
+                    {
                         Logging.LogWriter
                             .ForContext(Logging.MethodName, MethodName)
                             .ForContext(Logging.LineNumber, SourceLineNumber)
                             .ForContext(Logging.SourceFile, SourceFilePath)
                             .Write((LogEventLevel)LogLevel, logText, args);
+                    }
                 }
             }
         }

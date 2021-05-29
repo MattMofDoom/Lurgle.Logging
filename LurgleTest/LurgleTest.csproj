@@ -6,17 +6,12 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>Matt Marlor</Authors>
     <Company>Matt Marlor</Company>
-    <Version>1.0.1</Version>
+    <Version>1.0.9</Version>
+    <UserSecretsId>9501afe9-6c55-48f4-9ff4-b6cfce5c6764</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Lurgle.Logging\Lurgle.Logging.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="App.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

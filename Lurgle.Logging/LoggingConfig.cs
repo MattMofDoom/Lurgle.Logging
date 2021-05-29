@@ -91,41 +91,59 @@ namespace Lurgle.Logging
         /// </summary>
         public string LogFormatFile { get; set; }
 
-        public static LoggingConfig GetConfig()
+        /// <summary>
+        /// Get a config. Optionally a LoggingConfig can be passed 
+        /// </summary>
+        /// <param name="config"></param>
+        /// <returns></returns>
+        public static LoggingConfig GetConfig(LoggingConfig config = null)
         {
-            LoggingConfig config = new LoggingConfig()
+            LoggingConfig loggingConfig;
+            if (config == null)
             {
-                AppName = ConfigurationManager.AppSettings["AppName"],
-                LogType = GetLogType(ConfigurationManager.AppSettings["LogType"]),
-                LogFolder = ConfigurationManager.AppSettings["LogFolder"],
-                LogName = ConfigurationManager.AppSettings["LogName"],
-                LogExtension = ConfigurationManager.AppSettings["LogExtension"],
-                LogEventSource = ConfigurationManager.AppSettings["LogEventSource"],
-                LogEventName = ConfigurationManager.AppSettings["LogEventName"],
-                LogLevel = GetEventLevel(ConfigurationManager.AppSettings["LogLevel"]),
-                LogLevelConsole = GetEventLevel(ConfigurationManager.AppSettings["LogLevelConsole"]),
-                LogLevelFile = GetEventLevel(ConfigurationManager.AppSettings["LogLevelFile"]),
-                LogLevelEvent = GetEventLevel(ConfigurationManager.AppSettings["LogLevelEvent"]),
-                LogLevelSeq = GetEventLevel(ConfigurationManager.AppSettings["LogLevelSeq"]),
-                LogDays = GetInt(ConfigurationManager.AppSettings["LogMonths"]),
-                LogFlush = GetInt(ConfigurationManager.AppSettings["LogFlush"]),
-                LogSeqServer = ConfigurationManager.AppSettings["LogSeqServer"],
-                LogSeqApiKey = ConfigurationManager.AppSettings["LogSeqApiKey"],
-                LogFormatConsole = ConfigurationManager.AppSettings["LogFormatConsole"],
-                LogFormatEvent = ConfigurationManager.AppSettings["LogFormatEvent"],
-                LogFormatFile = ConfigurationManager.AppSettings["LogFormatFile"]
-            };
+                loggingConfig = new LoggingConfig()
+                {
+                    AppName = ConfigurationManager.AppSettings["AppName"],
+                    LogType = GetLogType(ConfigurationManager.AppSettings["LogType"]),
+                    LogFolder = ConfigurationManager.AppSettings["LogFolder"],
+                    LogName = ConfigurationManager.AppSettings["LogName"],
+                    LogExtension = ConfigurationManager.AppSettings["LogExtension"],
+                    LogEventSource = ConfigurationManager.AppSettings["LogEventSource"],
+                    LogEventName = ConfigurationManager.AppSettings["LogEventName"],
+                    LogLevel = GetEventLevel(ConfigurationManager.AppSettings["LogLevel"]),
+                    LogLevelConsole = GetEventLevel(ConfigurationManager.AppSettings["LogLevelConsole"]),
+                    LogLevelFile = GetEventLevel(ConfigurationManager.AppSettings["LogLevelFile"]),
+                    LogLevelEvent = GetEventLevel(ConfigurationManager.AppSettings["LogLevelEvent"]),
+                    LogLevelSeq = GetEventLevel(ConfigurationManager.AppSettings["LogLevelSeq"]),
+                    LogDays = GetInt(ConfigurationManager.AppSettings["LogMonths"]),
+                    LogFlush = GetInt(ConfigurationManager.AppSettings["LogFlush"]),
+                    LogSeqServer = ConfigurationManager.AppSettings["LogSeqServer"],
+                    LogSeqApiKey = ConfigurationManager.AppSettings["LogSeqApiKey"],
+                    LogFormatConsole = ConfigurationManager.AppSettings["LogFormatConsole"],
+                    LogFormatEvent = ConfigurationManager.AppSettings["LogFormatEvent"],
+                    LogFormatFile = ConfigurationManager.AppSettings["LogFormatFile"]
+                };
+            }
+            else
+            {
+                loggingConfig = config;
+            }
 
             bool isSuccess = true;
 
             //If AppName is not specified in config, attempt to populate it. Populate AppVersion while we're at it.
             try
             {
-                if (string.IsNullOrEmpty(config.AppName))
-                    config.AppName = Assembly.GetEntryAssembly().GetName().Name;
-                config.AppVersion = Assembly.GetEntryAssembly().GetName().Version.ToString();
-                if (string.IsNullOrEmpty(config.LogFolder))
-                    config.LogFolder = Assembly.GetEntryAssembly().Location;
+                if (string.IsNullOrEmpty(loggingConfig.AppName))
+                {
+                    loggingConfig.AppName = Assembly.GetEntryAssembly().GetName().Name;
+                }
+
+                loggingConfig.AppVersion = Assembly.GetEntryAssembly().GetName().Version.ToString();
+                if (string.IsNullOrEmpty(loggingConfig.LogFolder))
+                {
+                    loggingConfig.LogFolder = Assembly.GetEntryAssembly().Location;
+                }
             }
             catch
             {
@@ -133,48 +151,73 @@ namespace Lurgle.Logging
             }
 
             if (!isSuccess)
+            {
                 try
                 {
-                    if (string.IsNullOrEmpty(config.AppName))
-                        config.AppName = Assembly.GetExecutingAssembly().GetName().Name;
-                    config.AppVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-                    if (string.IsNullOrEmpty(config.LogFolder))
-                        config.LogFolder = Assembly.GetExecutingAssembly().GetName().CodeBase;
+                    if (string.IsNullOrEmpty(loggingConfig.AppName))
+                    {
+                        loggingConfig.AppName = Assembly.GetExecutingAssembly().GetName().Name;
+                    }
+
+                    loggingConfig.AppVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                    if (string.IsNullOrEmpty(loggingConfig.LogFolder))
+                    {
+                        loggingConfig.LogFolder = Assembly.GetExecutingAssembly().GetName().CodeBase;
+                    }
                 }
                 catch
                 {
                     //We surrender ...
-                    config.AppVersion = string.Empty;
+                    loggingConfig.AppVersion = string.Empty;
                 }
+            }
 
-            if (config.LogDays.Equals(-1))
-                config.LogDays = 31;
+            if (loggingConfig.LogDays.Equals(-1))
+            {
+                loggingConfig.LogDays = 31;
+            }
 
-            if (config.LogFlush.Equals(-1))
-                config.LogFlush = 1;
+            if (loggingConfig.LogFlush.Equals(-1))
+            {
+                loggingConfig.LogFlush = 1;
+            }
 
-            if (string.IsNullOrEmpty(config.LogName))
-                config.LogName = "Blorp";
+            if (string.IsNullOrEmpty(loggingConfig.LogName))
+            {
+                loggingConfig.LogName = "Blorp";
+            }
 
-            if (string.IsNullOrEmpty(config.LogExtension))
-                config.LogExtension = ".log";
+            if (string.IsNullOrEmpty(loggingConfig.LogExtension))
+            {
+                loggingConfig.LogExtension = ".log";
+            }
 
-            if (string.IsNullOrEmpty(config.LogEventSource))
-                config.LogEventSource = config.AppName;
+            if (string.IsNullOrEmpty(loggingConfig.LogEventSource))
+            {
+                loggingConfig.LogEventSource = loggingConfig.AppName;
+            }
 
-            if (string.IsNullOrEmpty(config.LogEventName))
-                config.LogEventName = "Application";
+            if (string.IsNullOrEmpty(loggingConfig.LogEventName))
+            {
+                loggingConfig.LogEventName = "Application";
+            }
 
-            if (string.IsNullOrEmpty(config.LogFormatConsole))
-                config.LogFormatConsole = "{Message}{NewLine}";
+            if (string.IsNullOrEmpty(loggingConfig.LogFormatConsole))
+            {
+                loggingConfig.LogFormatConsole = "{Message}{NewLine}";
+            }
 
-            if (string.IsNullOrEmpty(config.LogFormatEvent))
-                config.LogFormatEvent = "({ThreadId}) {Message}{NewLine}{NewLine}{Exception}";
+            if (string.IsNullOrEmpty(loggingConfig.LogFormatEvent))
+            {
+                loggingConfig.LogFormatEvent = "({ThreadId}) {Message}{NewLine}{NewLine}{Exception}";
+            }
 
-            if (string.IsNullOrEmpty(config.LogFormatFile))
-                config.LogFormatFile = "{Timestamp:yyyy-MM-dd HH:mm:ss}: ({ThreadId}) [{Level}] {Message}{NewLine}";
+            if (string.IsNullOrEmpty(loggingConfig.LogFormatFile))
+            {
+                loggingConfig.LogFormatFile = "{Timestamp:yyyy-MM-dd HH:mm:ss}: ({ThreadId}) [{Level}] {Message}{NewLine}";
+            }
 
-            return config;
+            return loggingConfig;
         }
 
         /// <summary>
@@ -184,9 +227,10 @@ namespace Lurgle.Logging
         /// <returns></returns>
         private static LogLevel GetEventLevel(string configValue)
         {
-            LogLevel eventLevel;
-            if (Enum.TryParse(configValue, true, out eventLevel))
+            if (Enum.TryParse(configValue, true, out LogLevel eventLevel))
+            {
                 return eventLevel;
+            }
 
             return LogLevel.Verbose;
         }
@@ -202,9 +246,10 @@ namespace Lurgle.Logging
 
             foreach (string logString in configValue.Split(','))
             {
-                LogType logTypeValue;
-                if (Enum.TryParse(logString, true, out logTypeValue))
+                if (Enum.TryParse(logString, true, out LogType logTypeValue))
+                {
                     logTypes.Add(logTypeValue);
+                }
             }
 
             return logTypes;
@@ -219,13 +264,16 @@ namespace Lurgle.Logging
         public static int GetInt(object sourceObject)
         {
             string sourceString = string.Empty;
-            int destInt;
 
             if (!Convert.IsDBNull(sourceObject))
+            {
                 sourceString = (string)sourceObject;
+            }
 
-            if (int.TryParse(sourceString, out destInt))
+            if (int.TryParse(sourceString, out int destInt))
+            {
                 return destInt;
+            }
 
             return -1;
         }
@@ -239,13 +287,16 @@ namespace Lurgle.Logging
         public static bool GetBool(object sourceObject)
         {
             string sourceString = string.Empty;
-            bool destBool;
 
             if (!Convert.IsDBNull(sourceObject))
+            {
                 sourceString = (string)sourceObject;
+            }
 
-            if (bool.TryParse(sourceString, out destBool))
+            if (bool.TryParse(sourceString, out bool destBool))
+            {
                 return destBool;
+            }
 
             return false;
         }
