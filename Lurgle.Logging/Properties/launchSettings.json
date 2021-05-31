@@ -1,8 +1,1 @@
-{
-  "profiles": {
-    "SuperMegaUltra.Logging": {
-      "commandName": "Project",
-      "nativeDebugging": true
-    }
-  }
-}
+{}

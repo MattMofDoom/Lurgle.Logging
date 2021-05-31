@@ -1,8 +1,6 @@
 ﻿using Serilog;
 using Serilog.Core;
 using Serilog.Events;
-using Serilog.Exceptions;
-using Serilog.Sinks.SystemConsole.Themes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,6 +16,7 @@ namespace Lurgle.Logging
     {
         public static LoggingConfig Config { get; private set; }
         public static Logger LogWriter { get; private set; } = null;
+        private static Dictionary<string, object> CommonProperties { get; set; } = new Dictionary<string, object>();
         public static Dictionary<LogType, FailureReason> LogFailures { get; private set; }
         public static List<LogType> EnabledLogs { get; private set; }
         public static readonly string AppName = "AppName";
@@ -66,19 +65,19 @@ namespace Lurgle.Logging
             LoggerConfiguration config = new LoggerConfiguration();
             switch (Config.LogLevel)
             {
-                case LogLevel.Debug:
+                case LurgLevel.Debug:
                     config.MinimumLevel.Debug();
                     break;
-                case LogLevel.Error:
+                case LurgLevel.Error:
                     config.MinimumLevel.Error();
                     break;
-                case LogLevel.Fatal:
+                case LurgLevel.Fatal:
                     config.MinimumLevel.Fatal();
                     break;
-                case LogLevel.Information:
+                case LurgLevel.Information:
                     config.MinimumLevel.Information();
                     break;
-                case LogLevel.Warning:
+                case LurgLevel.Warning:
                     config.MinimumLevel.Warning();
                     break;
                 default:
@@ -94,11 +93,85 @@ namespace Lurgle.Logging
                 .Enrich.WithMachineName()
                 .Enrich.WithProcessId()
                 .Enrich.WithProcessName()
-                .Enrich.WithExceptionDetails()
                 .Enrich.WithMemoryUsage()
                 .Enrich.WithProperty(AppName, Config.AppName)
                 .Enrich.WithProperty(AppVersion, Config.AppVersion);
 
+        }
+
+        /// <summary>
+        /// Return a dictionary comprised of the base properties that we pass to each event
+        /// </summary>
+        /// <param name="correlationId"></param>
+        /// <param name="methodName"></param>
+        /// <param name="sourceFilePath"></param>
+        /// <param name="sourceLineNumber"></param>
+        /// <returns></returns>
+        public static Dictionary<string, object> GetBaseProperties(string correlationId = null,
+            string methodName = null, string sourceFilePath = null, int sourceLineNumber = -1)
+        {
+            //Automatically include static common properties
+            Dictionary<string, object> propertyValues = CommonProperties.ToDictionary(p => p.Key, p => p.Value);
+
+            if (!string.IsNullOrEmpty(correlationId))
+            {
+                propertyValues.Add(CorrelationId, correlationId);
+            }
+
+            if (Config.EnableMethodNameProperty && !string.IsNullOrEmpty(methodName))
+            {
+                propertyValues.Add(MethodName, methodName);
+            }
+
+            if (Config.EnableSourceFileProperty && !string.IsNullOrEmpty(sourceFilePath))
+            {
+                propertyValues.Add(SourceFile, sourceFilePath);
+            }
+
+            if (Config.EnableLineNumberProperty && sourceLineNumber > 0)
+            {
+                propertyValues.Add(LineNumber, sourceLineNumber);
+            }
+
+            return propertyValues;
+        }
+
+        /// <summary>
+        /// Add an additional static property for logging
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static void AddCommonProperty(string name, object value)
+        {
+            if (!string.IsNullOrEmpty(name) && !CommonProperties.ContainsKey(name))
+            {
+                CommonProperties.Add(name, value);
+            }
+        }
+
+        /// <summary>
+        /// Add an additional set of static properties for logging
+        /// </summary>
+        /// <param name="propertyPairs"></param>
+        /// <returns></returns>
+        public static void AddCommonProperty(Dictionary<string, object> propertyPairs)
+        {
+            foreach (KeyValuePair<string, object> values in propertyPairs)
+            {
+                if (!string.IsNullOrEmpty(values.Key) && !CommonProperties.ContainsKey(values.Key))
+                {
+                    CommonProperties.Add(values.Key, values.Value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Clear the list of static properties
+        /// </summary>
+        public static void ResetCommonProperties()
+        {
+            CommonProperties.Clear();
         }
 
         /// <summary>
@@ -120,12 +193,17 @@ namespace Lurgle.Logging
                 switch (logType)
                 {
                     case LogType.Console:
-                        testConfig.WriteTo.Console((LogEventLevel)Config.LogLevelConsole, Config.LogFormatConsole, theme: SystemConsoleTheme.Literate);
+                        testConfig
+                            .WriteTo
+                            .Console((LogEventLevel)Config.LogLevelConsole, Config.LogFormatConsole, theme: Config.LogConsoleTheme);
                         break;
                     case LogType.EventLog:
                         try
                         {
-                            testConfig.WriteTo.EventLog(Config.LogEventSource, Config.LogEventName, ".", manageSource, Config.LogFormatEvent, null, LogEventLevel.Verbose);
+                            testConfig
+                                .WriteTo
+                                .EventLog(Config.LogEventSource, Config.LogEventName, ".", manageSource, Config.LogFormatEvent, null,
+                                (LogEventLevel)Config.LogLevelEvent);
                         }
                         catch (System.TypeInitializationException)
                         {
@@ -141,40 +219,45 @@ namespace Lurgle.Logging
                         }
                         break;
                     case LogType.File:
-                        testConfig.WriteTo.File(fileName, LogEventLevel.Verbose, Config.LogFormatFile, rollingInterval: RollingInterval.Day, retainedFileCountLimit: Config.LogDays,
-                                shared: true, buffered: false, flushToDiskInterval: new TimeSpan(0, 0, Config.LogFlush));
+                        if (Config.LogFileType.Equals(LogFileFormat.Text))
+                        {
+                            testConfig
+                            .WriteTo
+                            .File(fileName, (LogEventLevel)Config.LogLevelFile, Config.LogFormatFile, rollingInterval: RollingInterval.Day,
+                            retainedFileCountLimit: Config.LogDays, shared: Config.LogShared, buffered: Config.LogBuffered,
+                            flushToDiskInterval: new TimeSpan(0, 0, Config.LogFlush));
+                        }
+                        else
+                        {
+                            testConfig
+                                .WriteTo
+                                .File(new Serilog.Formatting.Compact.CompactJsonFormatter(), fileName, (LogEventLevel)Config.LogLevelFile,
+                                rollingInterval: RollingInterval.Day, retainedFileCountLimit: Config.LogDays, shared: Config.LogShared,
+                                buffered: Config.LogBuffered, flushToDiskInterval: new TimeSpan(0, 0, Config.LogFlush));
+                        }
+
                         break;
                     case LogType.Seq:
                         if (!string.IsNullOrEmpty(Config.LogSeqApiKey))
                         {
-                            testConfig.WriteTo.Seq(Config.LogSeqServer, LogEventLevel.Verbose, apiKey: Config.LogSeqApiKey);
+                            testConfig
+                                .WriteTo
+                                .Seq(Config.LogSeqServer, (LogEventLevel)Config.LogLevelSeq, apiKey: Config.LogSeqApiKey);
                         }
                         else
                         {
-                            testConfig.WriteTo.Seq(Config.LogSeqServer, LogEventLevel.Verbose);
+                            testConfig
+                                .WriteTo
+                                .Seq(Config.LogSeqServer, (LogEventLevel)Config.LogLevelSeq);
                         }
 
                         break;
                 }
 
                 Logger testWriter = testConfig.CreateLogger();
-                if (!string.IsNullOrEmpty(correlationId))
-                {
-                    testWriter
-                        .ForContext(Logging.CorrelationId, correlationId)
-                        .ForContext(MethodName, methodName)
-                        .ForContext(LineNumber, sourceLineNumber)
-                        .ForContext(SourceFile, sourceFilePath)
-                        .Debug(Initialising);
-                }
-                else
-                {
-                    testWriter
-                        .ForContext(MethodName, methodName)
-                        .ForContext(LineNumber, sourceLineNumber)
-                        .ForContext(SourceFile, sourceFilePath)
-                        .Debug(Initialising);
-                }
+                testWriter
+                    .ForContext(new PropertyBagEnricher().Add(GetBaseProperties(correlationId, methodName, sourceFilePath, sourceLineNumber)))
+                    .Verbose(Initialising);
 
                 testWriter.Dispose();
                 return true;
@@ -281,25 +364,44 @@ namespace Lurgle.Logging
 
                 if (logTypes.Contains(LogType.Console))
                 {
-                    logConfig.WriteTo.Console((LogEventLevel)Config.LogLevelConsole, Config.LogFormatConsole, theme: SystemConsoleTheme.Literate);
+                    logConfig
+                        .WriteTo
+                        .Console((LogEventLevel)Config.LogLevelConsole, Config.LogFormatConsole, theme: Config.LogConsoleTheme);
                 }
 
                 if (logTypes.Contains(LogType.Seq))
                 {
                     if (!string.IsNullOrEmpty(Config.LogSeqApiKey))
                     {
-                        logConfig.WriteTo.Seq(Config.LogSeqServer, (LogEventLevel)Config.LogLevelSeq, apiKey: Config.LogSeqApiKey);
+                        logConfig
+                            .WriteTo
+                            .Seq(Config.LogSeqServer, (LogEventLevel)Config.LogLevelSeq, apiKey: Config.LogSeqApiKey);
                     }
                     else
                     {
-                        logConfig.WriteTo.Seq(Config.LogSeqServer, (LogEventLevel)Config.LogLevelSeq);
+                        logConfig
+                            .WriteTo
+                            .Seq(Config.LogSeqServer, (LogEventLevel)Config.LogLevelSeq);
                     }
                 }
 
                 if (logTypes.Contains(LogType.File))
                 {
-                    logConfig.WriteTo.File(fileName, (LogEventLevel)Config.LogLevelFile, Config.LogFormatFile, rollingInterval: RollingInterval.Day,
-                        retainedFileCountLimit: Config.LogDays, shared: true, buffered: false, flushToDiskInterval: new TimeSpan(0, 0, Config.LogFlush));
+                    if (Config.LogFileType.Equals(LogFileFormat.Text))
+                    {
+                        logConfig
+                            .WriteTo
+                            .File(fileName, (LogEventLevel)Config.LogLevelFile, Config.LogFormatFile, rollingInterval: RollingInterval.Day,
+                            retainedFileCountLimit: Config.LogDays, shared: Config.LogShared, buffered: Config.LogBuffered, flushToDiskInterval: new TimeSpan(0, 0, Config.LogFlush));
+                    }
+                    else
+                    {
+                        logConfig
+                            .WriteTo
+                            .File(new Serilog.Formatting.Compact.CompactJsonFormatter(), fileName, (LogEventLevel)Config.LogLevelFile,
+                            rollingInterval: RollingInterval.Day, retainedFileCountLimit: Config.LogDays, shared: Config.LogShared, buffered: Config.LogBuffered,
+                            flushToDiskInterval: new TimeSpan(0, 0, Config.LogFlush));
+                    }
                 }
 
                 if (logTypes.Contains(LogType.EventLog))

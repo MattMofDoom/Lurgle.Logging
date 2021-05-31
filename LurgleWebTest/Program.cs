@@ -1,11 +1,19 @@
-﻿using Lurgle.Logging;
+﻿using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+//using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Lurgle.Logging;
 
-namespace LurgleTest
+namespace LurgleWebTest
 {
-    internal class Program
+    public class Program
     {
-        private static void Main()
+        public static void Main(string[] args)
         {
             Logging.AddCommonProperty("TestCommonProperty", "Common property for all log events");
 
@@ -43,6 +51,11 @@ namespace LurgleTest
             }
 
             Logging.Close();
+            CreateWebHostBuilder(args).Build().Run();
         }
+
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>();
     }
 }

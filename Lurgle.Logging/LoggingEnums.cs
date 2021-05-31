@@ -20,6 +20,18 @@ namespace Lurgle.Logging
         All = -1
     }
 
+    /// <summary>
+    /// Control the format of text logs
+    /// </summary>
+    public enum LogFileFormat
+    {
+        Text,
+        Json,
+    }
+
+    /// <summary>
+    /// Return a reason why a given log type failed
+    /// </summary>
     public enum FailureReason
     {
         DirectoryNotFound,
@@ -30,7 +42,7 @@ namespace Lurgle.Logging
     /// <summary>
     /// Outlines the supported log levels. Abstracts Serilog's <see cref="LogEventLevel"/> so that it does not need to be referenced outside of the <see cref="Logging"/> class.
     /// </summary>
-    public enum LogLevel
+    public enum LurgLevel
     {
         Fatal = LogEventLevel.Fatal,
         Error = LogEventLevel.Error,

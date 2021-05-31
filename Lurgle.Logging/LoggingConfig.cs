@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog.Sinks.SystemConsole.Themes;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Reflection;
@@ -11,6 +12,18 @@ namespace Lurgle.Logging
     public class LoggingConfig
     {
         /// <summary>
+        /// Set to false to disable the MethodName property
+        /// </summary>
+        public bool EnableMethodNameProperty { get; set; } = true;
+        /// <summary>
+        /// Set to false to disable the SourceFile property
+        /// </summary>
+        public bool EnableSourceFileProperty { get; set; } = true;
+        /// <summary>
+        /// Set to false to disable the LineNumber property
+        /// </summary>
+        public bool EnableLineNumberProperty { get; set; } = true;
+        /// <summary>
         /// Meaningful app name that is used for logging. Will be auto-set if not specified.
         /// </summary>
         public string AppName { get; set; }
@@ -22,6 +35,10 @@ namespace Lurgle.Logging
         /// List of valid log types. At least one must be specified or an exception will be raised.
         /// </summary>
         public List<LogType> LogType { get; set; }
+        /// <summary>
+        /// Select a console theme, defaults to Literate
+        /// </summary>
+        public ConsoleTheme LogConsoleTheme { get; set; }
         /// <summary>
         /// Log folder for file logs
         /// </summary>
@@ -45,23 +62,27 @@ namespace Lurgle.Logging
         /// <summary>
         /// Minimum overall log level that will be written - Verbose, Debug, Information, Warning, Error, Fatal
         /// </summary>
-        public LogLevel LogLevel { get; set; }
+        public LurgLevel LogLevel { get; set; }
         /// <summary>
         /// Minimum log level accepted by the Console sink
         /// </summary>
-        public LogLevel LogLevelConsole { get; set; }
+        public LurgLevel LogLevelConsole { get; set; }
         /// <summary>
         /// Minimum log level accepted by the File sink
         /// </summary>
-        public LogLevel LogLevelFile { get; set; }
+        public LurgLevel LogLevelFile { get; set; }
         /// <summary>
         /// Minimum log level accepted by the Event Log sink
         /// </summary>
-        public LogLevel LogLevelEvent { get; set; }
+        public LurgLevel LogLevelEvent { get; set; }
         /// <summary>
         /// Minimum log level accepted by the Seq sink
         /// </summary>
-        public LogLevel LogLevelSeq { get; set; }
+        public LurgLevel LogLevelSeq { get; set; }
+        /// <summary>
+        /// Output files as text or Compact Json - defaults to text. If set to Json, <see cref="LogFormatFile" /> will not be used/>
+        /// </summary>
+        public LogFileFormat LogFileType { get; set; }
         /// <summary>
         /// How many days log files will be retained - default is 31
         /// </summary>
@@ -70,6 +91,14 @@ namespace Lurgle.Logging
         /// How many seconds before log file writes are flushed to disk - default is 1
         /// </summary>
         public int LogFlush { get; set; }
+        /// <summary>
+        /// Allow log file to be accessed in shared mode. Cannot be used with buffered mode.
+        /// </summary>
+        public bool LogShared { get; set; }
+        /// <summary>
+        /// Allow log file to have buffered writes. Cannot be used with shared mode.
+        /// </summary>
+        public bool LogBuffered { get; set; }
         /// <summary>
         /// URL for the Seq server, eg. https://seq.domain.com
         /// </summary>
@@ -103,8 +132,12 @@ namespace Lurgle.Logging
             {
                 loggingConfig = new LoggingConfig()
                 {
+                    EnableMethodNameProperty = GetBool(ConfigurationManager.AppSettings["EnableMethodNameProperty"], true),
+                    EnableSourceFileProperty = GetBool(ConfigurationManager.AppSettings["EnableSourceFileProperty"], true),
+                    EnableLineNumberProperty = GetBool(ConfigurationManager.AppSettings["EnableLineNumberProperty"], true),
                     AppName = ConfigurationManager.AppSettings["AppName"],
                     LogType = GetLogType(ConfigurationManager.AppSettings["LogType"]),
+                    LogConsoleTheme = GetConsoleTheme(ConfigurationManager.AppSettings["ConsoleTheme"]),
                     LogFolder = ConfigurationManager.AppSettings["LogFolder"],
                     LogName = ConfigurationManager.AppSettings["LogName"],
                     LogExtension = ConfigurationManager.AppSettings["LogExtension"],
@@ -115,8 +148,11 @@ namespace Lurgle.Logging
                     LogLevelFile = GetEventLevel(ConfigurationManager.AppSettings["LogLevelFile"]),
                     LogLevelEvent = GetEventLevel(ConfigurationManager.AppSettings["LogLevelEvent"]),
                     LogLevelSeq = GetEventLevel(ConfigurationManager.AppSettings["LogLevelSeq"]),
+                    LogFileType = GetLogFileType(ConfigurationManager.AppSettings["LogFileType"]),
                     LogDays = GetInt(ConfigurationManager.AppSettings["LogMonths"]),
                     LogFlush = GetInt(ConfigurationManager.AppSettings["LogFlush"]),
+                    LogShared = GetBool(ConfigurationManager.AppSettings["LogShared"]),
+                    LogBuffered = GetBool(ConfigurationManager.AppSettings["LogBuffered"], true),
                     LogSeqServer = ConfigurationManager.AppSettings["LogSeqServer"],
                     LogSeqApiKey = ConfigurationManager.AppSettings["LogSeqApiKey"],
                     LogFormatConsole = ConfigurationManager.AppSettings["LogFormatConsole"],
@@ -182,9 +218,14 @@ namespace Lurgle.Logging
                 loggingConfig.LogFlush = 1;
             }
 
+            if (loggingConfig.LogBuffered && loggingConfig.LogShared)
+            {
+                loggingConfig.LogShared = false;
+            }
+
             if (string.IsNullOrEmpty(loggingConfig.LogName))
             {
-                loggingConfig.LogName = "Blorp";
+                loggingConfig.LogName = "Lurgle";
             }
 
             if (string.IsNullOrEmpty(loggingConfig.LogExtension))
@@ -225,14 +266,17 @@ namespace Lurgle.Logging
         /// </summary>
         /// <param name="configValue">Setting string</param>
         /// <returns></returns>
-        private static LogLevel GetEventLevel(string configValue)
+        private static LurgLevel GetEventLevel(string configValue)
         {
-            if (Enum.TryParse(configValue, true, out LogLevel eventLevel))
+            if (!string.IsNullOrEmpty(configValue))
             {
-                return eventLevel;
+                if (Enum.TryParse(configValue, true, out LurgLevel eventLevel))
+                {
+                    return eventLevel;
+                }
             }
 
-            return LogLevel.Verbose;
+            return LurgLevel.Verbose;
         }
 
         /// <summary>
@@ -244,15 +288,56 @@ namespace Lurgle.Logging
         {
             List<LogType> logTypes = new List<LogType>();
 
-            foreach (string logString in configValue.Split(','))
+            if (!string.IsNullOrEmpty(configValue))
             {
-                if (Enum.TryParse(logString, true, out LogType logTypeValue))
+                foreach (string logString in configValue.Split(','))
                 {
-                    logTypes.Add(logTypeValue);
+                    if (Enum.TryParse(logString, true, out LogType logTypeValue))
+                    {
+                        logTypes.Add(logTypeValue);
+                    }
                 }
+            }
+            else
+            {
+                logTypes.Add(Lurgle.Logging.LogType.Console);
             }
 
             return logTypes;
+        }
+
+        private static ConsoleTheme GetConsoleTheme(string configValue)
+        {
+            if (!string.IsNullOrEmpty(configValue))
+            {
+                switch (configValue.ToLowerInvariant())
+                {
+                    case "literate":
+                        return SystemConsoleTheme.Literate;
+                    case "grayscale":
+                        return SystemConsoleTheme.Grayscale;
+                    case "colored":
+                        return SystemConsoleTheme.Colored;
+                    case "ansiliterate":
+                        return AnsiConsoleTheme.Literate;
+                    case "ansigrayscale":
+                        return AnsiConsoleTheme.Grayscale;
+                    case "ansicode":
+                        return AnsiConsoleTheme.Code;
+                }
+            }
+
+            return SystemConsoleTheme.Literate;
+        }
+
+        private static LogFileFormat GetLogFileType(string configValue)
+        {
+            if (!string.IsNullOrEmpty(configValue) && Enum.TryParse(configValue, out LogFileFormat fileFormat))
+            {
+                return fileFormat;
+            }
+
+            return LogFileFormat.Text;
         }
 
         /// <summary>
@@ -283,8 +368,9 @@ namespace Lurgle.Logging
         /// This will filter out nulls that could otherwise cause exceptions
         /// </summary>
         /// <param name="sourceObject">An object that can be converted to a bool</param>
+        /// <pasram name=trueIfEmpty">Return true if the object is empty</param>
         /// <returns></returns>
-        public static bool GetBool(object sourceObject)
+        public static bool GetBool(object sourceObject, bool trueIfEmpty = false)
         {
             string sourceString = string.Empty;
 
@@ -298,7 +384,7 @@ namespace Lurgle.Logging
                 return destBool;
             }
 
-            return false;
+            return trueIfEmpty;
         }
     }
 }
