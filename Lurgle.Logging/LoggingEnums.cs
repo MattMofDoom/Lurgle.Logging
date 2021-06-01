@@ -52,4 +52,14 @@ namespace Lurgle.Logging
         Verbose = LogEventLevel.Verbose,
         NotSet = -1
     }
+
+    /// <summary>
+    /// Masking policy to be used when masking properties
+    /// </summary>
+    public enum MaskPolicy
+    {
+        None,
+        MaskWithString,
+        MaskLettersAndNumbers,
+    }
 }

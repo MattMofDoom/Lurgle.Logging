@@ -5,6 +5,9 @@ using System.Runtime.CompilerServices;
 
 namespace Lurgle.Logging
 {
+    /// <summary>
+    /// Log an event with Lurgle.Logging
+    /// </summary>
     public sealed class Log : ILog, ILevel, IAddProperty, IDisposable
     {
         private bool IsMethod { get; set; }
@@ -104,10 +107,49 @@ namespace Lurgle.Logging
         /// <returns></returns>
         public IAddProperty AddProperty(string name, object value)
         {
-            if (!string.IsNullOrEmpty(name) && !EventProperties.ContainsKey(name))
+            bool exists = false;
+            if (!string.IsNullOrEmpty(name))
             {
-                EventProperties.Add(name, value);
+                foreach (KeyValuePair<string, object> property in EventProperties)
+                {
+                    if (property.Key.Equals(name, StringComparison.OrdinalIgnoreCase))
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
+
+                if (!exists)
+                {
+                    if (Logging.Config.LogMaskPolicy.Equals(MaskPolicy.None))
+                    {
+                        EventProperties.Add(name, value);
+                    }
+                    else
+                    {
+                        bool isMask = false;
+                        foreach (string maskProperty in Logging.Config.LogMaskProperties)
+                        {
+                            if (maskProperty.Equals(name, StringComparison.OrdinalIgnoreCase))
+                            {
+                                isMask = true;
+                                break;
+                            }
+                        }
+
+                        if (isMask)
+                        {
+                            EventProperties.Add(name, Logging.MaskProperty(value));
+                        }
+                        else
+                        {
+                            EventProperties.Add(name, value);
+                        }
+                    }
+                }
+
             }
+
 
             return this;
         }
@@ -121,9 +163,46 @@ namespace Lurgle.Logging
         {
             foreach (KeyValuePair<string, object> values in propertyPairs)
             {
-                if (!string.IsNullOrEmpty(values.Key) && !EventProperties.ContainsKey(values.Key))
+                bool exists = false;
+                if (!string.IsNullOrEmpty(values.Key))
                 {
-                    EventProperties.Add(values.Key, values.Value);
+                    foreach (KeyValuePair<string, object> property in EventProperties)
+                    {
+                        if (property.Key.Equals(values.Key, StringComparison.OrdinalIgnoreCase))
+                        {
+                            exists = true;
+                            break;
+                        }
+                    }
+
+                    if (!exists)
+                    {
+                        if (Logging.Config.LogMaskPolicy.Equals(MaskPolicy.None))
+                        {
+                            EventProperties.Add(values.Key, values.Value);
+                        }
+                        else
+                        {
+                            bool isMask = false;
+                            foreach (string maskProperty in Logging.Config.LogMaskProperties)
+                            {
+                                if (maskProperty.Equals(values.Key, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    isMask = true;
+                                    break;
+                                }
+                            }
+
+                            if (isMask)
+                            {
+                                EventProperties.Add(values.Key, Logging.MaskProperty(values.Value));
+                            }
+                            else
+                            {
+                                EventProperties.Add(values.Key, values.Value);
+                            }
+                        }
+                    }
                 }
             }
 
@@ -159,6 +238,7 @@ namespace Lurgle.Logging
                 {
                     Logging.LogWriter
                         .ForContext(new PropertyBagEnricher().Add(EventProperties))
+                        .ForContext(new MaskingEnricher().Add(Logging.Config.LogMaskProperties))
                         .Write((LogEventLevel)LogLevel, logText, args);
                 }
             }

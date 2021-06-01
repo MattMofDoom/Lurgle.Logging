@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Reflection;
 
 namespace Lurgle.Logging
@@ -35,6 +36,26 @@ namespace Lurgle.Logging
         /// List of valid log types. At least one must be specified or an exception will be raised.
         /// </summary>
         public List<LogType> LogType { get; set; }
+        /// <summary>
+        /// Define properties that should be masked in logging
+        /// </summary>
+        public List<string> LogMaskProperties { get; set; } = new List<string>();
+        /// <summary>
+        /// Define the applicable policy for masking - MaskWithString, MaskLettersAndNumbers
+        /// </summary>
+        public MaskPolicy LogMaskPolicy { get; set; } = MaskPolicy.None;
+        /// <summary>
+        /// Define the string pattern to use for masking if MaskWithString policy is used
+        /// </summary>
+        public string LogMaskPattern { get; set; } = "XXXXXX";
+        /// <summary>
+        /// Define the mask character to use for non-digit values in masking if MaskLettersAndNumbers is used
+        /// </summary>
+        public string LogMaskCharacter { get; set; } = "X";
+        /// <summary>
+        /// Define the mask character to use for digit values in masking if MaskLettersAndNumbers is used
+        /// </summary>
+        public string LogMaskDigit { get; set; } = "*";
         /// <summary>
         /// Select a console theme, defaults to Literate
         /// </summary>
@@ -137,6 +158,11 @@ namespace Lurgle.Logging
                     EnableLineNumberProperty = GetBool(ConfigurationManager.AppSettings["EnableLineNumberProperty"], true),
                     AppName = ConfigurationManager.AppSettings["AppName"],
                     LogType = GetLogType(ConfigurationManager.AppSettings["LogType"]),
+                    LogMaskProperties = GetMaskProperties(ConfigurationManager.AppSettings["LogMaskProperties"]),
+                    LogMaskPattern = ConfigurationManager.AppSettings["LogMaskPattern"],
+                    LogMaskPolicy = GetMaskPolicy(ConfigurationManager.AppSettings["LogMaskPolicy"]),
+                    LogMaskCharacter = GetChar(ConfigurationManager.AppSettings["LogMaskCharacter"]),
+                    LogMaskDigit = GetChar(ConfigurationManager.AppSettings["LogMaskDigit"]),
                     LogConsoleTheme = GetConsoleTheme(ConfigurationManager.AppSettings["ConsoleTheme"]),
                     LogFolder = ConfigurationManager.AppSettings["LogFolder"],
                     LogName = ConfigurationManager.AppSettings["LogName"],
@@ -208,6 +234,21 @@ namespace Lurgle.Logging
                 }
             }
 
+            if (string.IsNullOrEmpty(loggingConfig.LogMaskPattern))
+            {
+                loggingConfig.LogMaskPattern = "******";
+            }
+
+            if (string.IsNullOrEmpty(loggingConfig.LogMaskCharacter))
+            {
+                loggingConfig.LogMaskCharacter = "X";
+            }
+
+            if (string.IsNullOrEmpty(loggingConfig.LogMaskDigit))
+            {
+                loggingConfig.LogMaskDigit = "*";
+            }
+
             if (loggingConfig.LogDays.Equals(-1))
             {
                 loggingConfig.LogDays = 31;
@@ -277,6 +318,42 @@ namespace Lurgle.Logging
             }
 
             return LurgLevel.Verbose;
+        }
+
+        private static List<string> GetMaskProperties(string configValue)
+        {
+            return (configValue ?? "")
+                .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(t => t.Trim())
+                .ToList();
+        }
+
+        /// <summary>
+        /// Parse the configured mask policy into a <see cref="MaskPolicy"/>
+        /// </summary>
+        /// <param name="configValue"></param>
+        /// <returns></returns>
+        private static MaskPolicy GetMaskPolicy(string configValue)
+        {
+            if (!string.IsNullOrEmpty(configValue))
+            {
+                if (Enum.TryParse(configValue, true, out MaskPolicy maskPolicy))
+                {
+                    return maskPolicy;
+                }
+            }
+
+            return MaskPolicy.None;
+        }
+
+        private static string GetChar(string configValue)
+        {
+            if (!string.IsNullOrEmpty(configValue))
+            {
+                return configValue[0].ToString();
+            }
+
+            return string.Empty;
         }
 
         /// <summary>

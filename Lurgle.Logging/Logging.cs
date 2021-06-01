@@ -6,30 +6,43 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace Lurgle.Logging
 {
     /// <summary>
-    /// Static Blorp.Logging instance that provides an interface to properties and methods for logging
+    /// Static Lurgle.Logging instance that provides an interface to properties and methods for logging
     /// </summary>
     public static class Logging
     {
+        /// <summary>
+        /// Current Lurgle.Logging configuration
+        /// </summary>
         public static LoggingConfig Config { get; private set; }
+        /// <summary>
+        /// Currently configured Serilog Logger
+        /// </summary>
         public static Logger LogWriter { get; private set; } = null;
         private static Dictionary<string, object> CommonProperties { get; set; } = new Dictionary<string, object>();
+        /// <summary>
+        /// Dictionary of <see cref="FailureReason"/> for why a given <see cref="LogType"/> failed
+        /// </summary>
         public static Dictionary<LogType, FailureReason> LogFailures { get; private set; }
+        /// <summary>
+        /// List of enabled <see cref="LogType"/>
+        /// </summary>
         public static List<LogType> EnabledLogs { get; private set; }
-        public static readonly string AppName = "AppName";
-        public static readonly string AppVersion = "AppVersion";
-        public static readonly string CorrelationId = "CorrelationId";
-        public static readonly string MethodName = "MethodName";
-        public static readonly string SourceFile = "SourceFile";
-        public static readonly string LineNumber = "LineNumber";
+        private static readonly string AppName = "AppName";
+        private static readonly string AppVersion = "AppVersion";
+        private static readonly string CorrelationId = "CorrelationId";
+        private static readonly string MethodName = "MethodName";
+        private static readonly string SourceFile = "SourceFile";
+        private static readonly string LineNumber = "LineNumber";
         public static readonly string LogMethod = "{0} - {1}";
-        public static readonly string LogNameDate = "{0}-{1}";
-        public static readonly string LogTemplate = "{0}-";
-        public static readonly string DateIso = "yyyyMMdd";
-        public static readonly string Initialising = "Initialising event sources ...";
+        private static readonly string LogNameDate = "{0}-{1}";
+        private static readonly string LogTemplate = "{0}-";
+        private static readonly string DateIso = "yyyyMMdd";
+        private static readonly string Initialising = "Initialising event sources ...";
 
         /// <summary>
         /// Flush logs and dispose the logging interface. Used for application shutdown. <para/>
@@ -96,7 +109,6 @@ namespace Lurgle.Logging
                 .Enrich.WithMemoryUsage()
                 .Enrich.WithProperty(AppName, Config.AppName)
                 .Enrich.WithProperty(AppVersion, Config.AppVersion);
-
         }
 
         /// <summary>
@@ -144,9 +156,47 @@ namespace Lurgle.Logging
         /// <returns></returns>
         public static void AddCommonProperty(string name, object value)
         {
-            if (!string.IsNullOrEmpty(name) && !CommonProperties.ContainsKey(name))
+            bool exists = false;
+            if (!string.IsNullOrEmpty(name))
             {
-                CommonProperties.Add(name, value);
+                foreach (KeyValuePair<string, object> property in CommonProperties)
+                {
+                    if (property.Key.Equals(name, StringComparison.OrdinalIgnoreCase))
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
+
+                if (!exists)
+                {
+                    if (Logging.Config == null || Logging.Config.LogMaskPolicy.Equals(MaskPolicy.None))
+                    {
+                        CommonProperties.Add(name, value);
+                    }
+                    else
+                    {
+                        bool isMask = false;
+                        foreach (string maskProperty in Logging.Config.LogMaskProperties)
+                        {
+                            if (maskProperty.Equals(name, StringComparison.OrdinalIgnoreCase))
+                            {
+                                isMask = true;
+                                break;
+                            }
+                        }
+
+                        if (isMask)
+                        {
+                            CommonProperties.Add(name, MaskProperty(value));
+                        }
+                        else
+                        {
+                            CommonProperties.Add(name, value);
+                        }
+                    }
+                }
+
             }
         }
 
@@ -159,9 +209,46 @@ namespace Lurgle.Logging
         {
             foreach (KeyValuePair<string, object> values in propertyPairs)
             {
-                if (!string.IsNullOrEmpty(values.Key) && !CommonProperties.ContainsKey(values.Key))
+                bool exists = false;
+                if (!string.IsNullOrEmpty(values.Key))
                 {
-                    CommonProperties.Add(values.Key, values.Value);
+                    foreach (KeyValuePair<string, object> property in CommonProperties)
+                    {
+                        if (property.Key.Equals(values.Key, StringComparison.OrdinalIgnoreCase))
+                        {
+                            exists = true;
+                            break;
+                        }
+                    }
+
+                    if (!exists)
+                    {
+                        if (Logging.Config == null || Logging.Config.LogMaskPolicy.Equals(MaskPolicy.None))
+                        {
+                            CommonProperties.Add(values.Key, values.Value);
+                        }
+                        else
+                        {
+                            bool isMask = false;
+                            foreach (string maskProperty in Logging.Config.LogMaskProperties)
+                            {
+                                if (maskProperty.Equals(values.Key, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    isMask = true;
+                                    break;
+                                }
+                            }
+
+                            if (isMask)
+                            {
+                                CommonProperties.Add(values.Key, MaskProperty(values.Value));
+                            }
+                            else
+                            {
+                                CommonProperties.Add(values.Key, values.Value);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -172,6 +259,26 @@ namespace Lurgle.Logging
         public static void ResetCommonProperties()
         {
             CommonProperties.Clear();
+        }
+
+        /// <summary>
+        /// Returns a masked property based on the masking policy
+        /// </summary>
+        /// <param name="propertyValue"></param>
+        /// <returns></returns>
+        public static object MaskProperty(object propertyValue)
+        {
+            switch (Logging.Config.LogMaskPolicy)
+            {
+                case MaskPolicy.MaskWithString:
+                    return Logging.Config.LogMaskPattern;
+                case MaskPolicy.MaskLettersAndNumbers:
+                    string replaceValue = Regex.Replace(propertyValue.ToString(), "[A-Z]", Logging.Config.LogMaskCharacter, RegexOptions.IgnoreCase);
+                    return Regex.Replace(replaceValue, "\\d", Logging.Config.LogMaskDigit);
+                default:
+                    return propertyValue;
+
+            }
         }
 
         /// <summary>

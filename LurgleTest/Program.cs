@@ -21,6 +21,14 @@ namespace LurgleTest
             Log.Level(LurgLevel.Error).Add("Test error log");
             //Send added properties
             Log.Level().AddProperty("test1", "test1").AddProperty("test2", LurgLevel.Fatal).AddProperty(test).Add("Test Adding Properties");
+            //Add masked properties for test
+            Logging.Config.LogMaskPolicy = MaskPolicy.MaskWithString;
+            Logging.AddCommonProperty("TestCommonMask", "mask1234");
+            Log.Level().AddProperty("Mechagodzilla", "Godzilla").AddProperty("password", "godzilla").Add("Testing masking properties, send complaints to {Email:l}", "mechagodzilla@monster.rargh");
+            //Switch masked properties to use MaskPolicy.MaskLettersAndNumbers
+            Logging.Config.LogMaskPolicy = MaskPolicy.MaskLettersAndNumbers;
+            Logging.AddCommonProperty("TestCommonMask2", "mask1234");
+            Log.Level().AddProperty("Mechagodzilla", "Godzilla123").AddProperty("password", "godzilla123").Add("Testing masking properties, send complaints to {Email:l}", "mechagodzilla123@monster.rargh");
             //Output the enabled log types
             Log.Level(LurgLevel.Information).Add("Configured Logs: {LogCount}, Enabled Logs: {EnabledCount}", Logging.Config.LogType.Count, Logging.EnabledLogs.Count);
             Log.Level(LurgLevel.Information).Add("Configured Log List:");
