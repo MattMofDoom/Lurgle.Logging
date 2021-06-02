@@ -9,7 +9,7 @@
 **Lurgle.Logging** is an implementation of Serilog that can help to save time in getting up and running, and provides some useful functionality.
 
 - Includes sinks for Console, Windows Event Log, File, and Seq, with configurable properties exposed via config
-- Includes enrichers for log context, thread id, environment user name, machine name, process id, process nmame, memory usage
+- Includes enrichers for log context, thread id, environment user name, machine name, process id, process name, memory usage
 - Includes AppName and AppVersion properties which can use the executing assembly name/version, or set appname via config
 - Test enabled sinks at initialisation and return a FailureReason if an error occurs
 - Add common properties to every log event (roughly equivalent to Enrich.WithProperty) 
