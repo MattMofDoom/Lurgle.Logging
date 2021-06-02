@@ -6,7 +6,7 @@
 
 [Serilog](https://serilog.net/) is a fantastic open source logging solution, which can be configured in innumerable ways. Anyone needing a logging solution can add Serilog and get started.
 
-Lurgle.Logging is an implementation of Serilog that can help to save time in getting up and running, and provides some useful functionality.
+**Lurgle.Logging** is an implementation of Serilog that can help to save time in getting up and running, and provides some useful functionality.
 
 - Includes sinks for Console, Windows Event Log, File, and Seq, with configurable properties exposed via config
 - Includes enrichers for log context, thread id, environment user name, machine name, process id, process nmame, memory usage
