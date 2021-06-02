@@ -1,5 +1,9 @@
 # Lurgle.Logging
 
+[![Version](https://img.shields.io/nuget/v/Lurgle.Logging?style=plastic)](https://www.nuget.org/packages/Lurgle.Logging)
+[![Downloads](https://img.shields.io/nuget/dt/Lurgle.Logging?style=plastic)](https://www.nuget.org/packages/Lurgle.Logging)
+[![License](https://img.shields.io/github/license/MattMofDoom/Lurgle.Logging?style=plastic)](https://github.com/MattMofDoom/Lurgle.Logging/blob/dev/LICENSE)
+
 [Serilog](https://serilog.net/) is a fantastic open source logging solution, which can be configured in innumerable ways. Anyone needing a logging solution can add Serilog and get started.
 
 Lurgle.Logging is an implementation of Serilog that can help to save time in getting up and running, and provides some useful functionality.
