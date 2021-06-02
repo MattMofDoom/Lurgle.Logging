@@ -37,8 +37,8 @@ namespace LurgleTest
                 Log.Level(LurgLevel.Information).Add(" - {LogType}", logType);
             }
 
-            //Add a correlation Id
-            Log.Level(LurgLevel.Debug, "TestCorro").Add("Enabled Log List:");
+            //Set a new correlation Id
+            Log.Level(LurgLevel.Debug, Logging.NewCorrelationId()).Add("Enabled Log List:");
             foreach (LogType logType in Logging.EnabledLogs)
             {
                 Log.Level(LurgLevel.Information).Add(" - {LogType}", logType);

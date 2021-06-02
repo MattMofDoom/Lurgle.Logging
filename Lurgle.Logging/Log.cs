@@ -85,21 +85,6 @@ namespace Lurgle.Logging
         }
 
         /// <summary>
-        /// Simple log entry using <seealso cref="LurgLevel.Information"/> with no arguments.
-        /// </summary>
-        /// <param name="logTemplate"></param>
-        /// <param name="correlationId"></param>
-        /// <param name="showMethod"></param>
-        /// <param name="methodName"></param>
-        /// <param name="sourceFilePath"></param>
-        /// <param name="sourceLineNumber"></param>
-        public static void Add(string logTemplate, string correlationId = null, bool showMethod = false,
-            [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "", [CallerLineNumber] int sourceLineNumber = 0)
-        {
-            Level(LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber).Add(logTemplate);
-        }
-
-        /// <summary>
         /// Add an additional property for logging context
         /// </summary>
         /// <param name="name"></param>
@@ -207,6 +192,21 @@ namespace Lurgle.Logging
             }
 
             return this;
+        }
+
+        /// <summary>
+        /// Simple log entry using <seealso cref="LurgLevel.Information"/> with no arguments.
+        /// </summary>
+        /// <param name="logTemplate"></param>
+        /// <param name="correlationId"></param>
+        /// <param name="showMethod"></param>
+        /// <param name="methodName"></param>
+        /// <param name="sourceFilePath"></param>
+        /// <param name="sourceLineNumber"></param>
+        public static void Add(string logTemplate, string correlationId = null, bool showMethod = false,
+            [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "", [CallerLineNumber] int sourceLineNumber = 0)
+        {
+            Level(LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber).Add(logTemplate);
         }
 
         /// <summary>

@@ -25,6 +25,10 @@ namespace Lurgle.Logging
         public static Logger LogWriter { get; private set; } = null;
         private static Dictionary<string, object> CommonProperties { get; set; } = new Dictionary<string, object>();
         /// <summary>
+        /// Current Correlation Id
+        /// </summary>
+        public static string CorrelationId { get; private set; }
+        /// <summary>
         /// Dictionary of <see cref="FailureReason"/> for why a given <see cref="LogType"/> failed
         /// </summary>
         public static Dictionary<LogType, FailureReason> LogFailures { get; private set; }
@@ -34,7 +38,6 @@ namespace Lurgle.Logging
         public static List<LogType> EnabledLogs { get; private set; }
         private static readonly string AppName = "AppName";
         private static readonly string AppVersion = "AppVersion";
-        private static readonly string CorrelationId = "CorrelationId";
         private static readonly string MethodName = "MethodName";
         private static readonly string SourceFile = "SourceFile";
         private static readonly string LineNumber = "LineNumber";
@@ -112,6 +115,32 @@ namespace Lurgle.Logging
         }
 
         /// <summary>
+        /// Generate or set the CorrelationId
+        /// </summary>
+        /// <param name="correlationId"></param>
+        /// <returns></returns>
+        private static string SetCorrelationId(string correlationId = null)
+        {
+            if (!string.IsNullOrEmpty(correlationId))
+            {
+                CorrelationId = correlationId;
+            }
+            else if (string.IsNullOrEmpty(CorrelationId))
+            {
+                NewCorrelationId();
+            }
+
+            return CorrelationId;
+        }
+
+        public static string NewCorrelationId()
+        {
+            CorrelationId = Guid.NewGuid().ToString();
+
+            return CorrelationId;
+        }
+
+        /// <summary>
         /// Return a dictionary comprised of the base properties that we pass to each event
         /// </summary>
         /// <param name="correlationId"></param>
@@ -125,10 +154,7 @@ namespace Lurgle.Logging
             //Automatically include static common properties
             Dictionary<string, object> propertyValues = CommonProperties.ToDictionary(p => p.Key, p => p.Value);
 
-            if (!string.IsNullOrEmpty(correlationId))
-            {
-                propertyValues.Add(CorrelationId, correlationId);
-            }
+            propertyValues.Add(nameof(CorrelationId), SetCorrelationId(correlationId));
 
             if (Config.EnableMethodNameProperty && !string.IsNullOrEmpty(methodName))
             {
