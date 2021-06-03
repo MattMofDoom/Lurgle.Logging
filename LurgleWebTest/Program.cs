@@ -1,7 +1,6 @@
 ﻿using Lurgle.Logging;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-//using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 
 namespace LurgleWebTest
