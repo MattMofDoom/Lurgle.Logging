@@ -8,6 +8,7 @@
     <Company>Matt Marlor</Company>
     <Version>1.1.0</Version>
     <Description>Console application for testing Lurgle.Logging</Description>
+    <ApplicationIcon>Lurgle.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

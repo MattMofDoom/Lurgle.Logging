@@ -16,6 +16,7 @@
     <Version>1.1.2</Version>
     <PackageReleaseNotes>- Add data masking functionality
 - Create a correlationid if one is not passed, provide functionality to switch correlationids</PackageReleaseNotes>
+    <ApplicationIcon>Lurgle.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
