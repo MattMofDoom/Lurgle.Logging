@@ -11,12 +11,14 @@ namespace Lurgle.Logging
         /// <param name="value"></param>
         /// <returns></returns>
         IAddProperty AddProperty(string name, object value);
+
         /// <summary>
         /// Add an additional set of properties for logging context
         /// </summary>
         /// <param name="propertyPairs"></param>
         /// <returns></returns>
         IAddProperty AddProperty(Dictionary<string, object> propertyPairs);
+
         /// <summary>
         /// Add a new log entry and apply parameters to the supplied log template
         /// </summary>

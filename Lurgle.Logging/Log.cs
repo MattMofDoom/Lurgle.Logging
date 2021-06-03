@@ -44,7 +44,7 @@ namespace Lurgle.Logging
         }
 
         /// <summary>
-        /// Log an event with the specified level. Defaults to Information. 
+        /// Log an event with the specified level. Defaults to <see cref="LurgLevel.Information"/>. 
         /// 
         /// CorrelationId can optionally be specified.
         /// 
@@ -64,7 +64,7 @@ namespace Lurgle.Logging
         }
 
         /// <summary>
-        /// Log an Exception with the specified level. Defaults to Error. 
+        /// Log an Exception with the specified level. Defaults to <see cref="LurgLevel.Error"/>. 
         /// 
         /// CorrelationId can optionally be specified. 
         /// 

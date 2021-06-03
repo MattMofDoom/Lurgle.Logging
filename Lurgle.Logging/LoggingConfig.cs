@@ -320,6 +320,11 @@ namespace Lurgle.Logging
             return LurgLevel.Verbose;
         }
 
+        /// <summary>
+        /// Parse a comma delimited list of property names to mask
+        /// </summary>
+        /// <param name="configValue"></param>
+        /// <returns></returns>
         private static List<string> GetMaskProperties(string configValue)
         {
             return (configValue ?? "")
@@ -346,6 +351,11 @@ namespace Lurgle.Logging
             return MaskPolicy.None;
         }
 
+        /// <summary>
+        /// Parse a config value into a single character string
+        /// </summary>
+        /// <param name="configValue"></param>
+        /// <returns></returns>
         private static string GetChar(string configValue)
         {
             if (!string.IsNullOrEmpty(configValue))
@@ -383,6 +393,11 @@ namespace Lurgle.Logging
             return logTypes;
         }
 
+        /// <summary>
+        /// Parse a configured theme to a <see cref="ConsoleTheme"/>
+        /// </summary>
+        /// <param name="configValue"></param>
+        /// <returns></returns>
         private static ConsoleTheme GetConsoleTheme(string configValue)
         {
             if (!string.IsNullOrEmpty(configValue))
@@ -407,6 +422,11 @@ namespace Lurgle.Logging
             return SystemConsoleTheme.Literate;
         }
 
+        /// <summary>
+        /// Parse a config value to a <see cref="LogFileFormat"/>
+        /// </summary>
+        /// <param name="configValue"></param>
+        /// <returns></returns>
         private static LogFileFormat GetLogFileType(string configValue)
         {
             if (!string.IsNullOrEmpty(configValue) && Enum.TryParse(configValue, out LogFileFormat fileFormat))
