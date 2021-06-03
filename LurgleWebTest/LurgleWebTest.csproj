@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
     <DebugType>full</DebugType>
-    <Version>1.1.0</Version>
+    <Version>1.1.4</Version>
     <Description>Simple web scaffolding to perform basic testing of Lurgle.Logging initialisation</Description>
   </PropertyGroup>
 
