@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Lurgle.Logging
 {
     /// <summary>
-    /// Add properties to logs - adapted from <see cref="https://benfoster.io/blog/serilog-best-practices/"/>
+    /// Add properties to logs - adapted from https://benfoster.io/blog/serilog-best-practices/
     /// </summary>
     public class PropertyBagEnricher : ILogEventEnricher
     {
@@ -58,10 +58,9 @@ namespace Lurgle.Logging
         }
 
         /// <summary>
-        /// Add a property that will be added to all log events enriched by this enricher.
+        /// Add properties that will be added to all log events enriched by this enricher.
         /// </summary>
-        /// <param name="key">The property key.</param>
-        /// <param name="value">The property value.</param>
+        /// <param name="valueList">The property dictionary</param>
         /// <param name="destructureObject">
         /// Whether to destructure the value. See https://github.com/serilog/serilog/wiki/Structured-Data
         /// </param>

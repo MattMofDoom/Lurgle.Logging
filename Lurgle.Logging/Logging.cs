@@ -41,7 +41,10 @@ namespace Lurgle.Logging
         private static readonly string MethodName = "MethodName";
         private static readonly string SourceFile = "SourceFile";
         private static readonly string LineNumber = "LineNumber";
-        public static readonly string LogMethod = "{0} - {1}";
+        /// <summary>
+        /// String format for adding the method name to logs
+        /// </summary>
+        public static readonly string LogMethod = "[{0}] - {1}";
         private static readonly string LogNameDate = "{0}-{1}";
         private static readonly string LogTemplate = "{0}-";
         private static readonly string DateIso = "yyyyMMdd";
@@ -115,7 +118,9 @@ namespace Lurgle.Logging
         }
 
         /// <summary>
-        /// Generate or set the CorrelationId
+        /// Generate or set the <see cref="CorrelationId"/> <para/>
+        /// CorrelationId is a static property by default. If you have concurrent instances with different correlationids, always pass the correlationid to log calls.<para/>
+        /// You can generate a new CorrelationId with <see cref="NewCorrelationId()"/>
         /// </summary>
         /// <param name="correlationId"></param>
         /// <returns></returns>
@@ -124,20 +129,30 @@ namespace Lurgle.Logging
             if (!string.IsNullOrEmpty(correlationId))
             {
                 CorrelationId = correlationId;
+
+                return correlationId;
             }
             else if (string.IsNullOrEmpty(CorrelationId))
             {
-                NewCorrelationId();
+                string corrId = NewCorrelationId();
+                CorrelationId = corrId;
+
+                return corrId;
             }
 
             return CorrelationId;
         }
 
+        /// <summary>
+        /// Return a new CorrelationId and update <see cref="CorrelationId"/>
+        /// </summary>
+        /// <returns></returns>
         public static string NewCorrelationId()
         {
-            CorrelationId = Guid.NewGuid().ToString();
+            string corrId = Guid.NewGuid().ToString();
+            CorrelationId = corrId;
 
-            return CorrelationId;
+            return corrId;
         }
 
         /// <summary>
@@ -312,6 +327,7 @@ namespace Lurgle.Logging
         /// </summary>
         /// <param name="logType"></param>
         /// <param name="correlationId"></param>
+        /// <param name="manageSource"></param>
         /// <param name="fileName"></param>
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>

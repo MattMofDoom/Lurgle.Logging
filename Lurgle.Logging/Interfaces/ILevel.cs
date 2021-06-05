@@ -2,6 +2,9 @@
 
 namespace Lurgle.Logging
 {
+    /// <summary>
+    /// Level interface
+    /// </summary>
     public interface ILevel : IHideObjectMembers
     {
         /// <summary>

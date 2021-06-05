@@ -465,7 +465,7 @@ namespace Lurgle.Logging
         /// This will filter out nulls that could otherwise cause exceptions
         /// </summary>
         /// <param name="sourceObject">An object that can be converted to a bool</param>
-        /// <pasram name=trueIfEmpty">Return true if the object is empty</param>
+        /// <param name="trueIfEmpty">Return true if the object is empty</param>
         /// <returns></returns>
         public static bool GetBool(object sourceObject, bool trueIfEmpty = false)
         {

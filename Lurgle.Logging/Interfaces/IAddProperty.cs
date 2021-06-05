@@ -2,6 +2,9 @@
 
 namespace Lurgle.Logging
 {
+    /// <summary>
+    /// Property interface
+    /// </summary>
     public interface IAddProperty : IHideObjectMembers
     {
         /// <summary>

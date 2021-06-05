@@ -11,17 +11,22 @@
     <PackageIcon>Lurgle.png</PackageIcon>
     <RepositoryUrl>https://github.com/MattMofDoom/Lurgle.Logging</RepositoryUrl>
     <RepositoryType>Github</RepositoryType>
-    <PackageTags>Serilog,Logging,Seq,File,Event Log,Console</PackageTags>
+    <PackageTags>Serilog,Log,Logging,Seq,File,EventLog,Console,data,masking,datamasking,correlationid,correlation,structured,properties</PackageTags>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Version>1.1.5</Version>
+    <Version>1.1.6</Version>
     <PackageReleaseNotes>- Add data masking functionality
 - Create a correlationid if one is not passed, provide functionality to switch correlationids
-- Update icons</PackageReleaseNotes>
+- Update icons
+- Ensure correlationId can be passed by concurrent threads</PackageReleaseNotes>
     <ApplicationIcon>Lurgle.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+    <DocumentationFile>C:\Users\mattm\source\repos\Lurgle.Logging\Lurgle.Logging\Lurgle.Logging.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
