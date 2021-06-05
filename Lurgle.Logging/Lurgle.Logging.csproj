@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;net46;net461;net47;net48;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net45;net46;net461;net47;net48;net5.0;netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Matt Marlor</Authors>
     <Company>Matt Marlor</Company>
@@ -13,7 +13,7 @@
     <RepositoryType>Github</RepositoryType>
     <PackageTags>Serilog,Logging,Seq,File,Event Log,Console</PackageTags>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Version>1.1.4</Version>
+    <Version>1.1.5</Version>
     <PackageReleaseNotes>- Add data masking functionality
 - Create a correlationid if one is not passed, provide functionality to switch correlationids
 - Update icons</PackageReleaseNotes>
@@ -49,10 +49,16 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'netstandard2.0' and '$(TargetFramework)' != 'net5.0' and '$(TargetFramework)' != 'netcoreapp3.1'">
     <Reference Include="System.Configuration" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Configuration.ConfigurationManager">
+      <Version>5.0.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
     <PackageReference Include="System.Configuration.ConfigurationManager">
       <Version>5.0.0</Version>
