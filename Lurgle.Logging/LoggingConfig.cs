@@ -15,7 +15,7 @@ namespace Lurgle.Logging
         /// <summary>
         ///     LoggingConfig constructor
         /// </summary>
-        public LoggingConfig()
+        private LoggingConfig()
         {
         }
 
@@ -27,6 +27,7 @@ namespace Lurgle.Logging
         /// <param name="enableSourceFileProperty"></param>
         /// <param name="enableLineNumberProperty"></param>
         /// <param name="appName"></param>
+        /// <param name="appVersion"></param>
         /// <param name="logType"></param>
         /// <param name="logMaskProperties"></param>
         /// <param name="logMaskPattern"></param>
@@ -56,7 +57,7 @@ namespace Lurgle.Logging
         /// <param name="logFormatFile"></param>
         public LoggingConfig(LoggingConfig config = null, bool? enableMethodNameProperty = null,
             bool? enableSourceFileProperty = null,
-            bool? enableLineNumberProperty = null, string appName = null, List<LogType> logType = null,
+            bool? enableLineNumberProperty = null, string appName = null, string appVersion = null, List<LogType> logType = null,
             List<string> logMaskProperties = null, string logMaskPattern = null, MaskPolicy? logMaskPolicy = null,
             string logMaskCharacter = null, string logMaskDigit = null, ConsoleThemeType? logConsoleTheme = null,
             string logFolder = null, string logName = null, string logExtension = null, string logEventSource = null,
@@ -74,6 +75,7 @@ namespace Lurgle.Logging
                 EnableSourceFileProperty = config.EnableSourceFileProperty;
                 EnableLineNumberProperty = config.EnableLineNumberProperty;
                 AppName = config.AppName;
+                AppVersion = config.AppVersion;
                 LogType = config.LogType;
                 LogMaskProperties = config.LogMaskProperties;
                 LogMaskPattern = config.LogMaskPattern;
@@ -111,6 +113,8 @@ namespace Lurgle.Logging
                 EnableLineNumberProperty = (bool) enableLineNumberProperty;
             if (!string.IsNullOrEmpty(appName))
                 AppName = appName;
+            if (!string.IsNullOrEmpty(appVersion))
+                AppVersion = appVersion;
             if (logType != null)
                 LogType = logType;
             if (logMaskProperties != null)

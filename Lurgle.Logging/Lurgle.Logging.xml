@@ -463,7 +463,7 @@
                 LoggingConfig constructor
             </summary>
         </member>
-        <member name="M:Lurgle.Logging.LoggingConfig.#ctor(Lurgle.Logging.LoggingConfig,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.Collections.Generic.List{Lurgle.Logging.LogType},System.Collections.Generic.List{System.String},System.String,System.Nullable{Lurgle.Logging.MaskPolicy},System.String,System.String,System.Nullable{Lurgle.Logging.ConsoleThemeType},System.String,System.String,System.String,System.String,System.String,System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LogFileFormat},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:Lurgle.Logging.LoggingConfig.#ctor(Lurgle.Logging.LoggingConfig,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String,System.Collections.Generic.List{Lurgle.Logging.LogType},System.Collections.Generic.List{System.String},System.String,System.Nullable{Lurgle.Logging.MaskPolicy},System.String,System.String,System.Nullable{Lurgle.Logging.ConsoleThemeType},System.String,System.String,System.String,System.String,System.String,System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LogFileFormat},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String,System.String,System.String,System.String)">
             <summary>
                 Constructor that permits passing a config and optional overrides of any property
             </summary>
@@ -472,6 +472,7 @@
             <param name="enableSourceFileProperty"></param>
             <param name="enableLineNumberProperty"></param>
             <param name="appName"></param>
+            <param name="appVersion"></param>
             <param name="logType"></param>
             <param name="logMaskProperties"></param>
             <param name="logMaskPattern"></param>
