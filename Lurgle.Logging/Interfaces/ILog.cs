@@ -1,10 +1,9 @@
-﻿namespace Lurgle.Logging
+﻿namespace Lurgle.Logging.Interfaces
 {
     /// <summary>
-    /// Base Log interface
+    ///     Base Log interface
     /// </summary>
     public interface ILog : IHideObjectMembers
     {
-
     }
 }
