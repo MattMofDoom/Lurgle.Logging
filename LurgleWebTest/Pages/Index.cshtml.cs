@@ -6,7 +6,6 @@ namespace LurgleWebTest.Pages
     {
         public void OnGet()
         {
-
         }
     }
 }

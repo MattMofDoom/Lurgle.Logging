@@ -4,107 +4,288 @@
         <name>Lurgle.Logging</name>
     </assembly>
     <members>
-        <member name="T:Lurgle.Logging.IAddProperty">
+        <member name="T:Lurgle.Logging.ConsoleThemeType">
             <summary>
-            Property interface
+            Control the theme type used for the console
             </summary>
         </member>
-        <member name="M:Lurgle.Logging.IAddProperty.AddProperty(System.String,System.Object)">
+        <member name="F:Lurgle.Logging.ConsoleThemeType.Literate">
             <summary>
-            Add an additional property for logging context
+            Literate theme
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.ConsoleThemeType.Grayscale">
+            <summary>
+            Grayscale theme
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.ConsoleThemeType.Colored">
+            <summary>
+            Colored theme
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.ConsoleThemeType.AnsiLiterate">
+            <summary>
+            Ansi Literate theme
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.ConsoleThemeType.AnsiGrayscale">
+            <summary>
+            Ansi Grayscale theme
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.ConsoleThemeType.AnsiCode">
+            <summary>
+            Ansi Code theme
+            </summary>
+        </member>
+        <member name="T:Lurgle.Logging.FailureReason">
+            <summary>
+                Return a reason why a given log type failed
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.FailureReason.DirectoryNotFound">
+            <summary>
+                Could not find log file directory
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.FailureReason.DirectoryConfigEmpty">
+            <summary>
+                Log file directory not set
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.FailureReason.LogTestFailed">
+            <summary>
+                Failed to initialise logging for this log type
+            </summary>
+        </member>
+        <member name="T:Lurgle.Logging.LogFileFormat">
+            <summary>
+                Control the format of text logs
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.LogFileFormat.Text">
+            <summary>
+                Text logs
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.LogFileFormat.Json">
+            <summary>
+                Json logs
+            </summary>
+        </member>
+        <member name="T:Lurgle.Logging.LogType">
+            <summary>
+                Supported log types
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.LogType.Console">
+            <summary>
+                Console
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.LogType.File">
+            <summary>
+                File
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.LogType.EventLog">
+            <summary>
+                Windows Event Log
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.LogType.Seq">
+            <summary>
+                Seq
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.LogType.All">
+            <summary>
+                All logs - can be used to return all logs being disabled
+            </summary>
+        </member>
+        <member name="T:Lurgle.Logging.LurgLevel">
+            <summary>
+                Outlines the supported log levels. Abstracts Serilog <see cref="T:Serilog.Events.LogEventLevel" /> so that it does not need to be
+                referenced outside of the <see cref="T:Lurgle.Logging.Logging" /> class.
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.LurgLevel.Fatal">
+            <summary>
+                Fatal
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.LurgLevel.Error">
+            <summary>
+                Error
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.LurgLevel.Warning">
+            <summary>
+                Warning
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.LurgLevel.Information">
+            <summary>
+                Information
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.LurgLevel.Debug">
+            <summary>
+                Debug
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.LurgLevel.Verbose">
+            <summary>
+                Verbose
+            </summary>
+        </member>
+        <member name="T:Lurgle.Logging.MaskPolicy">
+            <summary>
+                Masking policy to be used when masking properties
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.MaskPolicy.None">
+            <summary>
+                No masking
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.MaskPolicy.MaskWithString">
+            <summary>
+                Mask with static string
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.MaskPolicy.MaskLettersAndNumbers">
+            <summary>
+                Mask characters and digits
+            </summary>
+        </member>
+        <member name="T:Lurgle.Logging.Interfaces.IAddProperty">
+            <summary>
+                Property interface
+            </summary>
+        </member>
+        <member name="M:Lurgle.Logging.Interfaces.IAddProperty.AddProperty(System.String,System.Object)">
+            <summary>
+                Add an additional property for logging context
             </summary>
             <param name="name"></param>
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.IAddProperty.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object})">
+        <member name="M:Lurgle.Logging.Interfaces.IAddProperty.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object})">
             <summary>
-            Add an additional set of properties for logging context
+                Add an additional set of properties for logging context
             </summary>
             <param name="propertyPairs"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.IAddProperty.Add(System.String,System.Object[])">
+        <member name="M:Lurgle.Logging.Interfaces.IAddProperty.Add(System.String,System.Object[])">
             <summary>
-            Add a new log entry and apply parameters to the supplied log template
+                Add a new log entry and apply parameters to the supplied log template
             </summary>
             <param name="logTemplate"></param>
             <param name="args"></param>
         </member>
-        <member name="T:Lurgle.Logging.IHideObjectMembers">
+        <member name="T:Lurgle.Logging.Interfaces.IHideObjectMembers">
             <summary>
-            Hide object members
+                Hide object members
             </summary>
         </member>
-        <member name="M:Lurgle.Logging.IHideObjectMembers.GetType">
+        <member name="M:Lurgle.Logging.Interfaces.IHideObjectMembers.GetType">
             <summary>
-            Override GetType visibility
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Lurgle.Logging.IHideObjectMembers.GetHashCode">
-            <summary>
-            Override GetHashCode visibility
+                Override GetType visibility
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.IHideObjectMembers.ToString">
+        <member name="M:Lurgle.Logging.Interfaces.IHideObjectMembers.GetHashCode">
             <summary>
-            Override ToString visibility
+                Override GetHashCode visibility
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.IHideObjectMembers.Equals(System.Object)">
+        <member name="M:Lurgle.Logging.Interfaces.IHideObjectMembers.ToString">
             <summary>
-            Override Equals visibility
+                Override ToString visibility
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Lurgle.Logging.Interfaces.IHideObjectMembers.Equals(System.Object)">
+            <summary>
+                Override Equals visibility
             </summary>
             <param name="obj"></param>
             <returns></returns>
         </member>
-        <member name="T:Lurgle.Logging.ILevel">
+        <member name="T:Lurgle.Logging.Interfaces.ILevel">
             <summary>
-            Level interface
+                Level interface
             </summary>
         </member>
-        <member name="M:Lurgle.Logging.ILevel.AddProperty(System.String,System.Object)">
+        <member name="M:Lurgle.Logging.Interfaces.ILevel.AddProperty(System.String,System.Object)">
             <summary>
-            Add an additional property for logging context
+                Add an additional property for logging context
             </summary>
             <param name="name"></param>
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.ILevel.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object})">
+        <member name="M:Lurgle.Logging.Interfaces.ILevel.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object})">
             <summary>
-            Add an additional set of properties for logging context
+                Add an additional set of properties for logging context
             </summary>
             <param name="propertyPairs"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.ILevel.Add(System.String,System.Object[])">
+        <member name="M:Lurgle.Logging.Interfaces.ILevel.Add(System.String,System.Object[])">
             <summary>
-            Add a new log entry and apply parameters to the supplied log template
+                Add a new log entry and apply parameters to the supplied log template
             </summary>
             <param name="logTemplate"></param>
             <param name="args"></param>
         </member>
-        <member name="T:Lurgle.Logging.ILog">
+        <member name="T:Lurgle.Logging.Interfaces.ILog">
             <summary>
-            Base Log interface
+                Base Log interface
             </summary>
         </member>
         <member name="T:Lurgle.Logging.Log">
             <summary>
-            Log an event with Lurgle.Logging
+                Log an event with Lurgle.Logging
             </summary>
+        </member>
+        <member name="M:Lurgle.Logging.Log.Dispose">
+            <summary>
+                Ensure that we flush and dispose the log writer
+            </summary>
+        </member>
+        <member name="M:Lurgle.Logging.Log.AddProperty(System.String,System.Object)">
+            <summary>
+                Add an additional property for logging context
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lurgle.Logging.Log.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+                Add an additional set of properties for logging context
+            </summary>
+            <param name="propertyPairs"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lurgle.Logging.Log.Add(System.String,System.Object[])">
+            <summary>
+                Add a new log entry and apply parameters to the supplied log template
+            </summary>
+            <param name="logTemplate">Log template that parameters will be applied to</param>
+            <param name="args">Parameters for the log template</param>
         </member>
         <member name="M:Lurgle.Logging.Log.Level(Lurgle.Logging.LurgLevel,System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
-            Log an event with the specified level. Defaults to <see cref="F:Lurgle.Logging.LurgLevel.Information"/>. 
-            
-            CorrelationId can optionally be specified.
-            
-            Optionally, you can embed the method name in the event log text.
+                Log an event with the specified level. Defaults to <see cref="F:Lurgle.Logging.LurgLevel.Information" />.
+                CorrelationId can optionally be specified.
+                Optionally, you can embed the method name in the event log text.
             </summary>
             <param name="logLevel"></param>
             <param name="correlationId"></param>
@@ -116,11 +297,9 @@
         </member>
         <member name="M:Lurgle.Logging.Log.Exception(System.Exception,Lurgle.Logging.LurgLevel,System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
-            Log an Exception with the specified level. Defaults to <see cref="F:Lurgle.Logging.LurgLevel.Error"/>. 
-            
-            CorrelationId can optionally be specified. 
-            
-            Optionally, you can embed the method name in the  event log text.
+                Log an Exception with the specified level. Defaults to <see cref="F:Lurgle.Logging.LurgLevel.Error" />.
+                CorrelationId can optionally be specified.
+                Optionally, you can embed the method name in the  event log text.
             </summary>
             <param name="ex"></param>
             <param name="logLevel"></param>
@@ -131,24 +310,9 @@
             <param name="sourceLineNumber"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(System.String,System.Object)">
-            <summary>
-            Add an additional property for logging context
-            </summary>
-            <param name="name"></param>
-            <param name="value"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object})">
-            <summary>
-            Add an additional set of properties for logging context
-            </summary>
-            <param name="propertyPairs"></param>
-            <returns></returns>
-        </member>
         <member name="M:Lurgle.Logging.Log.Add(System.String,System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
-            Simple log entry using <seealso cref="F:Lurgle.Logging.LurgLevel.Information"/> with no arguments.
+                Simple log entry using <seealso cref="F:Lurgle.Logging.LurgLevel.Information" /> with no arguments.
             </summary>
             <param name="logTemplate"></param>
             <param name="correlationId"></param>
@@ -157,90 +321,81 @@
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
         </member>
-        <member name="M:Lurgle.Logging.Log.Add(System.String,System.Object[])">
-            <summary>
-            Add a new log entry and apply parameters to the supplied log template
-            </summary>
-            <param name="logTemplate">Log template that parameters will be applied to</param>
-            <param name="args">Parameters for the log template</param>
-        </member>
-        <member name="M:Lurgle.Logging.Log.Dispose">
-            <summary>
-            Ensure that we flush and dispose the logwriter
-            </summary>
-        </member>
         <member name="T:Lurgle.Logging.Logging">
             <summary>
-            Static Lurgle.Logging instance that provides an interface to properties and methods for logging
-            </summary>
-        </member>
-        <member name="P:Lurgle.Logging.Logging.Config">
-            <summary>
-            Current Lurgle.Logging configuration
-            </summary>
-        </member>
-        <member name="P:Lurgle.Logging.Logging.LogWriter">
-            <summary>
-            Currently configured Serilog Logger
-            </summary>
-        </member>
-        <member name="P:Lurgle.Logging.Logging.CorrelationId">
-            <summary>
-            Current Correlation Id
-            </summary>
-        </member>
-        <member name="P:Lurgle.Logging.Logging.LogFailures">
-            <summary>
-            Dictionary of <see cref="T:Lurgle.Logging.FailureReason"/> for why a given <see cref="T:Lurgle.Logging.LogType"/> failed
-            </summary>
-        </member>
-        <member name="P:Lurgle.Logging.Logging.EnabledLogs">
-            <summary>
-            List of enabled <see cref="T:Lurgle.Logging.LogType"/>
+                Static Lurgle.Logging instance that provides an interface to properties and methods for logging
             </summary>
         </member>
         <member name="F:Lurgle.Logging.Logging.LogMethod">
             <summary>
-            String format for adding the method name to logs
+                String format for adding the method name to logs
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.Logging.Config">
+            <summary>
+                Current Lurgle.Logging configuration
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.Logging.LogWriter">
+            <summary>
+                Currently configured Serilog Logger
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.Logging.CorrelationId">
+            <summary>
+                Current Correlation Id
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.Logging.LogFailures">
+            <summary>
+                Dictionary of <see cref="T:Lurgle.Logging.FailureReason" /> for why a given <see cref="T:Lurgle.Logging.LogType" /> failed
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.Logging.EnabledLogs">
+            <summary>
+                List of enabled <see cref="T:Lurgle.Logging.LogType" />
             </summary>
         </member>
         <member name="M:Lurgle.Logging.Logging.Close">
             <summary>
-            Flush logs and dispose the logging interface. Used for application shutdown. <para/>
-            
-            If this is called and then an attempt is made to write to the log, the log will be automatically initialised again.
+                Flush logs and dispose the logging interface. Used for application shutdown.
+                <para />
+                If this is called and then an attempt is made to write to the log, the log will be automatically initialised again.
             </summary>
         </member>
         <member name="M:Lurgle.Logging.Logging.GetLogFile">
             <summary>
-            Return today's logfile for file logs
+                Return today's logfile for file logs
             </summary>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.Logging.GetLogConfig">
             <summary>
-            Retrieve a logging configuration with enrichers and minimum log level
+                Retrieve a logging configuration with enrichers and minimum log level
             </summary>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.Logging.SetCorrelationId(System.String)">
             <summary>
-            Generate or set the <see cref="P:Lurgle.Logging.Logging.CorrelationId"/> <para/>
-            CorrelationId is a static property by default. If you have concurrent instances with different correlationids, always pass the correlationid to log calls.<para/>
-            You can generate a new CorrelationId with <see cref="M:Lurgle.Logging.Logging.NewCorrelationId"/>
+                Generate or set the <see cref="P:Lurgle.Logging.Logging.CorrelationId" />
+                <para />
+                CorrelationId is a static property by default. If you have concurrent instances with different correlationids,
+                always pass the correlationid to log calls.
+                <para />
+                You can generate a new CorrelationId with <see cref="M:Lurgle.Logging.Logging.NewCorrelationId" />
             </summary>
             <param name="correlationId"></param>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.Logging.NewCorrelationId">
             <summary>
-            Return a new CorrelationId and update <see cref="P:Lurgle.Logging.Logging.CorrelationId"/>
+                Return a new CorrelationId and update <see cref="P:Lurgle.Logging.Logging.CorrelationId" />
             </summary>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.Logging.GetBaseProperties(System.String,System.String,System.String,System.Int32)">
             <summary>
-            Return a dictionary comprised of the base properties that we pass to each event
+                Return a dictionary comprised of the base properties that we pass to each event
             </summary>
             <param name="correlationId"></param>
             <param name="methodName"></param>
@@ -250,7 +405,7 @@
         </member>
         <member name="M:Lurgle.Logging.Logging.AddCommonProperty(System.String,System.Object)">
             <summary>
-            Add an additional static property for logging
+                Add an additional static property for logging
             </summary>
             <param name="name"></param>
             <param name="value"></param>
@@ -258,26 +413,26 @@
         </member>
         <member name="M:Lurgle.Logging.Logging.AddCommonProperty(System.Collections.Generic.Dictionary{System.String,System.Object})">
             <summary>
-            Add an additional set of static properties for logging
+                Add an additional set of static properties for logging
             </summary>
             <param name="propertyPairs"></param>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.Logging.ResetCommonProperties">
             <summary>
-            Clear the list of static properties
+                Clear the list of static properties
             </summary>
         </member>
         <member name="M:Lurgle.Logging.Logging.MaskProperty(System.Object)">
             <summary>
-            Returns a masked property based on the masking policy
+                Returns a masked property based on the masking policy
             </summary>
             <param name="propertyValue"></param>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.Logging.TestLogConfig(Lurgle.Logging.LogType,System.String,System.Boolean,System.String,System.String,System.String,System.Int32)">
             <summary>
-            Test that the configured log type can be used
+                Test that the configured log type can be used
             </summary>
             <param name="logType"></param>
             <param name="correlationId"></param>
@@ -290,438 +445,358 @@
         </member>
         <member name="M:Lurgle.Logging.Logging.SetConfig(Lurgle.Logging.LoggingConfig)">
             <summary>
-            Set the logging config. This will only set/update the config if there is no LogWriter currently set. 
+                Set the logging config. This will only set/update the config if there is no LogWriter currently set.
             </summary>
         </member>
         <member name="M:Lurgle.Logging.Logging.Init(System.String,System.String,System.String,System.Int32)">
             <summary>
-            Initialise the logging interface. Checks that the configured log types are available and alerts if they aren't.
+                Initialise the logging interface. Checks that the configured log types are available and alerts if they aren't.
             </summary>
         </member>
         <member name="T:Lurgle.Logging.LoggingConfig">
             <summary>
-            Logging configuration. Loaded from AppSettings if available but can be configured from code.
+                Logging configuration. Loaded from AppSettings if available but can be configured from code.
             </summary>
+        </member>
+        <member name="M:Lurgle.Logging.LoggingConfig.#ctor">
+            <summary>
+            LoggingConfig constructor
+            </summary>
+        </member>
+        <member name="M:Lurgle.Logging.LoggingConfig.#ctor(Lurgle.Logging.LoggingConfig,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.Collections.Generic.List{Lurgle.Logging.LogType},System.Collections.Generic.List{System.String},System.String,System.Nullable{Lurgle.Logging.MaskPolicy},System.String,System.String,System.Nullable{Lurgle.Logging.ConsoleThemeType},System.String,System.String,System.String,System.String,System.String,System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LogFileFormat},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+                Constructor that permits passing a config and optional overrides of any property
+            </summary>
+            <param name="config"></param>
+            <param name="enableMethodNameProperty"></param>
+            <param name="enableSourceFileProperty"></param>
+            <param name="enableLineNumberProperty"></param>
+            <param name="appName"></param>
+            <param name="logType"></param>
+            <param name="logMaskProperties"></param>
+            <param name="logMaskPattern"></param>
+            <param name="logMaskPolicy"></param>
+            <param name="logMaskCharacter"></param>
+            <param name="logMaskDigit"></param>
+            <param name="logConsoleTheme"></param>
+            <param name="logFolder"></param>
+            <param name="logName"></param>
+            <param name="logExtension"></param>
+            <param name="logEventSource"></param>
+            <param name="logEventName"></param>
+            <param name="logLevel"></param>
+            <param name="logLevelConsole"></param>
+            <param name="logLevelFile"></param>
+            <param name="logLevelEvent"></param>
+            <param name="logLevelSeq"></param>
+            <param name="logFileType"></param>
+            <param name="logDays"></param>
+            <param name="logFlush"></param>
+            <param name="logShared"></param>
+            <param name="logBuffered"></param>
+            <param name="logSeqServer"></param>
+            <param name="logSeqApiKey"></param>
+            <param name="logFormatConsole"></param>
+            <param name="logFormatEvent"></param>
+            <param name="logFormatFile"></param>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.EnableMethodNameProperty">
             <summary>
-            Set to false to disable the MethodName property
+                Set to false to disable the MethodName property
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.EnableSourceFileProperty">
             <summary>
-            Set to false to disable the SourceFile property
+                Set to false to disable the SourceFile property
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.EnableLineNumberProperty">
             <summary>
-            Set to false to disable the LineNumber property
+                Set to false to disable the LineNumber property
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.AppName">
             <summary>
-            Meaningful app name that is used for logging. Will be auto-set if not specified.
+                Meaningful app name that is used for logging. Will be auto-set if not specified.
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.AppVersion">
             <summary>
-            App version will be determined from the binary version, but can be overriden
+                App version will be determined from the binary version, but can be overriden
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogType">
             <summary>
-            List of valid log types. At least one must be specified or an exception will be raised.
+                List of valid log types. At least one must be specified or an exception will be raised.
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogMaskProperties">
             <summary>
-            Define properties that should be masked in logging
+                Define properties that should be masked in logging
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogMaskPolicy">
             <summary>
-            Define the applicable policy for masking - MaskWithString, MaskLettersAndNumbers
+                Define the applicable policy for masking - MaskWithString, MaskLettersAndNumbers
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogMaskPattern">
             <summary>
-            Define the string pattern to use for masking if MaskWithString policy is used
+                Define the string pattern to use for masking if MaskWithString policy is used
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogMaskCharacter">
             <summary>
-            Define the mask character to use for non-digit values in masking if MaskLettersAndNumbers is used
+                Define the mask character to use for non-digit values in masking if MaskLettersAndNumbers is used
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogMaskDigit">
             <summary>
-            Define the mask character to use for digit values in masking if MaskLettersAndNumbers is used
+                Define the mask character to use for digit values in masking if MaskLettersAndNumbers is used
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogConsoleTheme">
             <summary>
-            Select a console theme, defaults to Literate
+                Select a console theme, defaults to Literate
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogFolder">
             <summary>
-            Log folder for file logs
+                Log folder for file logs
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogName">
             <summary>
-            Log filename prefix for file logs. A hyphen and date will be auto-appended.
+                Log filename prefix for file logs. A hyphen and date will be auto-appended.
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogExtension">
             <summary>
-            Log file extension. Defaults to .log
+                Log file extension. Defaults to .log
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogEventSource">
             <summary>
-            Event Source name for Windows Event Logs
+                Event Source name for Windows Event Logs
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogEventName">
             <summary>
-            Log name for Windows Event Logs (eg. Application)
+                Log name for Windows Event Logs (eg. Application)
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogLevel">
             <summary>
-            Minimum overall log level that will be written - Verbose, Debug, Information, Warning, Error, Fatal
+                Minimum overall log level that will be written - Verbose, Debug, Information, Warning, Error, Fatal
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogLevelConsole">
             <summary>
-            Minimum log level accepted by the Console sink
+                Minimum log level accepted by the Console sink
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogLevelFile">
             <summary>
-            Minimum log level accepted by the File sink
+                Minimum log level accepted by the File sink
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogLevelEvent">
             <summary>
-            Minimum log level accepted by the Event Log sink
+                Minimum log level accepted by the Event Log sink
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogLevelSeq">
             <summary>
-            Minimum log level accepted by the Seq sink
+                Minimum log level accepted by the Seq sink
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogFileType">
             <summary>
-            Output files as text or Compact Json - defaults to text. If set to Json, <see cref="P:Lurgle.Logging.LoggingConfig.LogFormatFile" /> will not be used/>
+                Output files as text or Compact Json - defaults to text. If set to Json, <see cref="P:Lurgle.Logging.LoggingConfig.LogFormatFile" /> will not be
+                used/>
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogDays">
             <summary>
-            How many days log files will be retained - default is 31
+                How many days log files will be retained - default is 31
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogFlush">
             <summary>
-            How many seconds before log file writes are flushed to disk - default is 1
+                How many seconds before log file writes are flushed to disk - default is 1
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogShared">
             <summary>
-            Allow log file to be accessed in shared mode. Cannot be used with buffered mode.
+                Allow log file to be accessed in shared mode. Cannot be used with buffered mode.
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogBuffered">
             <summary>
-            Allow log file to have buffered writes. Cannot be used with shared mode.
+                Allow log file to have buffered writes. Cannot be used with shared mode.
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogSeqServer">
             <summary>
-            URL for the Seq server, eg. https://seq.domain.com
+                URL for the Seq server, eg. https://seq.domain.com
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogSeqApiKey">
             <summary>
-            API key for Seq. If empty, an API key will not be used.
+                API key for Seq. If empty, an API key will not be used.
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogFormatConsole">
             <summary>
-            Logging format for the Console. Default is {Message}{NewLine}
+                Logging format for the Console. Default is {Message}{NewLine}
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogFormatEvent">
             <summary>
-            Logging format for the Event Log. Default is ({ThreadId}) {Message}{NewLine}{NewLine}{Exception}
+                Logging format for the Event Log. Default is ({ThreadId}) {Message}{NewLine}{NewLine}{Exception}
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogFormatFile">
             <summary>
-            Logging format for File logs. Default is {Timestamp:yyyy-MM-dd HH:mm:ss}: ({ThreadId}) [{Level}] {Message}{NewLine}
+                Logging format for File logs. Default is {Timestamp:yyyy-MM-dd HH:mm:ss}: ({ThreadId}) [{Level}] {Message}{NewLine}
             </summary>
         </member>
         <member name="M:Lurgle.Logging.LoggingConfig.GetConfig(Lurgle.Logging.LoggingConfig)">
             <summary>
-            Get a config. Optionally a LoggingConfig can be passed 
+                Get a config. Optionally a LoggingConfig can be passed
             </summary>
             <param name="config"></param>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.LoggingConfig.GetEventLevel(System.String)">
             <summary>
-            Parse the configured log level <see cref="T:System.String"/> into a <see cref="P:Lurgle.Logging.LoggingConfig.LogLevel"/> value
+                Parse the configured log level <see cref="T:System.String" /> into a <see cref="P:Lurgle.Logging.LoggingConfig.LogLevel" /> value
             </summary>
             <param name="configValue">Setting string</param>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.LoggingConfig.GetMaskProperties(System.String)">
             <summary>
-            Parse a comma delimited list of property names to mask
+                Parse a comma delimited list of property names to mask
             </summary>
             <param name="configValue"></param>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.LoggingConfig.GetMaskPolicy(System.String)">
             <summary>
-            Parse the configured mask policy into a <see cref="T:Lurgle.Logging.MaskPolicy"/>
+                Parse the configured mask policy into a <see cref="T:Lurgle.Logging.MaskPolicy" />
             </summary>
             <param name="configValue"></param>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.LoggingConfig.GetChar(System.String)">
             <summary>
-            Parse a config value into a single character string
+                Parse a config value into a single character string
             </summary>
             <param name="configValue"></param>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.LoggingConfig.GetLogType(System.String)">
             <summary>
-            Parse a comma-delimited logType <see cref="T:System.String"/> into a list of <see cref="T:Lurgle.Logging.LogType"/>
+                Parse a comma-delimited logType <see cref="T:System.String" /> into a list of <see cref="T:Lurgle.Logging.LogType" />
             </summary>
             <param name="configValue">Setting string (comma-delimited)</param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.LoggingConfig.GetConsoleTheme(System.String)">
+        <member name="M:Lurgle.Logging.LoggingConfig.GetConsoleTheme(Lurgle.Logging.ConsoleThemeType)">
             <summary>
-            Parse a configured theme to a <see cref="T:Serilog.Sinks.SystemConsole.Themes.ConsoleTheme"/>
+                Parse a configured theme to a <see cref="T:Serilog.Sinks.SystemConsole.Themes.ConsoleTheme" />
             </summary>
-            <param name="configValue"></param>
+            <param name="themeType"></param>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.LoggingConfig.GetLogFileType(System.String)">
             <summary>
-            Parse a config value to a <see cref="T:Lurgle.Logging.LogFileFormat"/>
+                Parse a config value to a <see cref="T:Lurgle.Logging.LogFileFormat" />
             </summary>
             <param name="configValue"></param>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.LoggingConfig.GetInt(System.Object)">
             <summary>
-            Convert the supplied <see cref="T:System.Object"/> to an <see cref="T:System.Int32"/><para/>
-            This will filter out nulls that could otherwise cause exceptions
+                Convert the supplied <see cref="T:System.Object" /> to an <see cref="T:System.Int32" />
+                <para />
+                This will filter out nulls that could otherwise cause exceptions
             </summary>
             <param name="sourceObject">An object that can be converted to an int</param>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.LoggingConfig.GetBool(System.Object,System.Boolean)">
             <summary>
-            Convert the supplied <see cref="T:System.Object"/> to a <see cref="T:System.Boolean"/><para/>
-            This will filter out nulls that could otherwise cause exceptions
+                Convert the supplied <see cref="T:System.Object" /> to a <see cref="T:System.Boolean" />
+                <para />
+                This will filter out nulls that could otherwise cause exceptions
             </summary>
             <param name="sourceObject">An object that can be converted to a bool</param>
             <param name="trueIfEmpty">Return true if the object is empty</param>
             <returns></returns>
         </member>
-        <member name="T:Lurgle.Logging.LogType">
-            <summary>
-            Supported log types
-            </summary>
-        </member>
-        <member name="F:Lurgle.Logging.LogType.Console">
-            <summary>
-            Console
-            </summary>
-        </member>
-        <member name="F:Lurgle.Logging.LogType.File">
-            <summary>
-            File
-            </summary>
-        </member>
-        <member name="F:Lurgle.Logging.LogType.EventLog">
-            <summary>
-            Windows Event Log
-            </summary>
-        </member>
-        <member name="F:Lurgle.Logging.LogType.Seq">
-            <summary>
-            Seq
-            </summary>
-        </member>
-        <member name="F:Lurgle.Logging.LogType.All">
-            <summary>
-            Not used
-            </summary>
-        </member>
-        <member name="T:Lurgle.Logging.LogFileFormat">
-            <summary>
-            Control the format of text logs
-            </summary>
-        </member>
-        <member name="F:Lurgle.Logging.LogFileFormat.Text">
-            <summary>
-            Text logs
-            </summary>
-        </member>
-        <member name="F:Lurgle.Logging.LogFileFormat.Json">
-            <summary>
-            Json logs
-            </summary>
-        </member>
-        <member name="T:Lurgle.Logging.FailureReason">
-            <summary>
-            Return a reason why a given log type failed
-            </summary>
-        </member>
-        <member name="F:Lurgle.Logging.FailureReason.DirectoryNotFound">
-            <summary>
-            Could not find log file directory
-            </summary>
-        </member>
-        <member name="F:Lurgle.Logging.FailureReason.DirectoryConfigEmpty">
-            <summary>
-            Log file directory not set
-            </summary>
-        </member>
-        <member name="F:Lurgle.Logging.FailureReason.LogTestFailed">
-            <summary>
-            Failed to initialise logging for this log type
-            </summary>
-        </member>
-        <member name="T:Lurgle.Logging.LurgLevel">
-            <summary>
-            Outlines the supported log levels. Abstracts Serilog's <see cref="T:Serilog.Events.LogEventLevel"/> so that it does not need to be referenced outside of the <see cref="T:Lurgle.Logging.Logging"/> class.
-            </summary>
-        </member>
-        <member name="F:Lurgle.Logging.LurgLevel.Fatal">
-            <summary>
-            Fatal
-            </summary>
-        </member>
-        <member name="F:Lurgle.Logging.LurgLevel.Error">
-            <summary>
-            Error
-            </summary>
-        </member>
-        <member name="F:Lurgle.Logging.LurgLevel.Warning">
-            <summary>
-            Warning
-            </summary>
-        </member>
-        <member name="F:Lurgle.Logging.LurgLevel.Information">
-            <summary>
-            Information
-            </summary>
-        </member>
-        <member name="F:Lurgle.Logging.LurgLevel.Debug">
-            <summary>
-            Debug
-            </summary>
-        </member>
-        <member name="F:Lurgle.Logging.LurgLevel.Verbose">
-            <summary>
-            Verbose
-            </summary>
-        </member>
-        <member name="F:Lurgle.Logging.LurgLevel.NotSet">
-            <summary>
-            None
-            </summary>
-        </member>
-        <member name="T:Lurgle.Logging.MaskPolicy">
-            <summary>
-            Masking policy to be used when masking properties
-            </summary>
-        </member>
-        <member name="F:Lurgle.Logging.MaskPolicy.None">
-            <summary>
-            No masking
-            </summary>
-        </member>
-        <member name="F:Lurgle.Logging.MaskPolicy.MaskWithString">
-            <summary>
-            Mask with static string
-            </summary>
-        </member>
-        <member name="F:Lurgle.Logging.MaskPolicy.MaskLettersAndNumbers">
-            <summary>
-            Mask characters and digits
-            </summary>
-        </member>
         <member name="T:Lurgle.Logging.MaskingEnricher">
             <summary>
-            Mask event properties based on the configured masking policy
+                Mask event properties based on the configured masking policy
             </summary>
+        </member>
+        <member name="M:Lurgle.Logging.MaskingEnricher.Enrich(Serilog.Events.LogEvent,Serilog.Core.ILogEventPropertyFactory)">
+            <summary>
+                Process incoming events and mask their values if a match is found in the configured properties
+            </summary>
+            <param name="logEvent"></param>
+            <param name="propertyFactory"></param>
         </member>
         <member name="M:Lurgle.Logging.MaskingEnricher.Add(System.Collections.Generic.List{System.String})">
             <summary>
-            Add a list of properties to the masking enricher
+                Add a list of properties to the masking enricher
             </summary>
             <param name="maskProperties"></param>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.MaskingEnricher.Add(System.String)">
             <summary>
-            Add a single property to the masking enricher
+                Add a single property to the masking enricher
             </summary>
             <param name="maskProperty"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.MaskingEnricher.Enrich(Serilog.Events.LogEvent,Serilog.Core.ILogEventPropertyFactory)">
-            <summary>
-            Process incoming events and mask their values if a match is found in the configured properties
-            </summary>
-            <param name="logEvent"></param>
-            <param name="propertyFactory"></param>
-        </member>
         <member name="T:Lurgle.Logging.PropertyBagEnricher">
             <summary>
-            Add properties to logs - adapted from https://benfoster.io/blog/serilog-best-practices/
+                Add properties to logs - adapted from https://benfoster.io/blog/serilog-best-practices/
             </summary>
         </member>
         <member name="M:Lurgle.Logging.PropertyBagEnricher.#ctor">
             <summary>
-            Creates a new <see cref="T:Lurgle.Logging.PropertyBagEnricher" /> instance.
+                Creates a new <see cref="T:Lurgle.Logging.PropertyBagEnricher" /> instance.
             </summary>
         </member>
         <member name="M:Lurgle.Logging.PropertyBagEnricher.Enrich(Serilog.Events.LogEvent,Serilog.Core.ILogEventPropertyFactory)">
             <summary>
-            Enriches the <paramref name="logEvent" /> using the values from the property bag.
+                Enriches the <paramref name="logEvent" /> using the values from the property bag.
             </summary>
             <param name="logEvent">The log event to enrich.</param>
             <param name="propertyFactory">The factory used to create the property.</param>
         </member>
         <member name="M:Lurgle.Logging.PropertyBagEnricher.Add(System.String,System.Object,System.Boolean)">
             <summary>
-            Add a property that will be added to all log events enriched by this enricher.
+                Add a property that will be added to all log events enriched by this enricher.
             </summary>
             <param name="key">The property key.</param>
             <param name="value">The property value.</param>
             <param name="destructureObject">
-            Whether to destructure the value. See https://github.com/serilog/serilog/wiki/Structured-Data
+                Whether to destructure the value. See https://github.com/serilog/serilog/wiki/Structured-Data
             </param>
             <returns>The enricher instance, for chaining Add operations together.</returns>
         </member>
         <member name="M:Lurgle.Logging.PropertyBagEnricher.Add(System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean)">
             <summary>
-            Add properties that will be added to all log events enriched by this enricher.
+                Add properties that will be added to all log events enriched by this enricher.
             </summary>
             <param name="valueList">The property dictionary</param>
             <param name="destructureObject">
-            Whether to destructure the value. See https://github.com/serilog/serilog/wiki/Structured-Data
+                Whether to destructure the value. See https://github.com/serilog/serilog/wiki/Structured-Data
             </param>
             <returns>The enricher instance, for chaining Add operations together.</returns>
         </member>

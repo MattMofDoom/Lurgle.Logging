@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LurgleTest", "LurgleTest\Lu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LurgleWebTest", "LurgleWebTest\LurgleWebTest.csproj", "{FDE83989-B74D-4014-AE1F-B1AC8663351C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lurgle.Logging.Tests", "Lurgle.Logging.Tests\Lurgle.Logging.Tests.csproj", "{5C14CA1B-ADA6-4789-8F73-7D98BF42ED64}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{FDE83989-B74D-4014-AE1F-B1AC8663351C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDE83989-B74D-4014-AE1F-B1AC8663351C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDE83989-B74D-4014-AE1F-B1AC8663351C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C14CA1B-ADA6-4789-8F73-7D98BF42ED64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C14CA1B-ADA6-4789-8F73-7D98BF42ED64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C14CA1B-ADA6-4789-8F73-7D98BF42ED64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C14CA1B-ADA6-4789-8F73-7D98BF42ED64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
