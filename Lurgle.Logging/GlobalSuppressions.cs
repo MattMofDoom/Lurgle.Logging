@@ -5,4 +5,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>", Scope = "member", Target = "~M:Lurgle.Logging.Logging.Init(System.String,System.String,System.String,System.Int32)")]
+[assembly:
+    SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>", Scope = "member",
+        Target = "~M:Lurgle.Logging.Logging.Init(System.String,System.String,System.String,System.Int32)")]

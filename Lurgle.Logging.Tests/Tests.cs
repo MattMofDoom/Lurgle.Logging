@@ -1,6 +1,4 @@
-﻿using System;
-using Xunit;
-using Lurgle.Logging;
+﻿using Xunit;
 
 namespace Lurgle.Logging.Tests
 {
