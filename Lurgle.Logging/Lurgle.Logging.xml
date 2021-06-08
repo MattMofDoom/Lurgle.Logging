@@ -6,37 +6,37 @@
     <members>
         <member name="T:Lurgle.Logging.ConsoleThemeType">
             <summary>
-            Control the theme type used for the console
+                Control the theme type used for the console
             </summary>
         </member>
         <member name="F:Lurgle.Logging.ConsoleThemeType.Literate">
             <summary>
-            Literate theme
+                Literate theme
             </summary>
         </member>
         <member name="F:Lurgle.Logging.ConsoleThemeType.Grayscale">
             <summary>
-            Grayscale theme
+                Grayscale theme
             </summary>
         </member>
         <member name="F:Lurgle.Logging.ConsoleThemeType.Colored">
             <summary>
-            Colored theme
+                Colored theme
             </summary>
         </member>
         <member name="F:Lurgle.Logging.ConsoleThemeType.AnsiLiterate">
             <summary>
-            Ansi Literate theme
+                Ansi Literate theme
             </summary>
         </member>
         <member name="F:Lurgle.Logging.ConsoleThemeType.AnsiGrayscale">
             <summary>
-            Ansi Grayscale theme
+                Ansi Grayscale theme
             </summary>
         </member>
         <member name="F:Lurgle.Logging.ConsoleThemeType.AnsiCode">
             <summary>
-            Ansi Code theme
+                Ansi Code theme
             </summary>
         </member>
         <member name="T:Lurgle.Logging.FailureReason">
@@ -460,10 +460,10 @@
         </member>
         <member name="M:Lurgle.Logging.LoggingConfig.#ctor">
             <summary>
-            LoggingConfig constructor
+                LoggingConfig constructor
             </summary>
         </member>
-        <member name="M:Lurgle.Logging.LoggingConfig.#ctor(Lurgle.Logging.LoggingConfig,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.Collections.Generic.List{Lurgle.Logging.LogType},System.Collections.Generic.List{System.String},System.String,System.Nullable{Lurgle.Logging.MaskPolicy},System.String,System.String,System.Nullable{Lurgle.Logging.ConsoleThemeType},System.String,System.String,System.String,System.String,System.String,System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LogFileFormat},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:Lurgle.Logging.LoggingConfig.#ctor(Lurgle.Logging.LoggingConfig,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String,System.Collections.Generic.List{Lurgle.Logging.LogType},System.Collections.Generic.List{System.String},System.String,System.Nullable{Lurgle.Logging.MaskPolicy},System.String,System.String,System.Nullable{Lurgle.Logging.ConsoleThemeType},System.String,System.String,System.String,System.String,System.String,System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LogFileFormat},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String,System.String,System.String,System.String)">
             <summary>
                 Constructor that permits passing a config and optional overrides of any property
             </summary>
@@ -472,6 +472,7 @@
             <param name="enableSourceFileProperty"></param>
             <param name="enableLineNumberProperty"></param>
             <param name="appName"></param>
+            <param name="appVersion"></param>
             <param name="logType"></param>
             <param name="logMaskProperties"></param>
             <param name="logMaskPattern"></param>
@@ -708,6 +709,13 @@
                 Parse a configured theme to a <see cref="T:Serilog.Sinks.SystemConsole.Themes.ConsoleTheme" />
             </summary>
             <param name="themeType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lurgle.Logging.LoggingConfig.GetConsoleThemeType(Serilog.Sinks.SystemConsole.Themes.ConsoleTheme)">
+            <summary>
+            Return the <see cref="T:Lurgle.Logging.ConsoleThemeType"/> of a given <see cref="T:Serilog.Sinks.SystemConsole.Themes.ConsoleTheme"/>
+            </summary>
+            <param name="theme"></param>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.LoggingConfig.GetLogFileType(System.String)">

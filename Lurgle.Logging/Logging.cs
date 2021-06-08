@@ -147,7 +147,6 @@ namespace Lurgle.Logging
             CorrelationId = corrId;
 
             return corrId;
-
         }
 
         /// <summary>
@@ -201,9 +200,7 @@ namespace Lurgle.Logging
             var exists = false;
             if (string.IsNullOrEmpty(name)) return;
             if (CommonProperties.Any(property => property.Key.Equals(name, StringComparison.OrdinalIgnoreCase)))
-            {
                 exists = true;
-            }
 
             if (exists) return;
             if (Config == null || Config.LogMaskPolicy.Equals(MaskPolicy.None))

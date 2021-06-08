@@ -13,9 +13,9 @@ namespace Lurgle.Logging
     public class LoggingConfig
     {
         /// <summary>
-        /// LoggingConfig constructor
+        ///     LoggingConfig constructor
         /// </summary>
-        public LoggingConfig()
+        private LoggingConfig()
         {
         }
 
@@ -27,6 +27,7 @@ namespace Lurgle.Logging
         /// <param name="enableSourceFileProperty"></param>
         /// <param name="enableLineNumberProperty"></param>
         /// <param name="appName"></param>
+        /// <param name="appVersion"></param>
         /// <param name="logType"></param>
         /// <param name="logMaskProperties"></param>
         /// <param name="logMaskPattern"></param>
@@ -54,8 +55,9 @@ namespace Lurgle.Logging
         /// <param name="logFormatConsole"></param>
         /// <param name="logFormatEvent"></param>
         /// <param name="logFormatFile"></param>
-        public LoggingConfig(LoggingConfig config = null, bool? enableMethodNameProperty = null, bool? enableSourceFileProperty = null,
-            bool? enableLineNumberProperty = null, string appName = null, List<LogType> logType = null,
+        public LoggingConfig(LoggingConfig config = null, bool? enableMethodNameProperty = null,
+            bool? enableSourceFileProperty = null,
+            bool? enableLineNumberProperty = null, string appName = null, string appVersion = null, List<LogType> logType = null,
             List<string> logMaskProperties = null, string logMaskPattern = null, MaskPolicy? logMaskPolicy = null,
             string logMaskCharacter = null, string logMaskDigit = null, ConsoleThemeType? logConsoleTheme = null,
             string logFolder = null, string logName = null, string logExtension = null, string logEventSource = null,
@@ -73,6 +75,7 @@ namespace Lurgle.Logging
                 EnableSourceFileProperty = config.EnableSourceFileProperty;
                 EnableLineNumberProperty = config.EnableLineNumberProperty;
                 AppName = config.AppName;
+                AppVersion = config.AppVersion;
                 LogType = config.LogType;
                 LogMaskProperties = config.LogMaskProperties;
                 LogMaskPattern = config.LogMaskPattern;
@@ -103,13 +106,15 @@ namespace Lurgle.Logging
             }
 
             if (enableMethodNameProperty != null)
-                EnableMethodNameProperty = (bool)enableMethodNameProperty;
+                EnableMethodNameProperty = (bool) enableMethodNameProperty;
             if (enableSourceFileProperty != null)
-                EnableSourceFileProperty = (bool)enableSourceFileProperty;
+                EnableSourceFileProperty = (bool) enableSourceFileProperty;
             if (enableLineNumberProperty != null)
                 EnableLineNumberProperty = (bool) enableLineNumberProperty;
             if (!string.IsNullOrEmpty(appName))
                 AppName = appName;
+            if (!string.IsNullOrEmpty(appVersion))
+                AppVersion = appVersion;
             if (logType != null)
                 LogType = logType;
             if (logMaskProperties != null)
@@ -123,7 +128,7 @@ namespace Lurgle.Logging
             if (!string.IsNullOrEmpty(logMaskDigit))
                 LogMaskDigit = logMaskDigit;
             if (logConsoleTheme != null)
-                LogConsoleTheme = GetConsoleTheme((ConsoleThemeType)logConsoleTheme);
+                LogConsoleTheme = GetConsoleTheme((ConsoleThemeType) logConsoleTheme);
             if (!string.IsNullOrEmpty(logFolder))
                 LogFolder = logFolder;
             if (!string.IsNullOrEmpty(logName))
@@ -351,7 +356,8 @@ namespace Lurgle.Logging
                     LogMaskPolicy = GetMaskPolicy(ConfigurationManager.AppSettings["LogMaskPolicy"]),
                     LogMaskCharacter = GetChar(ConfigurationManager.AppSettings["LogMaskCharacter"]),
                     LogMaskDigit = GetChar(ConfigurationManager.AppSettings["LogMaskDigit"]),
-                    LogConsoleTheme = GetConsoleTheme(GetConsoleThemeType((ConfigurationManager.AppSettings["ConsoleTheme"]))),
+                    LogConsoleTheme =
+                        GetConsoleTheme(GetConsoleThemeType(ConfigurationManager.AppSettings["ConsoleTheme"])),
                     LogFolder = ConfigurationManager.AppSettings["LogFolder"],
                     LogName = ConfigurationManager.AppSettings["LogName"],
                     LogExtension = ConfigurationManager.AppSettings["LogExtension"],
@@ -532,7 +538,7 @@ namespace Lurgle.Logging
         /// </summary>
         /// <param name="themeType"></param>
         /// <returns></returns>
-        private static ConsoleTheme GetConsoleTheme(ConsoleThemeType themeType)
+        public static ConsoleTheme GetConsoleTheme(ConsoleThemeType themeType)
         {
             switch (themeType)
             {
@@ -551,6 +557,31 @@ namespace Lurgle.Logging
                 default:
                     return SystemConsoleTheme.Literate;
             }
+        }
+
+        /// <summary>
+        /// Return the <see cref="ConsoleThemeType"/> of a given <see cref="ConsoleTheme"/>
+        /// </summary>
+        /// <param name="theme"></param>
+        /// <returns></returns>
+        public static ConsoleThemeType GetConsoleThemeType(ConsoleTheme theme)
+        {
+            if (theme == SystemConsoleTheme.Literate)
+                return ConsoleThemeType.Literate;
+
+            if (theme == SystemConsoleTheme.Colored)
+                return ConsoleThemeType.Colored;
+
+            if (theme == SystemConsoleTheme.Grayscale)
+                return ConsoleThemeType.Grayscale;
+
+            if (theme == AnsiConsoleTheme.Literate)
+                return ConsoleThemeType.AnsiLiterate;
+
+            if (theme == AnsiConsoleTheme.Grayscale)
+                return ConsoleThemeType.AnsiGrayscale;
+
+            return ConsoleThemeType.AnsiCode;
         }
 
         /// <summary>
@@ -573,7 +604,7 @@ namespace Lurgle.Logging
         /// </summary>
         /// <param name="sourceObject">An object that can be converted to an int</param>
         /// <returns></returns>
-        public static int GetInt(object sourceObject)
+        private static int GetInt(object sourceObject)
         {
             var sourceString = string.Empty;
 
@@ -592,7 +623,7 @@ namespace Lurgle.Logging
         /// <param name="sourceObject">An object that can be converted to a bool</param>
         /// <param name="trueIfEmpty">Return true if the object is empty</param>
         /// <returns></returns>
-        public static bool GetBool(object sourceObject, bool trueIfEmpty = false)
+        private static bool GetBool(object sourceObject, bool trueIfEmpty = false)
         {
             var sourceString = string.Empty;
 

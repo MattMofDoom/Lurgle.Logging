@@ -1,32 +1,37 @@
 ﻿namespace Lurgle.Logging
 {
     /// <summary>
-    /// Control the theme type used for the console
+    ///     Control the theme type used for the console
     /// </summary>
     public enum ConsoleThemeType
     {
         /// <summary>
-        /// Literate theme
+        ///     Literate theme
         /// </summary>
         Literate,
+
         /// <summary>
-        /// Grayscale theme
+        ///     Grayscale theme
         /// </summary>
         Grayscale,
+
         /// <summary>
-        /// Colored theme
+        ///     Colored theme
         /// </summary>
         Colored,
+
         /// <summary>
-        /// Ansi Literate theme
+        ///     Ansi Literate theme
         /// </summary>
         AnsiLiterate,
+
         /// <summary>
-        /// Ansi Grayscale theme
+        ///     Ansi Grayscale theme
         /// </summary>
         AnsiGrayscale,
+
         /// <summary>
-        /// Ansi Code theme
+        ///     Ansi Code theme
         /// </summary>
         AnsiCode
     }

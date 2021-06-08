@@ -100,7 +100,8 @@ namespace Lurgle.Logging
             foreach (var values in propertyPairs)
             {
                 if (string.IsNullOrEmpty(values.Key)) continue;
-                var exists = EventProperties.Any(property => property.Key.Equals(values.Key, StringComparison.OrdinalIgnoreCase));
+                var exists = EventProperties.Any(property =>
+                    property.Key.Equals(values.Key, StringComparison.OrdinalIgnoreCase));
 
                 if (exists) continue;
                 if (Logging.Config.LogMaskPolicy.Equals(MaskPolicy.None))
