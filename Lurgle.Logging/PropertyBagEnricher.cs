@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Serilog.Core;
 using Serilog.Events;
 
@@ -10,6 +11,7 @@ namespace Lurgle.Logging
     /// </summary>
     public class PropertyBagEnricher : ILogEventEnricher
     {
+        // ReSharper disable UnusedMember.Global
         private readonly Dictionary<string, Tuple<object, bool>> _properties;
 
         /// <summary>
@@ -60,9 +62,8 @@ namespace Lurgle.Logging
         /// <returns>The enricher instance, for chaining Add operations together.</returns>
         public PropertyBagEnricher Add(Dictionary<string, object> valueList, bool destructureObject = false)
         {
-            foreach (var value in valueList)
-                if (!_properties.ContainsKey(value.Key))
-                    _properties.Add(value.Key, Tuple.Create(value.Value, destructureObject));
+            foreach (var value in valueList.Where(value => !_properties.ContainsKey(value.Key)))
+                _properties.Add(value.Key, Tuple.Create(value.Value, destructureObject));
 
             return this;
         }

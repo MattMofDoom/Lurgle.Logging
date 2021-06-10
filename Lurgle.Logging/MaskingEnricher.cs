@@ -10,6 +10,7 @@ namespace Lurgle.Logging
     /// </summary>
     internal class MaskingEnricher : ILogEventEnricher
     {
+        // ReSharper disable UnusedMember.Global
         private readonly List<string> _maskProperties = new List<string>();
 
         /// <summary>
@@ -19,33 +20,33 @@ namespace Lurgle.Logging
         /// <param name="propertyFactory"></param>
         public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         {
-            if (!Logging.Config.LogMaskPolicy.Equals(MaskPolicy.None))
-                foreach (var propertyName in _maskProperties)
-                foreach (var logProperty in logEvent.Properties)
-                    if (logProperty.Key.Equals(propertyName, StringComparison.OrdinalIgnoreCase))
-                    {
-                        if (logProperty.Value is ScalarValue sv && sv.Value is string rawValue)
-                            logEvent
-                                .AddOrUpdateProperty
+            if (Logging.Config.LogMaskPolicy.Equals(MaskPolicy.None)) return;
+            foreach (var propertyName in _maskProperties)
+            foreach (var logProperty in logEvent.Properties)
+                if (logProperty.Key.Equals(propertyName, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (logProperty.Value is ScalarValue sv && sv.Value is string rawValue)
+                        logEvent
+                            .AddOrUpdateProperty
+                            (
+                                new LogEventProperty
                                 (
-                                    new LogEventProperty
-                                    (
-                                        propertyName,
-                                        new ScalarValue(Logging.MaskProperty(rawValue))
-                                    )
-                                );
-                        else
-                            logEvent
-                                .AddOrUpdateProperty
+                                    propertyName,
+                                    new ScalarValue(Logging.MaskProperty(rawValue))
+                                )
+                            );
+                    else
+                        logEvent
+                            .AddOrUpdateProperty
+                            (
+                                new LogEventProperty
                                 (
-                                    new LogEventProperty
-                                    (
-                                        propertyName,
-                                        new ScalarValue(Logging.MaskProperty(logProperty.Value))
-                                    )
-                                );
-                        break;
-                    }
+                                    propertyName,
+                                    new ScalarValue(Logging.MaskProperty(logProperty.Value))
+                                )
+                            );
+                    break;
+                }
         }
 
         /// <summary>
@@ -53,7 +54,7 @@ namespace Lurgle.Logging
         /// </summary>
         /// <param name="maskProperties"></param>
         /// <returns></returns>
-        public MaskingEnricher Add(List<string> maskProperties)
+        public MaskingEnricher Add(IEnumerable<string> maskProperties)
         {
             _maskProperties.AddRange(maskProperties);
 

@@ -7,6 +7,7 @@ using Serilog.Sinks.SystemConsole.Themes;
 
 namespace Lurgle.Logging
 {
+    // ReSharper disable UnusedMember.Global
     /// <summary>
     ///     Logging configuration. Loaded from AppSettings if available but can be configured from code.
     /// </summary>
@@ -57,7 +58,8 @@ namespace Lurgle.Logging
         /// <param name="logFormatFile"></param>
         public LoggingConfig(LoggingConfig config = null, bool? enableMethodNameProperty = null,
             bool? enableSourceFileProperty = null,
-            bool? enableLineNumberProperty = null, string appName = null, string appVersion = null, List<LogType> logType = null,
+            bool? enableLineNumberProperty = null, string appName = null, string appVersion = null,
+            List<LogType> logType = null,
             List<string> logMaskProperties = null, string logMaskPattern = null, MaskPolicy? logMaskPolicy = null,
             string logMaskCharacter = null, string logMaskDigit = null, ConsoleThemeType? logConsoleTheme = null,
             string logFolder = null, string logName = null, string logExtension = null, string logEventSource = null,
@@ -456,11 +458,8 @@ namespace Lurgle.Logging
         /// <returns></returns>
         private static LurgLevel GetEventLevel(string configValue)
         {
-            if (!string.IsNullOrEmpty(configValue))
-                if (Enum.TryParse(configValue, true, out LurgLevel eventLevel))
-                    return eventLevel;
-
-            return LurgLevel.Verbose;
+            if (string.IsNullOrEmpty(configValue)) return LurgLevel.Verbose;
+            return Enum.TryParse(configValue, true, out LurgLevel eventLevel) ? eventLevel : LurgLevel.Verbose;
         }
 
         /// <summary>
@@ -483,11 +482,8 @@ namespace Lurgle.Logging
         /// <returns></returns>
         private static MaskPolicy GetMaskPolicy(string configValue)
         {
-            if (!string.IsNullOrEmpty(configValue))
-                if (Enum.TryParse(configValue, true, out MaskPolicy maskPolicy))
-                    return maskPolicy;
-
-            return MaskPolicy.None;
+            if (string.IsNullOrEmpty(configValue)) return MaskPolicy.None;
+            return Enum.TryParse(configValue, true, out MaskPolicy maskPolicy) ? maskPolicy : MaskPolicy.None;
         }
 
         /// <summary>
@@ -497,9 +493,7 @@ namespace Lurgle.Logging
         /// <returns></returns>
         private static string GetChar(string configValue)
         {
-            if (!string.IsNullOrEmpty(configValue)) return configValue[0].ToString();
-
-            return string.Empty;
+            return !string.IsNullOrEmpty(configValue) ? configValue[0].ToString() : string.Empty;
         }
 
         /// <summary>
@@ -538,6 +532,7 @@ namespace Lurgle.Logging
         /// </summary>
         /// <param name="themeType"></param>
         /// <returns></returns>
+        // ReSharper disable once MemberCanBePrivate.Global
         public static ConsoleTheme GetConsoleTheme(ConsoleThemeType themeType)
         {
             switch (themeType)
@@ -560,7 +555,7 @@ namespace Lurgle.Logging
         }
 
         /// <summary>
-        /// Return the <see cref="ConsoleThemeType"/> of a given <see cref="ConsoleTheme"/>
+        ///     Return the <see cref="ConsoleThemeType" /> of a given <see cref="ConsoleTheme" />
         /// </summary>
         /// <param name="theme"></param>
         /// <returns></returns>
@@ -578,10 +573,7 @@ namespace Lurgle.Logging
             if (theme == AnsiConsoleTheme.Literate)
                 return ConsoleThemeType.AnsiLiterate;
 
-            if (theme == AnsiConsoleTheme.Grayscale)
-                return ConsoleThemeType.AnsiGrayscale;
-
-            return ConsoleThemeType.AnsiCode;
+            return theme == AnsiConsoleTheme.Grayscale ? ConsoleThemeType.AnsiGrayscale : ConsoleThemeType.AnsiCode;
         }
 
         /// <summary>
@@ -629,9 +621,7 @@ namespace Lurgle.Logging
 
             if (!Convert.IsDBNull(sourceObject)) sourceString = (string) sourceObject;
 
-            if (bool.TryParse(sourceString, out var destBool)) return destBool;
-
-            return trueIfEmpty;
+            return bool.TryParse(sourceString, out var destBool) ? destBool : trueIfEmpty;
         }
     }
 }

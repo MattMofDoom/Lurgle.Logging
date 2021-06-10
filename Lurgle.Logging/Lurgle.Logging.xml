@@ -713,7 +713,7 @@
         </member>
         <member name="M:Lurgle.Logging.LoggingConfig.GetConsoleThemeType(Serilog.Sinks.SystemConsole.Themes.ConsoleTheme)">
             <summary>
-            Return the <see cref="T:Lurgle.Logging.ConsoleThemeType"/> of a given <see cref="T:Serilog.Sinks.SystemConsole.Themes.ConsoleTheme"/>
+                Return the <see cref="T:Lurgle.Logging.ConsoleThemeType" /> of a given <see cref="T:Serilog.Sinks.SystemConsole.Themes.ConsoleTheme" />
             </summary>
             <param name="theme"></param>
             <returns></returns>
@@ -756,7 +756,7 @@
             <param name="logEvent"></param>
             <param name="propertyFactory"></param>
         </member>
-        <member name="M:Lurgle.Logging.MaskingEnricher.Add(System.Collections.Generic.List{System.String})">
+        <member name="M:Lurgle.Logging.MaskingEnricher.Add(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
                 Add a list of properties to the masking enricher
             </summary>

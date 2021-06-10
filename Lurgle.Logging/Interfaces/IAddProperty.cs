@@ -7,6 +7,7 @@ namespace Lurgle.Logging.Interfaces
     /// </summary>
     public interface IAddProperty : IHideObjectMembers
     {
+        // ReSharper disable UnusedMember.Global
         /// <summary>
         ///     Add an additional property for logging context
         /// </summary>

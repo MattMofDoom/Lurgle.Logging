@@ -26,12 +26,19 @@ namespace Lurgle.Logging
         private const string LogNameDate = "{0}-{1}";
         private const string LogTemplate = "{0}-";
         private const string DateIso = "yyyyMMdd";
-        private const string Initialising = "Initialising event sources ...";
 
+        private const string
+            Initialising = "Initialising event sources ..."; // ReSharper disable MemberCanBePrivate.Global
+        // ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+        // ReSharper disable CollectionNeverQueried.Global
+        // ReSharper disable UnusedAutoPropertyAccessor.Global
+        // ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
+        // ReSharper disable UnusedMember.Global
+        // ReSharper disable UnusedParameter.Global
         /// <summary>
         ///     String format for adding the method name to logs
         /// </summary>
-        public static readonly string LogMethod = "[{0}] - {1}";
+        public const string LogMethod = "[{0}] - {1}";
 
         /// <summary>
         ///     Current Lurgle.Logging configuration
