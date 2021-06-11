@@ -21,7 +21,9 @@
 - Fix incorrect reference for LogDays
 - Code refactor
 - Add LogConfig constructor for passing config and optional overrides
-- Add method to resolve a ConsoleThemeType</PackageReleaseNotes>
+- Add method to resolve a ConsoleThemeType
+- Add ability to disable Initialising event with LogWriteInit
+- Correct default log filename to match AppName</PackageReleaseNotes>
     <ApplicationIcon>Lurgle.ico</ApplicationIcon>
   </PropertyGroup>
 

@@ -17,12 +17,6 @@ namespace Lurgle.Logging
     /// </summary>
     public static class Logging
     {
-        private const string AppName = "AppName";
-        private const string AppVersion = "AppVersion";
-        private const string MethodName = "MethodName";
-        private const string SourceFile = "SourceFile";
-        private const string LineNumber = "LineNumber";
-
         private const string LogNameDate = "{0}-{1}";
         private const string LogTemplate = "{0}-";
         private const string DateIso = "yyyyMMdd";
@@ -127,8 +121,8 @@ namespace Lurgle.Logging
                 .Enrich.WithProcessId()
                 .Enrich.WithProcessName()
                 .Enrich.WithMemoryUsage()
-                .Enrich.WithProperty(AppName, Config.AppName)
-                .Enrich.WithProperty(AppVersion, Config.AppVersion);
+                .Enrich.WithProperty(nameof(Config.AppName), Config.AppName)
+                .Enrich.WithProperty(nameof(Config.AppVersion), Config.AppVersion);
         }
 
         /// <summary>
@@ -186,13 +180,13 @@ namespace Lurgle.Logging
             propertyValues.Add(nameof(CorrelationId), SetCorrelationId(correlationId));
 
             if (Config.EnableMethodNameProperty && !string.IsNullOrEmpty(methodName))
-                propertyValues.Add(MethodName, methodName);
+                propertyValues.Add("MethodName", methodName);
 
             if (Config.EnableSourceFileProperty && !string.IsNullOrEmpty(sourceFilePath))
-                propertyValues.Add(SourceFile, sourceFilePath);
+                propertyValues.Add("SourceFile", sourceFilePath);
 
             if (Config.EnableLineNumberProperty && sourceLineNumber > 0)
-                propertyValues.Add(LineNumber, sourceLineNumber);
+                propertyValues.Add("LineNumber", sourceLineNumber);
 
             return propertyValues;
         }
@@ -365,10 +359,12 @@ namespace Lurgle.Logging
                 }
 
                 var testWriter = testConfig.CreateLogger();
-                testWriter
-                    .ForContext(new PropertyBagEnricher().Add(GetBaseProperties(correlationId, methodName,
-                        sourceFilePath, sourceLineNumber)))
-                    .Verbose(Initialising);
+                // Only write the Initialising event if enabled
+                if (Config.LogWriteInit)
+                    testWriter
+                        .ForContext(new PropertyBagEnricher().Add(GetBaseProperties(correlationId, methodName,
+                            sourceFilePath, sourceLineNumber)))
+                        .Verbose(Initialising);
 
                 testWriter.Dispose();
                 return true;

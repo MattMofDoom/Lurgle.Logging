@@ -27,6 +27,7 @@ namespace Lurgle.Logging
         /// <param name="enableMethodNameProperty"></param>
         /// <param name="enableSourceFileProperty"></param>
         /// <param name="enableLineNumberProperty"></param>
+        /// <param name="logWriteInit"></param>
         /// <param name="appName"></param>
         /// <param name="appVersion"></param>
         /// <param name="logType"></param>
@@ -58,7 +59,7 @@ namespace Lurgle.Logging
         /// <param name="logFormatFile"></param>
         public LoggingConfig(LoggingConfig config = null, bool? enableMethodNameProperty = null,
             bool? enableSourceFileProperty = null,
-            bool? enableLineNumberProperty = null, string appName = null, string appVersion = null,
+            bool? enableLineNumberProperty = null, bool? logWriteInit = null, string appName = null, string appVersion = null,
             List<LogType> logType = null,
             List<string> logMaskProperties = null, string logMaskPattern = null, MaskPolicy? logMaskPolicy = null,
             string logMaskCharacter = null, string logMaskDigit = null, ConsoleThemeType? logConsoleTheme = null,
@@ -76,6 +77,7 @@ namespace Lurgle.Logging
                 EnableMethodNameProperty = config.EnableMethodNameProperty;
                 EnableSourceFileProperty = config.EnableSourceFileProperty;
                 EnableLineNumberProperty = config.EnableLineNumberProperty;
+                LogWriteInit = config.LogWriteInit;
                 AppName = config.AppName;
                 AppVersion = config.AppVersion;
                 LogType = config.LogType;
@@ -113,6 +115,8 @@ namespace Lurgle.Logging
                 EnableSourceFileProperty = (bool) enableSourceFileProperty;
             if (enableLineNumberProperty != null)
                 EnableLineNumberProperty = (bool) enableLineNumberProperty;
+            if (logWriteInit != null)
+                LogWriteInit = (bool) logWriteInit;
             if (!string.IsNullOrEmpty(appName))
                 AppName = appName;
             if (!string.IsNullOrEmpty(appVersion))
@@ -187,6 +191,11 @@ namespace Lurgle.Logging
         ///     Set to false to disable the LineNumber property
         /// </summary>
         public bool EnableLineNumberProperty { get; private set; } = true;
+
+        /// <summary>
+        /// Write an "Initialising" event during Init's call to TestLogConfig
+        /// </summary>
+        public bool LogWriteInit { get; private set; }
 
         /// <summary>
         ///     Meaningful app name that is used for logging. Will be auto-set if not specified.
@@ -351,6 +360,8 @@ namespace Lurgle.Logging
                         GetBool(ConfigurationManager.AppSettings["EnableSourceFileProperty"], true),
                     EnableLineNumberProperty =
                         GetBool(ConfigurationManager.AppSettings["EnableLineNumberProperty"], true),
+                    LogWriteInit = 
+                        GetBool(ConfigurationManager.AppSettings["LogWriteInit"]),
                     AppName = ConfigurationManager.AppSettings["AppName"],
                     LogType = GetLogType(ConfigurationManager.AppSettings["LogType"]),
                     LogMaskProperties = GetMaskProperties(ConfigurationManager.AppSettings["LogMaskProperties"]),
@@ -417,7 +428,7 @@ namespace Lurgle.Logging
                     loggingConfig.AppVersion = string.Empty;
                 }
 
-            if (string.IsNullOrEmpty(loggingConfig.LogMaskPattern)) loggingConfig.LogMaskPattern = "******";
+            if (string.IsNullOrEmpty(loggingConfig.LogMaskPattern)) loggingConfig.LogMaskPattern = "XXXXXX";
 
             if (string.IsNullOrEmpty(loggingConfig.LogMaskCharacter)) loggingConfig.LogMaskCharacter = "X";
 
@@ -429,7 +440,7 @@ namespace Lurgle.Logging
 
             if (loggingConfig.LogBuffered && loggingConfig.LogShared) loggingConfig.LogShared = false;
 
-            if (string.IsNullOrEmpty(loggingConfig.LogName)) loggingConfig.LogName = "Lurgle";
+            if (string.IsNullOrEmpty(loggingConfig.LogName)) loggingConfig.LogName = loggingConfig.AppName;
 
             if (string.IsNullOrEmpty(loggingConfig.LogExtension)) loggingConfig.LogExtension = ".log";
 
