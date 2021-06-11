@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace LurgleWebTest
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -46,6 +46,7 @@ namespace LurgleWebTest
             foreach (var logType in Logging.EnabledLogs) Log.Level().Add(" - {LogType}", logType);
 
             //Output any failure reasons
+            // ReSharper disable once UseDeconstruction
             foreach (var logFailure in Logging.LogFailures)
                 Log.Level(LurgLevel.Error)
                     .Add("Failure - {LogType}: {FailureReason}", logFailure.Key, logFailure.Value);
@@ -55,6 +56,7 @@ namespace LurgleWebTest
             CreateWebHostBuilder(args).Build().Run();
         }
 
+        // ReSharper disable once MemberCanBePrivate.Global
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)

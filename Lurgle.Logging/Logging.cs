@@ -29,6 +29,7 @@ namespace Lurgle.Logging
 
         private const string
             Initialising = "Initialising event sources ..."; // ReSharper disable MemberCanBePrivate.Global
+
         // ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
         // ReSharper disable CollectionNeverQueried.Global
         // ReSharper disable UnusedAutoPropertyAccessor.Global

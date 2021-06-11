@@ -3,7 +3,7 @@ using Lurgle.Logging;
 
 namespace LurgleTest
 {
-    internal class Program
+    internal static class Program
     {
         private static void Main()
         {
