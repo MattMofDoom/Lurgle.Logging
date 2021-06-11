@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace LurgleWebTest
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -29,9 +29,9 @@ namespace LurgleWebTest
             Logging.AddCommonProperty("TestCommonMask", "mask1234");
             Log.Level().AddProperty("Mechagodzilla", "Godzilla").AddProperty("password", "godzilla")
                 .Add("Testing masking properties, send complaints to {Email:l}", "mechagodzilla@monster.rargh");
-            //Switch masked properties to use MaskPolicy.MaskLettersAndNumbers
+            //Switch masked properties to use MaskPolicy.MaskLettersAndNumbers, allow init event to be logged
             Logging.Close();
-            Logging.SetConfig(new LoggingConfig(Logging.Config, logMaskPolicy: MaskPolicy.MaskLettersAndNumbers));
+            Logging.SetConfig(new LoggingConfig(Logging.Config, logWriteInit: true, logMaskPolicy: MaskPolicy.MaskLettersAndNumbers));
             Logging.AddCommonProperty("TestCommonMask2", "mask1234");
             Log.Level().AddProperty("Mechagodzilla", "Godzilla123").AddProperty("password", "godzilla123").Add(
                 "Testing masking properties, send complaints to {Email:l}", "mechagodzilla123@monster.rargh");
@@ -46,6 +46,7 @@ namespace LurgleWebTest
             foreach (var logType in Logging.EnabledLogs) Log.Level().Add(" - {LogType}", logType);
 
             //Output any failure reasons
+            // ReSharper disable once UseDeconstruction
             foreach (var logFailure in Logging.LogFailures)
                 Log.Level(LurgLevel.Error)
                     .Add("Failure - {LogType}: {FailureReason}", logFailure.Key, logFailure.Value);
@@ -55,6 +56,7 @@ namespace LurgleWebTest
             CreateWebHostBuilder(args).Build().Run();
         }
 
+        // ReSharper disable once MemberCanBePrivate.Global
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)

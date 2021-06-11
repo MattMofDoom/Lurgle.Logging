@@ -7,6 +7,7 @@ using Serilog.Sinks.SystemConsole.Themes;
 
 namespace Lurgle.Logging
 {
+    // ReSharper disable UnusedMember.Global
     /// <summary>
     ///     Logging configuration. Loaded from AppSettings if available but can be configured from code.
     /// </summary>
@@ -26,6 +27,7 @@ namespace Lurgle.Logging
         /// <param name="enableMethodNameProperty"></param>
         /// <param name="enableSourceFileProperty"></param>
         /// <param name="enableLineNumberProperty"></param>
+        /// <param name="logWriteInit"></param>
         /// <param name="appName"></param>
         /// <param name="appVersion"></param>
         /// <param name="logType"></param>
@@ -57,7 +59,8 @@ namespace Lurgle.Logging
         /// <param name="logFormatFile"></param>
         public LoggingConfig(LoggingConfig config = null, bool? enableMethodNameProperty = null,
             bool? enableSourceFileProperty = null,
-            bool? enableLineNumberProperty = null, string appName = null, string appVersion = null, List<LogType> logType = null,
+            bool? enableLineNumberProperty = null, bool? logWriteInit = null, string appName = null, string appVersion = null,
+            List<LogType> logType = null,
             List<string> logMaskProperties = null, string logMaskPattern = null, MaskPolicy? logMaskPolicy = null,
             string logMaskCharacter = null, string logMaskDigit = null, ConsoleThemeType? logConsoleTheme = null,
             string logFolder = null, string logName = null, string logExtension = null, string logEventSource = null,
@@ -74,6 +77,7 @@ namespace Lurgle.Logging
                 EnableMethodNameProperty = config.EnableMethodNameProperty;
                 EnableSourceFileProperty = config.EnableSourceFileProperty;
                 EnableLineNumberProperty = config.EnableLineNumberProperty;
+                LogWriteInit = config.LogWriteInit;
                 AppName = config.AppName;
                 AppVersion = config.AppVersion;
                 LogType = config.LogType;
@@ -111,6 +115,8 @@ namespace Lurgle.Logging
                 EnableSourceFileProperty = (bool) enableSourceFileProperty;
             if (enableLineNumberProperty != null)
                 EnableLineNumberProperty = (bool) enableLineNumberProperty;
+            if (logWriteInit != null)
+                LogWriteInit = (bool) logWriteInit;
             if (!string.IsNullOrEmpty(appName))
                 AppName = appName;
             if (!string.IsNullOrEmpty(appVersion))
@@ -185,6 +191,11 @@ namespace Lurgle.Logging
         ///     Set to false to disable the LineNumber property
         /// </summary>
         public bool EnableLineNumberProperty { get; private set; } = true;
+
+        /// <summary>
+        /// Write an "Initialising" event during Init's call to TestLogConfig
+        /// </summary>
+        public bool LogWriteInit { get; private set; }
 
         /// <summary>
         ///     Meaningful app name that is used for logging. Will be auto-set if not specified.
@@ -349,6 +360,8 @@ namespace Lurgle.Logging
                         GetBool(ConfigurationManager.AppSettings["EnableSourceFileProperty"], true),
                     EnableLineNumberProperty =
                         GetBool(ConfigurationManager.AppSettings["EnableLineNumberProperty"], true),
+                    LogWriteInit = 
+                        GetBool(ConfigurationManager.AppSettings["LogWriteInit"]),
                     AppName = ConfigurationManager.AppSettings["AppName"],
                     LogType = GetLogType(ConfigurationManager.AppSettings["LogType"]),
                     LogMaskProperties = GetMaskProperties(ConfigurationManager.AppSettings["LogMaskProperties"]),
@@ -415,7 +428,7 @@ namespace Lurgle.Logging
                     loggingConfig.AppVersion = string.Empty;
                 }
 
-            if (string.IsNullOrEmpty(loggingConfig.LogMaskPattern)) loggingConfig.LogMaskPattern = "******";
+            if (string.IsNullOrEmpty(loggingConfig.LogMaskPattern)) loggingConfig.LogMaskPattern = "XXXXXX";
 
             if (string.IsNullOrEmpty(loggingConfig.LogMaskCharacter)) loggingConfig.LogMaskCharacter = "X";
 
@@ -427,7 +440,7 @@ namespace Lurgle.Logging
 
             if (loggingConfig.LogBuffered && loggingConfig.LogShared) loggingConfig.LogShared = false;
 
-            if (string.IsNullOrEmpty(loggingConfig.LogName)) loggingConfig.LogName = "Lurgle";
+            if (string.IsNullOrEmpty(loggingConfig.LogName)) loggingConfig.LogName = loggingConfig.AppName;
 
             if (string.IsNullOrEmpty(loggingConfig.LogExtension)) loggingConfig.LogExtension = ".log";
 
@@ -456,11 +469,8 @@ namespace Lurgle.Logging
         /// <returns></returns>
         private static LurgLevel GetEventLevel(string configValue)
         {
-            if (!string.IsNullOrEmpty(configValue))
-                if (Enum.TryParse(configValue, true, out LurgLevel eventLevel))
-                    return eventLevel;
-
-            return LurgLevel.Verbose;
+            if (string.IsNullOrEmpty(configValue)) return LurgLevel.Verbose;
+            return Enum.TryParse(configValue, true, out LurgLevel eventLevel) ? eventLevel : LurgLevel.Verbose;
         }
 
         /// <summary>
@@ -483,11 +493,8 @@ namespace Lurgle.Logging
         /// <returns></returns>
         private static MaskPolicy GetMaskPolicy(string configValue)
         {
-            if (!string.IsNullOrEmpty(configValue))
-                if (Enum.TryParse(configValue, true, out MaskPolicy maskPolicy))
-                    return maskPolicy;
-
-            return MaskPolicy.None;
+            if (string.IsNullOrEmpty(configValue)) return MaskPolicy.None;
+            return Enum.TryParse(configValue, true, out MaskPolicy maskPolicy) ? maskPolicy : MaskPolicy.None;
         }
 
         /// <summary>
@@ -497,9 +504,7 @@ namespace Lurgle.Logging
         /// <returns></returns>
         private static string GetChar(string configValue)
         {
-            if (!string.IsNullOrEmpty(configValue)) return configValue[0].ToString();
-
-            return string.Empty;
+            return !string.IsNullOrEmpty(configValue) ? configValue[0].ToString() : string.Empty;
         }
 
         /// <summary>
@@ -538,6 +543,7 @@ namespace Lurgle.Logging
         /// </summary>
         /// <param name="themeType"></param>
         /// <returns></returns>
+        // ReSharper disable once MemberCanBePrivate.Global
         public static ConsoleTheme GetConsoleTheme(ConsoleThemeType themeType)
         {
             switch (themeType)
@@ -560,7 +566,7 @@ namespace Lurgle.Logging
         }
 
         /// <summary>
-        /// Return the <see cref="ConsoleThemeType"/> of a given <see cref="ConsoleTheme"/>
+        ///     Return the <see cref="ConsoleThemeType" /> of a given <see cref="ConsoleTheme" />
         /// </summary>
         /// <param name="theme"></param>
         /// <returns></returns>
@@ -578,10 +584,7 @@ namespace Lurgle.Logging
             if (theme == AnsiConsoleTheme.Literate)
                 return ConsoleThemeType.AnsiLiterate;
 
-            if (theme == AnsiConsoleTheme.Grayscale)
-                return ConsoleThemeType.AnsiGrayscale;
-
-            return ConsoleThemeType.AnsiCode;
+            return theme == AnsiConsoleTheme.Grayscale ? ConsoleThemeType.AnsiGrayscale : ConsoleThemeType.AnsiCode;
         }
 
         /// <summary>
@@ -629,9 +632,7 @@ namespace Lurgle.Logging
 
             if (!Convert.IsDBNull(sourceObject)) sourceString = (string) sourceObject;
 
-            if (bool.TryParse(sourceString, out var destBool)) return destBool;
-
-            return trueIfEmpty;
+            return bool.TryParse(sourceString, out var destBool) ? destBool : trueIfEmpty;
         }
     }
 }

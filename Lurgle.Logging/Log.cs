@@ -10,8 +10,12 @@ namespace Lurgle.Logging
     /// <summary>
     ///     Log an event with Lurgle.Logging
     /// </summary>
+    // ReSharper disable once UnusedType.Global
     public sealed class Log : ILog, ILevel, IAddProperty, IDisposable
     {
+        // ReSharper disable UnusedMember.Global
+        // ReSharper disable MemberCanBePrivate.Global
+        // ReSharper disable UnusedParameter.Global
         private Log(LurgLevel logLevel, string correlationId, bool showMethod, string methodName, string sourceFilePath,
             int sourceLineNumber)
         {
@@ -58,32 +62,21 @@ namespace Lurgle.Logging
         public IAddProperty AddProperty(string name, object value)
         {
             var exists = false;
-            if (!string.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(name)) return this;
+            if (EventProperties.Any(property => property.Key.Equals(name, StringComparison.OrdinalIgnoreCase)))
+                exists = true;
+
+            if (exists) return this;
+            if (Logging.Config.LogMaskPolicy.Equals(MaskPolicy.None))
             {
-                foreach (var property in EventProperties)
-                    if (property.Key.Equals(name, StringComparison.OrdinalIgnoreCase))
-                    {
-                        exists = true;
-                        break;
-                    }
+                EventProperties.Add(name, value);
+            }
+            else
+            {
+                var isMask = Logging.Config.LogMaskProperties.Any(maskProperty =>
+                    maskProperty.Equals(name, StringComparison.OrdinalIgnoreCase));
 
-                if (exists) return this;
-                if (Logging.Config.LogMaskPolicy.Equals(MaskPolicy.None))
-                {
-                    EventProperties.Add(name, value);
-                }
-                else
-                {
-                    var isMask = false;
-                    foreach (var maskProperty in Logging.Config.LogMaskProperties)
-                        if (maskProperty.Equals(name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            isMask = true;
-                            break;
-                        }
-
-                    EventProperties.Add(name, isMask ? Logging.MaskProperty(value) : value);
-                }
+                EventProperties.Add(name, isMask ? Logging.MaskProperty(value) : value);
             }
 
 
@@ -97,13 +90,12 @@ namespace Lurgle.Logging
         /// <returns></returns>
         public IAddProperty AddProperty(Dictionary<string, object> propertyPairs)
         {
-            foreach (var values in propertyPairs)
-            {
-                if (string.IsNullOrEmpty(values.Key)) continue;
-                var exists = EventProperties.Any(property =>
-                    property.Key.Equals(values.Key, StringComparison.OrdinalIgnoreCase));
-
-                if (exists) continue;
+            foreach (var values in from values in propertyPairs
+                where !string.IsNullOrEmpty(values.Key)
+                let exists = EventProperties.Any(property =>
+                    property.Key.Equals(values.Key, StringComparison.OrdinalIgnoreCase))
+                where !exists
+                select values)
                 if (Logging.Config.LogMaskPolicy.Equals(MaskPolicy.None))
                 {
                     EventProperties.Add(values.Key, values.Value);
@@ -115,7 +107,6 @@ namespace Lurgle.Logging
 
                     EventProperties.Add(values.Key, isMask ? Logging.MaskProperty(values.Value) : values.Value);
                 }
-            }
 
             return this;
         }

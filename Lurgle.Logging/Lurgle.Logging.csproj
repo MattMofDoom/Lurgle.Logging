@@ -13,7 +13,7 @@
     <RepositoryType>Github</RepositoryType>
     <PackageTags>Serilog,Log,Logging,Seq,File,EventLog,Console,data,masking,datamasking,correlationid,correlation,structured,properties</PackageTags>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Version>1.1.11</Version>
+    <Version>1.1.12</Version>
     <PackageReleaseNotes>- Add data masking functionality
 - Create a correlationid if one is not passed, provide functionality to switch correlationids
 - Update icons
@@ -21,7 +21,9 @@
 - Fix incorrect reference for LogDays
 - Code refactor
 - Add LogConfig constructor for passing config and optional overrides
-- Add method to resolve a ConsoleThemeType</PackageReleaseNotes>
+- Add method to resolve a ConsoleThemeType
+- Add ability to disable Initialising event with LogWriteInit
+- Correct default log filename to match AppName</PackageReleaseNotes>
     <ApplicationIcon>Lurgle.ico</ApplicationIcon>
   </PropertyGroup>
 

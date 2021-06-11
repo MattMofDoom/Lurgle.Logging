@@ -463,7 +463,7 @@
                 LoggingConfig constructor
             </summary>
         </member>
-        <member name="M:Lurgle.Logging.LoggingConfig.#ctor(Lurgle.Logging.LoggingConfig,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String,System.Collections.Generic.List{Lurgle.Logging.LogType},System.Collections.Generic.List{System.String},System.String,System.Nullable{Lurgle.Logging.MaskPolicy},System.String,System.String,System.Nullable{Lurgle.Logging.ConsoleThemeType},System.String,System.String,System.String,System.String,System.String,System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LogFileFormat},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:Lurgle.Logging.LoggingConfig.#ctor(Lurgle.Logging.LoggingConfig,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String,System.Collections.Generic.List{Lurgle.Logging.LogType},System.Collections.Generic.List{System.String},System.String,System.Nullable{Lurgle.Logging.MaskPolicy},System.String,System.String,System.Nullable{Lurgle.Logging.ConsoleThemeType},System.String,System.String,System.String,System.String,System.String,System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LogFileFormat},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String,System.String,System.String,System.String)">
             <summary>
                 Constructor that permits passing a config and optional overrides of any property
             </summary>
@@ -471,6 +471,7 @@
             <param name="enableMethodNameProperty"></param>
             <param name="enableSourceFileProperty"></param>
             <param name="enableLineNumberProperty"></param>
+            <param name="logWriteInit"></param>
             <param name="appName"></param>
             <param name="appVersion"></param>
             <param name="logType"></param>
@@ -514,6 +515,11 @@
         <member name="P:Lurgle.Logging.LoggingConfig.EnableLineNumberProperty">
             <summary>
                 Set to false to disable the LineNumber property
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogWriteInit">
+            <summary>
+            Write an "Initialising" event during Init's call to TestLogConfig
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.AppName">
@@ -713,7 +719,7 @@
         </member>
         <member name="M:Lurgle.Logging.LoggingConfig.GetConsoleThemeType(Serilog.Sinks.SystemConsole.Themes.ConsoleTheme)">
             <summary>
-            Return the <see cref="T:Lurgle.Logging.ConsoleThemeType"/> of a given <see cref="T:Serilog.Sinks.SystemConsole.Themes.ConsoleTheme"/>
+                Return the <see cref="T:Lurgle.Logging.ConsoleThemeType" /> of a given <see cref="T:Serilog.Sinks.SystemConsole.Themes.ConsoleTheme" />
             </summary>
             <param name="theme"></param>
             <returns></returns>
@@ -756,7 +762,7 @@
             <param name="logEvent"></param>
             <param name="propertyFactory"></param>
         </member>
-        <member name="M:Lurgle.Logging.MaskingEnricher.Add(System.Collections.Generic.List{System.String})">
+        <member name="M:Lurgle.Logging.MaskingEnricher.Add(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
                 Add a list of properties to the masking enricher
             </summary>

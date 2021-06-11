@@ -13,6 +13,7 @@
         /// <summary>
         ///     Json logs
         /// </summary>
+        // ReSharper disable once UnusedMember.Global
         Json
     }
 }
