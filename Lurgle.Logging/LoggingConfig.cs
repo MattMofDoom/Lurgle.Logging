@@ -59,7 +59,8 @@ namespace Lurgle.Logging
         /// <param name="logFormatFile"></param>
         public LoggingConfig(LoggingConfig config = null, bool? enableMethodNameProperty = null,
             bool? enableSourceFileProperty = null,
-            bool? enableLineNumberProperty = null, bool? logWriteInit = null, string appName = null, string appVersion = null,
+            bool? enableLineNumberProperty = null, bool? logWriteInit = null, string appName = null,
+            string appVersion = null,
             List<LogType> logType = null,
             List<string> logMaskProperties = null, string logMaskPattern = null, MaskPolicy? logMaskPolicy = null,
             string logMaskCharacter = null, string logMaskDigit = null, ConsoleThemeType? logConsoleTheme = null,
@@ -193,7 +194,7 @@ namespace Lurgle.Logging
         public bool EnableLineNumberProperty { get; private set; } = true;
 
         /// <summary>
-        /// Write an "Initialising" event during Init's call to TestLogConfig
+        ///     Write an "Initialising" event during Init's call to TestLogConfig
         /// </summary>
         public bool LogWriteInit { get; private set; }
 
@@ -360,7 +361,7 @@ namespace Lurgle.Logging
                         GetBool(ConfigurationManager.AppSettings["EnableSourceFileProperty"], true),
                     EnableLineNumberProperty =
                         GetBool(ConfigurationManager.AppSettings["EnableLineNumberProperty"], true),
-                    LogWriteInit = 
+                    LogWriteInit =
                         GetBool(ConfigurationManager.AppSettings["LogWriteInit"]),
                     AppName = ConfigurationManager.AppSettings["AppName"],
                     LogType = GetLogType(ConfigurationManager.AppSettings["LogType"]),

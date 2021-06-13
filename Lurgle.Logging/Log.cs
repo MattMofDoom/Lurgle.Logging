@@ -186,7 +186,9 @@ namespace Lurgle.Logging
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            Level(LurgLevel.Information, correlationId, showMethod).Add(logTemplate);
+            // ReSharper disable ExplicitCallerInfoArgument
+            Level(LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber)
+                .Add(logTemplate);
         }
     }
 }
