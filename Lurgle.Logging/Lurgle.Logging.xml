@@ -519,7 +519,7 @@
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogWriteInit">
             <summary>
-            Write an "Initialising" event during Init's call to TestLogConfig
+                Write an "Initialising" event during Init's call to TestLogConfig
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.AppName">
