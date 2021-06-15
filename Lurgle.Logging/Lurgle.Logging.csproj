@@ -13,7 +13,7 @@
     <RepositoryType>Github</RepositoryType>
     <PackageTags>Serilog,Log,Logging,Seq,File,EventLog,Console,data,masking,datamasking,correlationid,correlation,structured,properties</PackageTags>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Version>1.1.14</Version>
+    <Version>1.1.15</Version>
     <PackageReleaseNotes>- Add data masking functionality
 - Create a correlationid if one is not passed, provide functionality to switch correlationids
 - Update icons
@@ -24,7 +24,8 @@
 - Add method to resolve a ConsoleThemeType
 - Add ability to disable Initialising event with LogWriteInit
 - Correct default log filename to match AppName
-- Log.Add correctly passes calling method</PackageReleaseNotes>
+- Log.Add correctly passes calling method
+- Fallback LogFolder correctly resolves assembly folder name</PackageReleaseNotes>
     <ApplicationIcon>Lurgle.ico</ApplicationIcon>
   </PropertyGroup>
 

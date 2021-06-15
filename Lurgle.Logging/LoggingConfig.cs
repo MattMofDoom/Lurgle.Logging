@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Serilog.Sinks.SystemConsole.Themes;
@@ -406,7 +407,7 @@ namespace Lurgle.Logging
 
                 loggingConfig.AppVersion = Assembly.GetEntryAssembly()?.GetName().Version.ToString();
                 if (string.IsNullOrEmpty(loggingConfig.LogFolder))
-                    loggingConfig.LogFolder = Assembly.GetEntryAssembly()?.Location;
+                    loggingConfig.LogFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
             }
             catch
             {
@@ -421,7 +422,7 @@ namespace Lurgle.Logging
 
                     loggingConfig.AppVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
                     if (string.IsNullOrEmpty(loggingConfig.LogFolder))
-                        loggingConfig.LogFolder = Assembly.GetExecutingAssembly().GetName().CodeBase;
+                        loggingConfig.LogFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
                 }
                 catch
                 {
