@@ -7,11 +7,18 @@ using Xunit.Abstractions;
 
 namespace Lurgle.Logging.Tests
 {
+    /// <summary>
+    /// Log unit tests
+    /// </summary>
     public class LogTests
     {
         private readonly ITestOutputHelper _testOutputHelper;
         private static readonly Dictionary<int, string> ThreadList = new Dictionary<int, string>();
 
+        /// <summary>
+        /// Constructor for unit tests
+        /// </summary>
+        /// <param name="testOutputHelper"></param>
         public LogTests(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
@@ -25,12 +32,16 @@ namespace Lurgle.Logging.Tests
         /// </summary>
         /// <param name="level"></param>
         /// <param name="correlationId"></param>
+        // ReSharper disable once UnusedMethodReturnValue.Local
         private static ILevel CreateLog(LurgLevel level = LurgLevel.Information, string correlationId = null)
         {
             //We don't actually need to output to the console
             return Log.Level(level, correlationId);
         }
 
+        /// <summary>
+        /// Run 1000 log entries with a 25ms delay
+        /// </summary>
         private void LogRunner()
         {
             var watch = new Stopwatch();

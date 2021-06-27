@@ -54,6 +54,11 @@
             <param name="threadId"></param>
             <returns></returns>
         </member>
+        <member name="M:Lurgle.Logging.CorrelationCache.Clear">
+            <summary>
+            Remove all threads from the cache
+            </summary>
+        </member>
         <member name="T:Lurgle.Logging.ConsoleThemeType">
             <summary>
                 Control the theme type used for the console
