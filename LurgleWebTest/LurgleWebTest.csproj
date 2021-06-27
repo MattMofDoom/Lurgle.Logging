@@ -5,6 +5,7 @@
     <DebugType>full</DebugType>
     <Version>1.1.12</Version>
     <Description>Simple web scaffolding to perform basic testing of Lurgle.Logging initialisation</Description>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
