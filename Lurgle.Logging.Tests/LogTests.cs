@@ -8,12 +8,10 @@ namespace Lurgle.Logging.Tests
 {
     public class LogTests
     {
-        private readonly ITestOutputHelper _testOutputHelper;
         private static readonly Dictionary<int, string> ThreadList = new Dictionary<int, string>();
 
-        public LogTests(ITestOutputHelper testOutputHelper)
+        public LogTests()
         {
-            _testOutputHelper = testOutputHelper;
             Logging.SetConfig(new LoggingConfig(appName: "TestMaster Prime",
                 logType: new List<LogType> {LogType.Console}, enableCorrelationCache: true, correlationCacheExpiry:2));
             Logging.Init();
@@ -36,7 +34,6 @@ namespace Lurgle.Logging.Tests
                 Thread.Sleep(25);
             }
             watch.Stop();
-            _testOutputHelper.WriteLine("Thread {0} - Completed all thread runs in {1:N2} seconds", Thread.CurrentThread.ManagedThreadId, watch.ElapsedMilliseconds / 1000);
         }
 
         /// <summary>
@@ -51,7 +48,6 @@ namespace Lurgle.Logging.Tests
             Assert.True(Logging.Config.EnableCorrelationCache);
             var threadId = Thread.CurrentThread.ManagedThreadId;
             CreateLog();
-            _testOutputHelper.WriteLine("Thread {0} - Cache Count {1}, Correlation Id {2}", threadId, Logging.Cache.Count, Logging.Cache.Get(threadId));
             Assert.True(Logging.Cache.Contains(threadId));
         }
 
@@ -73,28 +69,22 @@ namespace Lurgle.Logging.Tests
                 count++;
             }
 
-            _testOutputHelper.WriteLine("Total in Cache at {0:N2} seconds: {1}", watch.ElapsedMilliseconds / 1000, Logging.Cache.Count);
             Thread.Sleep(15000);
-            _testOutputHelper.WriteLine("Total in Cache after {0:N2} seconds: {1}", watch.ElapsedMilliseconds / 1000, Logging.Cache.Count);
             Assert.True(Logging.Cache.Count == count);
             foreach (var thread in ThreadList)
             {
                 var correlationId = Logging.Cache.Get(thread.Key);
-                _testOutputHelper.WriteLine("Thread {0} ({1:N2} seconds) - Expect: {2}, Matched: {3}", thread.Key, watch.ElapsedMilliseconds / 1000, thread.Value, thread.Value == correlationId);
                 Assert.True(correlationId == thread.Value);
             }
             Thread.Sleep(15000);
-            _testOutputHelper.WriteLine("Total in Cache after {0:N2} seconds: {1}", watch.ElapsedMilliseconds / 1000, Logging.Cache.Count);
             Assert.True(Logging.Cache.Count == count);
             foreach (var thread in ThreadList)
             {
                 var correlationId = Logging.Cache.Get(thread.Key);
-                _testOutputHelper.WriteLine("Thread {0} ({1:N2} seconds) - Expect: {2}, Matched: {3}", thread.Key, watch.ElapsedMilliseconds / 1000, thread.Value, thread.Value == correlationId);
                 Assert.True(correlationId == thread.Value);
             }
             Thread.Sleep(10000);
             watch.Stop();
-            _testOutputHelper.WriteLine("Cache expiry count at {0:N2} seconds: {1}", watch.ElapsedMilliseconds / 1000, Logging.Cache.Count);
             Assert.True(Logging.Cache.Count < count);
 
         }
@@ -108,7 +98,6 @@ namespace Lurgle.Logging.Tests
             Logging.Close();
             Logging.SetConfig(new LoggingConfig(Logging.Config, enableCorrelationCache: false));
             CreateLog(LurgLevel.Error, "Barry");
-            _testOutputHelper.WriteLine("Correlation Id: {0}", Logging.CorrelationId);
             Assert.True(Logging.CorrelationId == "Barry");
             CreateLog();
             Assert.True(Logging.CorrelationId == "Barry");
