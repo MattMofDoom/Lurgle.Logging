@@ -81,5 +81,10 @@ namespace Lurgle.Logging
         {
             return _cache.Get(threadId.ToString()) != null;
         }
+
+        public void Clear()
+        {
+            _cache.Trim(100);
+        }
     }
 }
