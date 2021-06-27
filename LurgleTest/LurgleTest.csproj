@@ -9,6 +9,7 @@
     <Version>1.1.12</Version>
     <Description>Console application for testing Lurgle.Logging</Description>
     <ApplicationIcon>Lurgle.ico</ApplicationIcon>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

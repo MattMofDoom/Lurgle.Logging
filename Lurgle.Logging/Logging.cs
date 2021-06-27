@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
@@ -17,10 +18,15 @@ namespace Lurgle.Logging
     /// </summary>
     public static class Logging
     {
+        /// <summary>
+        /// Correlation ID cache for individual threads
+        /// </summary>
+        // ReSharper disable once MemberCanBePrivate.Global
+        public static CorrelationCache Cache;
         private const string LogNameDate = "{0}-{1}";
         private const string LogTemplate = "{0}-";
         private const string DateIso = "yyyyMMdd";
-
+        
         private const string
             Initialising = "Initialising event sources ..."; // ReSharper disable MemberCanBePrivate.Global
 
@@ -126,10 +132,9 @@ namespace Lurgle.Logging
         }
 
         /// <summary>
-        ///     Generate or set the <see cref="CorrelationId" />
+        ///     Generate or set the <see cref="CorrelationId" /> or add/update one in the <see cref="Logging.Cache"/>
         ///     <para />
-        ///     CorrelationId is a static property by default. If you have concurrent instances with different correlationids,
-        ///     always pass the correlationid to log calls.
+        ///     CorrelationId is a static property if <see cref="LoggingConfig.EnableCorrelationCache" /> is not enabled. />
         ///     <para />
         ///     You can generate a new CorrelationId with <see cref="NewCorrelationId()" />
         /// </summary>
@@ -137,6 +142,17 @@ namespace Lurgle.Logging
         /// <returns></returns>
         private static string SetCorrelationId(string correlationId = null)
         {
+            if (Config.EnableCorrelationCache)
+            {
+                if (string.IsNullOrEmpty(correlationId))
+                    return Cache.Contains(Thread.CurrentThread.ManagedThreadId)
+                        ? Cache.Get(Thread.CurrentThread.ManagedThreadId)
+                        : NewCorrelationId();
+                Cache.Replace(Thread.CurrentThread.ManagedThreadId, correlationId);
+                return correlationId;
+
+            }
+            
             if (!string.IsNullOrEmpty(correlationId))
             {
                 CorrelationId = correlationId;
@@ -157,6 +173,13 @@ namespace Lurgle.Logging
         /// <returns></returns>
         public static string NewCorrelationId()
         {
+            if (Config.EnableCorrelationCache)
+            {
+                var cacheId = Guid.NewGuid().ToString();
+                Cache.Replace(Thread.CurrentThread.ManagedThreadId, cacheId);
+                return cacheId;
+            }
+
             var corrId = Guid.NewGuid().ToString();
             CorrelationId = corrId;
 
@@ -329,7 +352,7 @@ namespace Lurgle.Logging
                         if (Config.LogFileType.Equals(LogFileFormat.Text))
                             testConfig
                                 .WriteTo
-                                .File(fileName, (LogEventLevel) Config.LogLevelFile, Config.LogFormatFile,
+                                .File(fileName ?? string.Empty, (LogEventLevel) Config.LogLevelFile, Config.LogFormatFile,
                                     rollingInterval: RollingInterval.Day,
                                     retainedFileCountLimit: Config.LogDays, shared: Config.LogShared,
                                     buffered: Config.LogBuffered,
@@ -337,7 +360,7 @@ namespace Lurgle.Logging
                         else
                             testConfig
                                 .WriteTo
-                                .File(new CompactJsonFormatter(), fileName, (LogEventLevel) Config.LogLevelFile,
+                                .File(new CompactJsonFormatter(), fileName ?? string.Empty, (LogEventLevel) Config.LogLevelFile,
                                     rollingInterval: RollingInterval.Day, retainedFileCountLimit: Config.LogDays,
                                     shared: Config.LogShared,
                                     buffered: Config.LogBuffered,
@@ -403,6 +426,8 @@ namespace Lurgle.Logging
             var manageSource = true;
 
             if (Config == null) return;
+            if (Config.EnableCorrelationCache)
+                Cache = new CorrelationCache(Config.CorrelationCacheExpiry);
             var logFolder = Config.LogFolder;
             var fileName = string.Empty;
 
