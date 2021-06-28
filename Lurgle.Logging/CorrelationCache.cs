@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.Caching;
+
 // ReSharper disable UnusedMember.Global
 
 
 namespace Lurgle.Logging
 {
     /// <summary>
-    /// Cache for correlation ids by thread
+    ///     Cache for correlation ids by thread
     /// </summary>
     public class CorrelationCache
     {
@@ -15,22 +16,23 @@ namespace Lurgle.Logging
         private readonly CacheItemPolicy _policy;
 
         /// <summary>
-        /// Correlation cache containing correlation ids by thread
+        ///     Correlation cache containing correlation ids by thread
         /// </summary>
         /// <param name="expiration"></param>
         public CorrelationCache(int expiration)
         {
             _cache = new MemoryCache("CorrelationCache");
-            _policy = new CacheItemPolicy {SlidingExpiration = TimeSpan.FromSeconds(expiration), Priority = CacheItemPriority.Default};
+            _policy = new CacheItemPolicy
+                {SlidingExpiration = TimeSpan.FromSeconds(expiration), Priority = CacheItemPriority.Default};
         }
 
         /// <summary>
-        /// Count of items in cache
+        ///     Count of items in cache
         /// </summary>
         public int Count => _cache.Count();
 
         /// <summary>
-        /// Add a thread's correlation id to the cache
+        ///     Add a thread's correlation id to the cache
         /// </summary>
         /// <param name="threadId"></param>
         /// <param name="correlationId"></param>
@@ -41,7 +43,7 @@ namespace Lurgle.Logging
         }
 
         /// <summary>
-        /// Replace a thread's correlation id in the cache
+        ///     Replace a thread's correlation id in the cache
         /// </summary>
         /// <param name="threadId"></param>
         /// <param name="correlationId"></param>
@@ -53,7 +55,7 @@ namespace Lurgle.Logging
         }
 
         /// <summary>
-        /// Remove a thread's correlation id from the cache
+        ///     Remove a thread's correlation id from the cache
         /// </summary>
         /// <param name="threadId"></param>
         public void Remove(int threadId)
@@ -63,7 +65,7 @@ namespace Lurgle.Logging
         }
 
         /// <summary>
-        /// Get a thread's correlation id from the cache
+        ///     Get a thread's correlation id from the cache
         /// </summary>
         /// <param name="threadId"></param>
         /// <returns></returns>
@@ -73,7 +75,7 @@ namespace Lurgle.Logging
         }
 
         /// <summary>
-        /// Return whether a given thread's correlation id is in the cache
+        ///     Return whether a given thread's correlation id is in the cache
         /// </summary>
         /// <param name="threadId"></param>
         /// <returns></returns>
@@ -83,7 +85,7 @@ namespace Lurgle.Logging
         }
 
         /// <summary>
-        /// Remove all threads from the cache
+        ///     Remove all threads from the cache
         /// </summary>
         public void Clear()
         {

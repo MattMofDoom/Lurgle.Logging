@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Lurgle.Logging;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -16,8 +17,31 @@ namespace LurgleWebTest
 
             //Add a start log
             Log.Level().Add("{AppName:l} v{AppVersion:l} starting ...");
-            //Send a simple string
-            Log.Add("Test simple log");
+            Log.Add("Simple information log");
+            Log.Add(LurgLevel.Debug, "Simple debug log");
+            Log.Add("Log with {Properties:l}", args: "Properties");
+            Log.Information("Information event");
+            Log.Information("Information event with {Properties:l}", args: "Properties");
+            Log.Verbose("Verbose event");
+            Log.Verbose("Verbose event with {Properties:l}", args: "Properties");
+            Log.Debug("Debug event");
+            Log.Debug("Debug event with {Properties:l}", args: "Properties");
+            Log.Warning("Warning event");
+            Log.Warning("Warning event with {Properties:l}", args: "Properties");
+            Log.Error("Error event");
+            Log.Error("Error event with {Properties:l}", args: "Properties");
+            Log.Fatal("Fatal event");
+            Log.Fatal("Fatal event with {Properties:l}", args: "Properties");
+            Log.AddProperty("Barry", "Barry").Warning("Warning event with {Barry:l}");
+            Log.Error(new ArgumentOutOfRangeException(nameof(test)), "Exception: {Message:l}", args: "Error Message");
+            Log.AddProperty(LurgLevel.Error, "Barry", "Barry").Add("Log an {Error:l}", "Error");
+            Log.AddProperty(LurgLevel.Debug, "Barry", "Barry").Add("Just pass the log template with {Barry:l}");
+            Log.AddProperty(new ArgumentOutOfRangeException(nameof(test)), "Barry", "Barry")
+                .Add("Pass an exception with {Barry:l}");
+            Log.AddProperty(test).AddProperty("Barry", "Barry").Add(
+                "{Barry:l} wants to pass a dictionary that results in the TestDictKey property having {TestDictKey}");
+            Log.Level().Warning("Override the event level and specify params like {Test:l}", "Test");
+
             //Send an error log
             Log.Level(LurgLevel.Error).Add("Test error log");
             //Send added properties
@@ -31,7 +55,8 @@ namespace LurgleWebTest
                 .Add("Testing masking properties, send complaints to {Email:l}", "mechagodzilla@monster.rargh");
             //Switch masked properties to use MaskPolicy.MaskLettersAndNumbers, allow init event to be logged
             Logging.Close();
-            Logging.SetConfig(new LoggingConfig(Logging.Config, logWriteInit: true, logMaskPolicy: MaskPolicy.MaskLettersAndNumbers));
+            Logging.SetConfig(new LoggingConfig(Logging.Config, logWriteInit: true,
+                logMaskPolicy: MaskPolicy.MaskLettersAndNumbers));
             Logging.AddCommonProperty("TestCommonMask2", "mask1234");
             Log.Level().AddProperty("Mechagodzilla", "Godzilla123").AddProperty("password", "godzilla123").Add(
                 "Testing masking properties, send complaints to {Email:l}", "mechagodzilla123@monster.rargh");

@@ -62,7 +62,8 @@ namespace Lurgle.Logging
         /// <param name="logFormatFile"></param>
         public LoggingConfig(LoggingConfig config = null, bool? enableMethodNameProperty = null,
             bool? enableSourceFileProperty = null,
-            bool? enableLineNumberProperty = null, bool? logWriteInit = null, bool? enableCorrelationCache = null, int? correlationCacheExpiry = null, string appName = null,
+            bool? enableLineNumberProperty = null, bool? logWriteInit = null, bool? enableCorrelationCache = null,
+            int? correlationCacheExpiry = null, string appName = null,
             string appVersion = null,
             List<LogType> logType = null,
             List<string> logMaskProperties = null, string logMaskPattern = null, MaskPolicy? logMaskPolicy = null,
@@ -126,7 +127,7 @@ namespace Lurgle.Logging
             if (enableCorrelationCache != null)
                 EnableCorrelationCache = (bool) enableCorrelationCache;
             if (correlationCacheExpiry != null)
-                CorrelationCacheExpiry = (int)correlationCacheExpiry;
+                CorrelationCacheExpiry = (int) correlationCacheExpiry;
             if (!string.IsNullOrEmpty(appName))
                 AppName = appName;
             if (!string.IsNullOrEmpty(appVersion))
@@ -208,12 +209,12 @@ namespace Lurgle.Logging
         public bool LogWriteInit { get; private set; }
 
         /// <summary>
-        /// Enable the correlation cache that allows for per-thread correlation ids
+        ///     Enable the correlation cache that allows for per-thread correlation ids
         /// </summary>
         public bool EnableCorrelationCache { get; private set; } = true;
 
         /// <summary>
-        /// Set how long a correlation id can remain in the cache in seconds
+        ///     Set how long a correlation id can remain in the cache in seconds
         /// </summary>
         public int CorrelationCacheExpiry { get; private set; } = 600;
 
@@ -382,9 +383,9 @@ namespace Lurgle.Logging
                         GetBool(ConfigurationManager.AppSettings["EnableLineNumberProperty"], true),
                     LogWriteInit =
                         GetBool(ConfigurationManager.AppSettings["LogWriteInit"]),
-                    EnableCorrelationCache = 
+                    EnableCorrelationCache =
                         GetBool(ConfigurationManager.AppSettings["EnableCorrelationCache"], true),
-                    CorrelationCacheExpiry = 
+                    CorrelationCacheExpiry =
                         GetInt(ConfigurationManager.AppSettings["CorrelationCacheExpiry"]),
                     AppName = ConfigurationManager.AppSettings["AppName"],
                     LogType = GetLogType(ConfigurationManager.AppSettings["LogType"]),
@@ -444,7 +445,8 @@ namespace Lurgle.Logging
 
                     loggingConfig.AppVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
                     if (string.IsNullOrEmpty(loggingConfig.LogFolder))
-                        loggingConfig.LogFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
+                        loggingConfig.LogFolder =
+                            Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
                 }
                 catch
                 {
