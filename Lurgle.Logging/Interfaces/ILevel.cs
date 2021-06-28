@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Lurgle.Logging.Interfaces
 {
@@ -29,5 +30,95 @@ namespace Lurgle.Logging.Interfaces
         /// <param name="logTemplate"></param>
         /// <param name="args"></param>
         void Add(string logTemplate, params object[] args);
+
+        /// <summary>
+        ///     Add an Information event and apply parameters to the supplied log template
+        /// </summary>
+        /// <param name="logTemplate"></param>
+        /// <param name="args"></param>
+        void Information(string logTemplate, params object[] args);
+
+        /// <summary>
+        ///     Add an Information event with an Exception and apply parameters
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="logTemplate"></param>
+        /// <param name="args"></param>
+        void Information(Exception ex, string logTemplate, params object[] args);
+
+        /// <summary>
+        ///     Add a Debug event and apply parameters to the supplied log template
+        /// </summary>
+        /// <param name="logTemplate"></param>
+        /// <param name="args"></param>
+        void Debug(string logTemplate, params object[] args);
+
+        /// <summary>
+        ///     Add a Debug event with an Exception and apply parameters
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="logTemplate"></param>
+        /// <param name="args"></param>
+        void Debug(Exception ex, string logTemplate, params object[] args);
+
+        /// <summary>
+        ///     Add a Verbose event and apply parameters to the supplied log template
+        /// </summary>
+        /// <param name="logTemplate"></param>
+        /// <param name="args"></param>
+        void Verbose(string logTemplate, params object[] args);
+
+        /// <summary>
+        ///     Add a Verbose event with an Exception and apply parameters
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="logTemplate"></param>
+        /// <param name="args"></param>
+        void Verbose(Exception ex, string logTemplate, params object[] args);
+
+        /// <summary>
+        ///     Add a Warning event and apply parameters to the supplied log template
+        /// </summary>
+        /// <param name="logTemplate"></param>
+        /// <param name="args"></param>
+        void Warning(string logTemplate, params object[] args);
+
+        /// <summary>
+        ///     Add a Warning event with an Exception and apply parameters
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="logTemplate"></param>
+        /// <param name="args"></param>
+        void Warning(Exception ex, string logTemplate, params object[] args);
+
+        /// <summary>
+        ///     Add an Error event and apply parameters to the supplied log template
+        /// </summary>
+        /// <param name="logTemplate"></param>
+        /// <param name="args"></param>
+        void Error(string logTemplate, params object[] args);
+
+        /// <summary>
+        ///     Add an Error event with an Exception and apply parameters
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="logTemplate"></param>
+        /// <param name="args"></param>
+        void Error(Exception ex, string logTemplate, params object[] args);
+
+        /// <summary>
+        ///     Add a Fatal event and apply parameters to the supplied log template
+        /// </summary>
+        /// <param name="logTemplate"></param>
+        /// <param name="args"></param>
+        void Fatal(string logTemplate, params object[] args);
+
+        /// <summary>
+        ///     Add a Fatal event with an Exception and apply parameters
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="logTemplate"></param>
+        /// <param name="args"></param>
+        void Fatal(Exception ex, string logTemplate, params object[] args);
     }
 }
