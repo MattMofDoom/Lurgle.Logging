@@ -6,6 +6,9 @@ using System.Runtime.CompilerServices;
 using System.Security;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Lurgle.Logging.Classes;
+using Lurgle.Logging.Destructurers;
+using Lurgle.Logging.Enrichers;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
@@ -52,7 +55,7 @@ namespace Lurgle.Logging
         /// </summary>
         public static Logger LogWriter { get; private set; }
 
-        private static Dictionary<string, object> CommonProperties { get; } = new Dictionary<string, object>();
+        private static List<LogProperty> CommonProperties { get; } = new List<LogProperty>();
 
         /// <summary>
         ///     Current Correlation Id
@@ -121,6 +124,7 @@ namespace Lurgle.Logging
             }
 
             return config
+                .Destructure.WithMaskProperties()
                 .Enrich.FromLogContext()
                 .Enrich.WithThreadId()
                 .Enrich.WithEnvironmentUserName()
@@ -194,22 +198,22 @@ namespace Lurgle.Logging
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
         /// <returns></returns>
-        public static Dictionary<string, object> GetBaseProperties(string correlationId = null,
+        public static List<LogProperty> GetBaseProperties(string correlationId = null,
             string methodName = null, string sourceFilePath = null, int sourceLineNumber = -1)
         {
             //Automatically include static common properties
-            var propertyValues = CommonProperties.ToDictionary(p => p.Key, p => p.Value);
+            var propertyValues = CommonProperties.ToList();
 
-            propertyValues.Add(nameof(CorrelationId), SetCorrelationId(correlationId));
+            propertyValues.Add(new LogProperty(nameof(CorrelationId), SetCorrelationId(correlationId)));
 
             if (Config.EnableMethodNameProperty && !string.IsNullOrEmpty(methodName))
-                propertyValues.Add("MethodName", methodName);
+                propertyValues.Add(new LogProperty("MethodName", methodName));
 
             if (Config.EnableSourceFileProperty && !string.IsNullOrEmpty(sourceFilePath))
-                propertyValues.Add("SourceFile", sourceFilePath);
+                propertyValues.Add(new LogProperty("SourceFile", sourceFilePath));
 
             if (Config.EnableLineNumberProperty && sourceLineNumber > 0)
-                propertyValues.Add("LineNumber", sourceLineNumber);
+                propertyValues.Add(new LogProperty("LineNumber", sourceLineNumber));
 
             return propertyValues;
         }
@@ -219,25 +223,30 @@ namespace Lurgle.Logging
         /// </summary>
         /// <param name="name"></param>
         /// <param name="value"></param>
+        /// <param name="destructure"></param>
+        /// <param name="update"></param>
         /// <returns></returns>
-        public static void AddCommonProperty(string name, object value)
+        public static void AddCommonProperty(string name, object value, bool destructure = false, bool update = false)
         {
-            var exists = false;
             if (string.IsNullOrEmpty(name)) return;
-            if (CommonProperties.Any(property => property.Key.Equals(name, StringComparison.OrdinalIgnoreCase)))
-                exists = true;
+            foreach (var property in CommonProperties.Where(property =>
+                property.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
+            {
+                if (!update) return;
+                property.Value = value;
+                property.Destructure = destructure;
+            }
 
-            if (exists) return;
             if (Config == null || Config.LogMaskPolicy.Equals(MaskPolicy.None))
             {
-                CommonProperties.Add(name, value);
+                CommonProperties.Add(new LogProperty(name, value, destructure));
             }
             else
             {
                 var isMask = Config.LogMaskProperties.Any(maskProperty =>
                     maskProperty.Equals(name, StringComparison.OrdinalIgnoreCase));
 
-                CommonProperties.Add(name, isMask ? MaskProperty(value) : value);
+                CommonProperties.Add(new LogProperty(name, isMask ? MaskProperty(value) : value, destructure));
             }
         }
 
@@ -245,27 +254,40 @@ namespace Lurgle.Logging
         ///     Add an additional set of static properties for logging
         /// </summary>
         /// <param name="propertyPairs"></param>
+        /// <param name="destructure"></param>
+        /// <param name="update"></param>
         /// <returns></returns>
-        public static void AddCommonProperty(Dictionary<string, object> propertyPairs)
+        public static void AddCommonProperty(Dictionary<string, object> propertyPairs, bool destructure = false,
+            bool update = false)
         {
             foreach (var values in propertyPairs)
             {
                 var exists = false;
                 if (string.IsNullOrEmpty(values.Key)) continue;
-                if (CommonProperties.Any(
-                    property => property.Key.Equals(values.Key, StringComparison.OrdinalIgnoreCase))) exists = true;
+                foreach (var property in CommonProperties.Where(property =>
+                    property.Name.Equals(values.Key, StringComparison.OrdinalIgnoreCase)))
+                    if (!update)
+                    {
+                        exists = true;
+                    }
+                    else
+                    {
+                        property.Value = property.Value;
+                        property.Destructure = property.Destructure;
+                    }
 
                 if (exists) continue;
                 if (Config == null || Config.LogMaskPolicy.Equals(MaskPolicy.None))
                 {
-                    CommonProperties.Add(values.Key, values.Value);
+                    CommonProperties.Add(new LogProperty(values.Key, values.Value, destructure));
                 }
                 else
                 {
                     var isMask = Config.LogMaskProperties.Any(maskProperty =>
                         maskProperty.Equals(values.Key, StringComparison.OrdinalIgnoreCase));
 
-                    CommonProperties.Add(values.Key, isMask ? MaskProperty(values.Value) : values.Value);
+                    CommonProperties.Add(
+                        new LogProperty(values.Key, isMask ? MaskProperty(values.Value) : values.Value));
                 }
             }
         }

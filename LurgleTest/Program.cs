@@ -2,8 +2,17 @@
 using System.Collections.Generic;
 using Lurgle.Logging;
 
+// ReSharper disable UnusedMember.Global
+
 namespace LurgleTest
 {
+    public class Test
+    {
+        public string Name => "Test";
+        public LogType LogType => LogType.All;
+        public string Mechagodzilla => "Rargh123";
+    }
+
     internal static class Program
     {
         private static void Main()
@@ -13,7 +22,8 @@ namespace LurgleTest
             //Populate a small dictionary for testing per-event properties
             var test = new Dictionary<string, object>
             {
-                {"TestDictKey", FailureReason.LogTestFailed}
+                {"TestDictKey", FailureReason.LogTestFailed},
+                {"TestClass", new Test()}
             };
 
             //Add a start log
@@ -33,14 +43,19 @@ namespace LurgleTest
             Log.Error("Error event with {Properties:l}", args: "Properties");
             Log.Fatal("Fatal event");
             Log.Fatal("Fatal event with {Properties:l}", args: "Properties");
+            Log.AddProperty("TestClass1", new Test()).Add("Logging a test class without destructuring: {TestClass1}");
+            Log.AddProperty("TestClass2", new Test(), true).Add("Logging a test class with destructuring: {TestClass2}");
             Log.AddProperty("Barry", "Barry").Warning("Warning event with {Barry:l}");
             Log.Error(new ArgumentOutOfRangeException(nameof(test)), "Exception: {Message:l}", args: "Error Message");
             Log.AddProperty(LurgLevel.Error, "Barry", "Barry").Add("Log an {Error:l}", "Error");
             Log.AddProperty(LurgLevel.Debug, "Barry", "Barry").Add("Just pass the log template with {Barry:l}");
             Log.AddProperty(new ArgumentOutOfRangeException(nameof(test)), "Barry", "Barry")
                 .Add("Pass an exception with {Barry:l}");
-            Log.AddProperty(test).AddProperty("Barry", "Barry").Add(
-                "{Barry:l} wants to pass a dictionary that results in the TestDictKey property having {TestDictKey}");
+            Log.AddProperty(new ArgumentOutOfRangeException(nameof(test)), "Mechagodzilla", "Barry")
+                .Add("Pass an exception with a masked property: {Mechagodzilla:l}");
+            Log.Information("Logging a using a masked property: {Mechagodzilla:l}", args: "Test");
+            Log.AddProperty(test, true).AddProperty("Barry", "Barry").Add(
+                "{Barry:l} wants to pass a dictionary that results in the TestDictKey property having {TestDictKey} and TestClass having the destructured {TestClass}");
             Log.Level().Warning("Override the event level and specify params like {Test:l}", "Test");
 
             //Send an error log
@@ -62,6 +77,7 @@ namespace LurgleTest
             Logging.Init();
             Log.Level().AddProperty("Mechagodzilla", "Godzilla123").AddProperty("password", "godzilla123").Add(
                 "Testing masking properties, send complaints to {Email:l}", "mechagodzilla123@monster.rargh");
+            Log.Level().AddProperty("Test", new Test(), true).Add("Test passing a destructured class with alternate mask policy {Test}");
             //Output the enabled log types
             Log.Level().Add("Configured Logs: {LogCount}, Enabled Logs: {EnabledCount}", Logging.Config.LogType.Count,
                 Logging.EnabledLogs.Count);

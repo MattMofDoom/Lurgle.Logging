@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lurgle.Logging.Classes;
 using Serilog.Core;
 using Serilog.Events;
 
-namespace Lurgle.Logging
+namespace Lurgle.Logging.Enrichers
 {
     /// <summary>
     ///     Add properties to logs - adapted from https://benfoster.io/blog/serilog-best-practices/
@@ -64,6 +65,26 @@ namespace Lurgle.Logging
         {
             foreach (var value in valueList.Where(value => !_properties.ContainsKey(value.Key)))
                 _properties.Add(value.Key, Tuple.Create(value.Value, destructureObject));
+
+            return this;
+        }
+
+        /// <summary>
+        ///     Add properties that will be added to all log events enriched by this enricher.
+        /// </summary>
+        /// <param name="valueList"></param>
+        /// <returns></returns>
+        public PropertyBagEnricher Add(IEnumerable<LogProperty> valueList)
+        {
+            foreach (var value in valueList)
+            {
+                var match = false;
+                foreach (var unused in _properties.Where(property =>
+                    property.Key.Equals(value.Name, StringComparison.OrdinalIgnoreCase)))
+                    match = true;
+                if (!match)
+                    _properties.Add(value.Name, Tuple.Create(value.Value, value.Destructure));
+            }
 
             return this;
         }

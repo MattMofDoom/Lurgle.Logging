@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Serilog.Core;
 using Serilog.Events;
 
-namespace Lurgle.Logging
+namespace Lurgle.Logging.Enrichers
 {
     /// <summary>
     ///     Mask event properties based on the configured masking policy
