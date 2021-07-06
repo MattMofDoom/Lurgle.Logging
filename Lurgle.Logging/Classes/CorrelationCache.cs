@@ -5,7 +5,7 @@ using System.Runtime.Caching;
 // ReSharper disable UnusedMember.Global
 
 
-namespace Lurgle.Logging
+namespace Lurgle.Logging.Classes
 {
     /// <summary>
     ///     Cache for correlation ids by thread

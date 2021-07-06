@@ -4,60 +4,185 @@
         <name>Lurgle.Logging</name>
     </assembly>
     <members>
-        <member name="T:Lurgle.Logging.CorrelationCache">
+        <member name="T:Lurgle.Logging.Classes.CorrelationCache">
             <summary>
                 Cache for correlation ids by thread
             </summary>
         </member>
-        <member name="M:Lurgle.Logging.CorrelationCache.#ctor(System.Int32)">
+        <member name="M:Lurgle.Logging.Classes.CorrelationCache.#ctor(System.Int32)">
             <summary>
                 Correlation cache containing correlation ids by thread
             </summary>
             <param name="expiration"></param>
         </member>
-        <member name="P:Lurgle.Logging.CorrelationCache.Count">
+        <member name="P:Lurgle.Logging.Classes.CorrelationCache.Count">
             <summary>
                 Count of items in cache
             </summary>
         </member>
-        <member name="M:Lurgle.Logging.CorrelationCache.Add(System.Int32,System.String)">
+        <member name="M:Lurgle.Logging.Classes.CorrelationCache.Add(System.Int32,System.String)">
             <summary>
                 Add a thread's correlation id to the cache
             </summary>
             <param name="threadId"></param>
             <param name="correlationId"></param>
         </member>
-        <member name="M:Lurgle.Logging.CorrelationCache.Replace(System.Int32,System.String)">
+        <member name="M:Lurgle.Logging.Classes.CorrelationCache.Replace(System.Int32,System.String)">
             <summary>
                 Replace a thread's correlation id in the cache
             </summary>
             <param name="threadId"></param>
             <param name="correlationId"></param>
         </member>
-        <member name="M:Lurgle.Logging.CorrelationCache.Remove(System.Int32)">
+        <member name="M:Lurgle.Logging.Classes.CorrelationCache.Remove(System.Int32)">
             <summary>
                 Remove a thread's correlation id from the cache
             </summary>
             <param name="threadId"></param>
         </member>
-        <member name="M:Lurgle.Logging.CorrelationCache.Get(System.Int32)">
+        <member name="M:Lurgle.Logging.Classes.CorrelationCache.Get(System.Int32)">
             <summary>
                 Get a thread's correlation id from the cache
             </summary>
             <param name="threadId"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.CorrelationCache.Contains(System.Int32)">
+        <member name="M:Lurgle.Logging.Classes.CorrelationCache.Contains(System.Int32)">
             <summary>
                 Return whether a given thread's correlation id is in the cache
             </summary>
             <param name="threadId"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.CorrelationCache.Clear">
+        <member name="M:Lurgle.Logging.Classes.CorrelationCache.Clear">
             <summary>
                 Remove all threads from the cache
             </summary>
+        </member>
+        <member name="T:Lurgle.Logging.Classes.LogProperty">
+            <summary>
+                Log property container
+            </summary>
+        </member>
+        <member name="M:Lurgle.Logging.Classes.LogProperty.#ctor(System.String,System.Object,System.Boolean)">
+            <summary>
+                LogProperty Constructor
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+            <param name="destructure"></param>
+        </member>
+        <member name="P:Lurgle.Logging.Classes.LogProperty.Name">
+            <summary>
+                Property Name
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.Classes.LogProperty.Value">
+            <summary>
+                Property Value
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.Classes.LogProperty.Destructure">
+            <summary>
+                Destructure Property
+            </summary>
+        </member>
+        <member name="T:Lurgle.Logging.Destructurers.MaskDestructuringConfig">
+            <summary>
+                Add a mask destructurer configuration
+            </summary>
+        </member>
+        <member name="M:Lurgle.Logging.Destructurers.MaskDestructuringConfig.WithMaskProperties(Serilog.Configuration.LoggerDestructuringConfiguration)">
+            <summary>
+                Mask configured properties
+            </summary>
+            <param name="config"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Lurgle.Logging.Destructurers.MaskDestructuringPolicy">
+            <summary>
+                Mask destructuring policy
+            </summary>
+        </member>
+        <member name="M:Lurgle.Logging.Destructurers.MaskDestructuringPolicy.TryDestructure(System.Object,Serilog.Core.ILogEventPropertyValueFactory,Serilog.Events.LogEventPropertyValue@)">
+            <summary>
+                Try destructuring the property
+            </summary>
+            <param name="value"></param>
+            <param name="propertyValueFactory"></param>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Lurgle.Logging.Enrichers.MaskingEnricher">
+            <summary>
+                Mask event properties based on the configured masking policy
+            </summary>
+        </member>
+        <member name="M:Lurgle.Logging.Enrichers.MaskingEnricher.Enrich(Serilog.Events.LogEvent,Serilog.Core.ILogEventPropertyFactory)">
+            <summary>
+                Process incoming events and mask their values if a match is found in the configured properties
+            </summary>
+            <param name="logEvent"></param>
+            <param name="propertyFactory"></param>
+        </member>
+        <member name="M:Lurgle.Logging.Enrichers.MaskingEnricher.Add(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+                Add a list of properties to the masking enricher
+            </summary>
+            <param name="maskProperties"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lurgle.Logging.Enrichers.MaskingEnricher.Add(System.String)">
+            <summary>
+                Add a single property to the masking enricher
+            </summary>
+            <param name="maskProperty"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Lurgle.Logging.Enrichers.PropertyBagEnricher">
+            <summary>
+                Add properties to logs - adapted from https://benfoster.io/blog/serilog-best-practices/
+            </summary>
+        </member>
+        <member name="M:Lurgle.Logging.Enrichers.PropertyBagEnricher.#ctor">
+            <summary>
+                Creates a new <see cref="T:Lurgle.Logging.Enrichers.PropertyBagEnricher" /> instance.
+            </summary>
+        </member>
+        <member name="M:Lurgle.Logging.Enrichers.PropertyBagEnricher.Enrich(Serilog.Events.LogEvent,Serilog.Core.ILogEventPropertyFactory)">
+            <summary>
+                Enriches the <paramref name="logEvent" /> using the values from the property bag.
+            </summary>
+            <param name="logEvent">The log event to enrich.</param>
+            <param name="propertyFactory">The factory used to create the property.</param>
+        </member>
+        <member name="M:Lurgle.Logging.Enrichers.PropertyBagEnricher.Add(System.String,System.Object,System.Boolean)">
+            <summary>
+                Add a property that will be added to all log events enriched by this enricher.
+            </summary>
+            <param name="key">The property key.</param>
+            <param name="value">The property value.</param>
+            <param name="destructureObject">
+                Whether to destructure the value. See https://github.com/serilog/serilog/wiki/Structured-Data
+            </param>
+            <returns>The enricher instance, for chaining Add operations together.</returns>
+        </member>
+        <member name="M:Lurgle.Logging.Enrichers.PropertyBagEnricher.Add(System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean)">
+            <summary>
+                Add properties that will be added to all log events enriched by this enricher.
+            </summary>
+            <param name="valueList">The property dictionary</param>
+            <param name="destructureObject">
+                Whether to destructure the value. See https://github.com/serilog/serilog/wiki/Structured-Data
+            </param>
+            <returns>The enricher instance, for chaining Add operations together.</returns>
+        </member>
+        <member name="M:Lurgle.Logging.Enrichers.PropertyBagEnricher.Add(System.Collections.Generic.IEnumerable{Lurgle.Logging.Classes.LogProperty})">
+            <summary>
+                Add properties that will be added to all log events enriched by this enricher.
+            </summary>
+            <param name="valueList"></param>
+            <returns></returns>
         </member>
         <member name="T:Lurgle.Logging.ConsoleThemeType">
             <summary>
@@ -220,19 +345,21 @@
                 Property interface
             </summary>
         </member>
-        <member name="M:Lurgle.Logging.Interfaces.IAddProperty.AddProperty(System.String,System.Object)">
+        <member name="M:Lurgle.Logging.Interfaces.IAddProperty.AddProperty(System.String,System.Object,System.Boolean)">
             <summary>
                 Add an additional property for logging context
             </summary>
             <param name="name"></param>
             <param name="value"></param>
+            <param name="destructure"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Interfaces.IAddProperty.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object})">
+        <member name="M:Lurgle.Logging.Interfaces.IAddProperty.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean)">
             <summary>
                 Add an additional set of properties for logging context
             </summary>
             <param name="propertyPairs"></param>
+            <param name="destructure"></param>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.Interfaces.IAddProperty.Add(System.String,System.Object[])">
@@ -367,19 +494,21 @@
                 Level interface
             </summary>
         </member>
-        <member name="M:Lurgle.Logging.Interfaces.ILevel.AddProperty(System.String,System.Object)">
+        <member name="M:Lurgle.Logging.Interfaces.ILevel.AddProperty(System.String,System.Object,System.Boolean)">
             <summary>
                 Add an additional property for logging context
             </summary>
             <param name="name"></param>
             <param name="value"></param>
+            <param name="destructure"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Interfaces.ILevel.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object})">
+        <member name="M:Lurgle.Logging.Interfaces.ILevel.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean)">
             <summary>
                 Add an additional set of properties for logging context
             </summary>
             <param name="propertyPairs"></param>
+            <param name="destructure"></param>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.Interfaces.ILevel.Add(System.String,System.Object[])">
@@ -504,27 +633,30 @@
                 Ensure that we flush and dispose the log writer
             </summary>
         </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(System.String,System.Object)">
+        <member name="M:Lurgle.Logging.Log.AddProperty(System.String,System.Object,System.Boolean)">
             <summary>
                 Add an additional property for logging context
             </summary>
             <param name="name"></param>
             <param name="value"></param>
+            <param name="destructure"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object})">
+        <member name="M:Lurgle.Logging.Log.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean)">
             <summary>
                 Add an additional set of properties for logging context
             </summary>
             <param name="propertyPairs"></param>
+            <param name="destructure"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(System.String,System.Object,System.String,System.Boolean,System.String,System.String,System.Int32)">
+        <member name="M:Lurgle.Logging.Log.AddProperty(System.String,System.Object,System.Boolean,System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
                 Add an additional property for logging context
             </summary>
             <param name="name"></param>
             <param name="value"></param>
+            <param name="destructure"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
             <param name="methodName"></param>
@@ -532,11 +664,12 @@
             <param name="sourceLineNumber"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object},System.String,System.Boolean,System.String,System.String,System.Int32)">
+        <member name="M:Lurgle.Logging.Log.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean,System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
                 Add an additional set of properties for logging context
             </summary>
             <param name="propertyPairs"></param>
+            <param name="destructure"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
             <param name="methodName"></param>
@@ -544,13 +677,14 @@
             <param name="sourceLineNumber"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(System.Exception,System.String,System.Object,System.String,System.Boolean,System.String,System.String,System.Int32)">
+        <member name="M:Lurgle.Logging.Log.AddProperty(System.Exception,System.String,System.Object,System.Boolean,System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
                 Add an additional property for logging context and pass an exception
             </summary>
             <param name="ex"></param>
             <param name="name"></param>
             <param name="value"></param>
+            <param name="destructure"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
             <param name="methodName"></param>
@@ -558,12 +692,13 @@
             <param name="sourceLineNumber"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(System.Exception,System.Collections.Generic.Dictionary{System.String,System.Object},System.String,System.Boolean,System.String,System.String,System.Int32)">
+        <member name="M:Lurgle.Logging.Log.AddProperty(System.Exception,System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean,System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
                 Add an additional set of properties for logging context and pass an exception
             </summary>
             <param name="ex"></param>
             <param name="propertyPairs"></param>
+            <param name="destructure"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
             <param name="methodName"></param>
@@ -571,13 +706,14 @@
             <param name="sourceLineNumber"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(Lurgle.Logging.LurgLevel,System.String,System.Object,System.String,System.Boolean,System.String,System.String,System.Int32)">
+        <member name="M:Lurgle.Logging.Log.AddProperty(Lurgle.Logging.LurgLevel,System.String,System.Object,System.Boolean,System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
                 Set log level and add an additional property for logging context
             </summary>
             <param name="logLevel"></param>
             <param name="name"></param>
             <param name="value"></param>
+            <param name="destructure"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
             <param name="methodName"></param>
@@ -585,12 +721,13 @@
             <param name="sourceLineNumber"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(Lurgle.Logging.LurgLevel,System.Collections.Generic.Dictionary{System.String,System.Object},System.String,System.Boolean,System.String,System.String,System.Int32)">
+        <member name="M:Lurgle.Logging.Log.AddProperty(Lurgle.Logging.LurgLevel,System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean,System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
                 Set log level and add an additional set of properties for logging context
             </summary>
             <param name="logLevel"></param>
             <param name="propertyPairs"></param>
+            <param name="destructure"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
             <param name="methodName"></param>
@@ -598,7 +735,7 @@
             <param name="sourceLineNumber"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(System.Exception,Lurgle.Logging.LurgLevel,System.String,System.Object,System.String,System.Boolean,System.String,System.String,System.Int32)">
+        <member name="M:Lurgle.Logging.Log.AddProperty(System.Exception,Lurgle.Logging.LurgLevel,System.String,System.Object,System.Boolean,System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
                 Set log level and exception, and add an additional property for logging context
             </summary>
@@ -606,6 +743,7 @@
             <param name="logLevel"></param>
             <param name="name"></param>
             <param name="value"></param>
+            <param name="destructure"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
             <param name="methodName"></param>
@@ -613,13 +751,14 @@
             <param name="sourceLineNumber"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(System.Exception,Lurgle.Logging.LurgLevel,System.Collections.Generic.Dictionary{System.String,System.Object},System.String,System.Boolean,System.String,System.String,System.Int32)">
+        <member name="M:Lurgle.Logging.Log.AddProperty(System.Exception,Lurgle.Logging.LurgLevel,System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean,System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
                 Set log level and exception,  and add an additional set of properties for logging context
             </summary>
             <param name="ex"></param>
             <param name="logLevel"></param>
             <param name="propertyPairs"></param>
+            <param name="destructure"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
             <param name="methodName"></param>
@@ -1041,19 +1180,23 @@
             <param name="sourceLineNumber"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Logging.AddCommonProperty(System.String,System.Object)">
+        <member name="M:Lurgle.Logging.Logging.AddCommonProperty(System.String,System.Object,System.Boolean,System.Boolean)">
             <summary>
                 Add an additional static property for logging
             </summary>
             <param name="name"></param>
             <param name="value"></param>
+            <param name="destructure"></param>
+            <param name="update"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Logging.AddCommonProperty(System.Collections.Generic.Dictionary{System.String,System.Object})">
+        <member name="M:Lurgle.Logging.Logging.AddCommonProperty(System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean,System.Boolean)">
             <summary>
                 Add an additional set of static properties for logging
             </summary>
             <param name="propertyPairs"></param>
+            <param name="destructure"></param>
+            <param name="update"></param>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.Logging.ResetCommonProperties">
@@ -1399,70 +1542,6 @@
             <param name="sourceObject">An object that can be converted to a bool</param>
             <param name="trueIfEmpty">Return true if the object is empty</param>
             <returns></returns>
-        </member>
-        <member name="T:Lurgle.Logging.MaskingEnricher">
-            <summary>
-                Mask event properties based on the configured masking policy
-            </summary>
-        </member>
-        <member name="M:Lurgle.Logging.MaskingEnricher.Enrich(Serilog.Events.LogEvent,Serilog.Core.ILogEventPropertyFactory)">
-            <summary>
-                Process incoming events and mask their values if a match is found in the configured properties
-            </summary>
-            <param name="logEvent"></param>
-            <param name="propertyFactory"></param>
-        </member>
-        <member name="M:Lurgle.Logging.MaskingEnricher.Add(System.Collections.Generic.IEnumerable{System.String})">
-            <summary>
-                Add a list of properties to the masking enricher
-            </summary>
-            <param name="maskProperties"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Lurgle.Logging.MaskingEnricher.Add(System.String)">
-            <summary>
-                Add a single property to the masking enricher
-            </summary>
-            <param name="maskProperty"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Lurgle.Logging.PropertyBagEnricher">
-            <summary>
-                Add properties to logs - adapted from https://benfoster.io/blog/serilog-best-practices/
-            </summary>
-        </member>
-        <member name="M:Lurgle.Logging.PropertyBagEnricher.#ctor">
-            <summary>
-                Creates a new <see cref="T:Lurgle.Logging.PropertyBagEnricher" /> instance.
-            </summary>
-        </member>
-        <member name="M:Lurgle.Logging.PropertyBagEnricher.Enrich(Serilog.Events.LogEvent,Serilog.Core.ILogEventPropertyFactory)">
-            <summary>
-                Enriches the <paramref name="logEvent" /> using the values from the property bag.
-            </summary>
-            <param name="logEvent">The log event to enrich.</param>
-            <param name="propertyFactory">The factory used to create the property.</param>
-        </member>
-        <member name="M:Lurgle.Logging.PropertyBagEnricher.Add(System.String,System.Object,System.Boolean)">
-            <summary>
-                Add a property that will be added to all log events enriched by this enricher.
-            </summary>
-            <param name="key">The property key.</param>
-            <param name="value">The property value.</param>
-            <param name="destructureObject">
-                Whether to destructure the value. See https://github.com/serilog/serilog/wiki/Structured-Data
-            </param>
-            <returns>The enricher instance, for chaining Add operations together.</returns>
-        </member>
-        <member name="M:Lurgle.Logging.PropertyBagEnricher.Add(System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean)">
-            <summary>
-                Add properties that will be added to all log events enriched by this enricher.
-            </summary>
-            <param name="valueList">The property dictionary</param>
-            <param name="destructureObject">
-                Whether to destructure the value. See https://github.com/serilog/serilog/wiki/Structured-Data
-            </param>
-            <returns>The enricher instance, for chaining Add operations together.</returns>
         </member>
     </members>
 </doc>
