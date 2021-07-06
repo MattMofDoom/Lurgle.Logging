@@ -28,6 +28,7 @@ namespace LurgleTest
 
             //Add a start log
             Log.Level().Add("{AppName:l} v{AppVersion:l} starting ...");
+            Log.Level().Add("Seq Proxy: {Proxy}", Logging.Config.LogSeqUseProxy);
             Log.Add("Simple information log");
             Log.Add(LurgLevel.Debug, "Simple debug log");
             Log.Add("Log with {Properties:l}", args: "Properties");

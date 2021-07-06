@@ -402,11 +402,12 @@ namespace Lurgle.Logging
                             testConfig
                                 .WriteTo
                                 .Seq(Config.LogSeqServer, (LogEventLevel) Config.LogLevelSeq,
-                                    apiKey: Config.LogSeqApiKey);
+                                    apiKey: Config.LogSeqApiKey, messageHandler: new SeqClient());
                         else
                             testConfig
                                 .WriteTo
-                                .Seq(Config.LogSeqServer, (LogEventLevel) Config.LogLevelSeq);
+                                .Seq(Config.LogSeqServer, (LogEventLevel) Config.LogLevelSeq,
+                                    messageHandler: new SeqClient());
 
                         break;
                 }
@@ -532,11 +533,14 @@ namespace Lurgle.Logging
                     if (!string.IsNullOrEmpty(Config.LogSeqApiKey))
                         logConfig
                             .WriteTo
-                            .Seq(Config.LogSeqServer, (LogEventLevel) Config.LogLevelSeq, apiKey: Config.LogSeqApiKey);
+                            .Seq(Config.LogSeqServer, (LogEventLevel) Config.LogLevelSeq, apiKey: Config.LogSeqApiKey,
+                                messageHandler: new SeqClient());
+
                     else
                         logConfig
                             .WriteTo
-                            .Seq(Config.LogSeqServer, (LogEventLevel) Config.LogLevelSeq);
+                            .Seq(Config.LogSeqServer, (LogEventLevel) Config.LogLevelSeq,
+                                messageHandler: new SeqClient());
                 }
 
                 if (logTypes.Contains(LogType.File))

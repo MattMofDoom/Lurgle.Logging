@@ -57,9 +57,15 @@ namespace Lurgle.Logging
         /// <param name="logBuffered"></param>
         /// <param name="logSeqServer"></param>
         /// <param name="logSeqApiKey"></param>
+        /// <param name="logSeqProxyPassword"></param>
         /// <param name="logFormatConsole"></param>
         /// <param name="logFormatEvent"></param>
         /// <param name="logFormatFile"></param>
+        /// <param name="logSeqUseProxy"></param>
+        /// <param name="logSeqProxyServer"></param>
+        /// <param name="logSeqBypassProxyOnLocal"></param>
+        /// <param name="logSeqProxyBypass"></param>
+        /// <param name="logSeqProxyUser"></param>
         public LoggingConfig(LoggingConfig config = null, bool? enableMethodNameProperty = null,
             bool? enableSourceFileProperty = null,
             bool? enableLineNumberProperty = null, bool? logWriteInit = null, bool? enableCorrelationCache = null,
@@ -74,6 +80,8 @@ namespace Lurgle.Logging
             LurgLevel? logLevelFile = null, LurgLevel? logLevelEvent = null, LurgLevel? logLevelSeq = null,
             LogFileFormat? logFileType = null, int? logDays = null, int? logFlush = null, bool? logShared = null,
             bool? logBuffered = null, string logSeqServer = null, string logSeqApiKey = null,
+            bool? logSeqUseProxy = null, string logSeqProxyServer = null, bool? logSeqBypassProxyOnLocal = null,
+            string logSeqProxyBypass = null, string logSeqProxyUser = null, string logSeqProxyPassword = null,
             string logFormatConsole = null, string logFormatEvent = null, string logFormatFile = null)
 
         {
@@ -111,6 +119,12 @@ namespace Lurgle.Logging
                 LogBuffered = config.LogBuffered;
                 LogSeqServer = config.LogSeqServer;
                 LogSeqApiKey = config.LogSeqApiKey;
+                LogSeqUseProxy = config.LogSeqUseProxy;
+                LogSeqProxyServer = config.LogSeqProxyServer;
+                LogSeqBypassProxyOnLocal = config.LogSeqBypassProxyOnLocal;
+                LogSeqProxyBypass = config.LogSeqProxyBypass;
+                LogSeqProxyUser = config.LogSeqProxyUser;
+                LogSeqProxyPassword = config.LogSeqProxyPassword;
                 LogFormatConsole = config.LogFormatConsole;
                 LogFormatEvent = config.LogFormatEvent;
                 LogFormatFile = config.LogFormatFile;
@@ -180,6 +194,18 @@ namespace Lurgle.Logging
                 LogSeqServer = logSeqServer;
             if (!string.IsNullOrEmpty(logSeqApiKey))
                 LogSeqApiKey = logSeqApiKey;
+            if (logSeqUseProxy != null)
+                LogSeqUseProxy = (bool) logSeqUseProxy;
+            if (!string.IsNullOrEmpty(logSeqProxyServer))
+                LogSeqProxyServer = logSeqProxyServer;
+            if (logSeqBypassProxyOnLocal != null)
+                LogSeqBypassProxyOnLocal = (bool) logSeqBypassProxyOnLocal;
+            if (!string.IsNullOrEmpty(logSeqProxyBypass))
+                LogSeqProxyBypass = logSeqProxyBypass;
+            if (!string.IsNullOrEmpty(logSeqProxyUser))
+                LogSeqProxyUser = logSeqProxyUser;
+            if (!string.IsNullOrEmpty(logSeqProxyPassword))
+                LogSeqProxyPassword = logSeqProxyPassword;
             if (!string.IsNullOrEmpty(logFormatConsole))
                 LogFormatConsole = logFormatConsole;
             if (!string.IsNullOrEmpty(logFormatFile))
@@ -350,6 +376,36 @@ namespace Lurgle.Logging
         public string LogSeqApiKey { get; private set; }
 
         /// <summary>
+        ///     Enable or disable proxy server for Seq
+        /// </summary>
+        public bool LogSeqUseProxy { get; private set; }
+
+        /// <summary>
+        ///     Configure proxy server for Seq if <see cref="LogSeqUseProxy" /> is enabled
+        /// </summary>
+        public string LogSeqProxyServer { get; private set; }
+
+        /// <summary>
+        ///     Bypass proxy for local addresses
+        /// </summary>
+        public bool LogSeqBypassProxyOnLocal { get; private set; }
+
+        /// <summary>
+        ///     Bypass proxy for these addresses
+        /// </summary>
+        public string LogSeqProxyBypass { get; private set; }
+
+        /// <summary>
+        ///     Optional username for proxy authentication
+        /// </summary>
+        public string LogSeqProxyUser { get; private set; }
+
+        /// <summary>
+        ///     Password for proxy authentication
+        /// </summary>
+        public string LogSeqProxyPassword { get; private set; }
+
+        /// <summary>
         ///     Logging format for the Console. Default is {Message}{NewLine}
         /// </summary>
         public string LogFormatConsole { get; private set; }
@@ -413,6 +469,12 @@ namespace Lurgle.Logging
                     LogBuffered = GetBool(ConfigurationManager.AppSettings["LogBuffered"], true),
                     LogSeqServer = ConfigurationManager.AppSettings["LogSeqServer"],
                     LogSeqApiKey = ConfigurationManager.AppSettings["LogSeqApiKey"],
+                    LogSeqUseProxy = GetBool(ConfigurationManager.AppSettings["LogSeqUseProxy"]),
+                    LogSeqProxyServer = ConfigurationManager.AppSettings["LogSeqProxyServer"],
+                    LogSeqBypassProxyOnLocal = GetBool(ConfigurationManager.AppSettings["LogSeqBypassProxyOnLocal"]),
+                    LogSeqProxyBypass = ConfigurationManager.AppSettings["LogSeqProxyBypass"],
+                    LogSeqProxyUser = ConfigurationManager.AppSettings["LogSeqProxyUser"],
+                    LogSeqProxyPassword = ConfigurationManager.AppSettings["LogSeqProxyPassword"],
                     LogFormatConsole = ConfigurationManager.AppSettings["LogFormatConsole"],
                     LogFormatEvent = ConfigurationManager.AppSettings["LogFormatEvent"],
                     LogFormatFile = ConfigurationManager.AppSettings["LogFormatFile"]
