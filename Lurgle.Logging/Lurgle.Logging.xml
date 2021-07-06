@@ -87,6 +87,17 @@
                 Destructure Property
             </summary>
         </member>
+        <member name="T:Lurgle.Logging.Classes.SeqClient">
+            <summary>
+                HTTP Client handler for Seq
+            </summary>
+        </member>
+        <member name="M:Lurgle.Logging.Classes.SeqClient.#ctor">
+            <summary>
+                Return a HTTP Client Handler for Seq
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Lurgle.Logging.Destructurers.MaskDestructuringConfig">
             <summary>
                 Add a mask destructurer configuration
@@ -1244,7 +1255,7 @@
                 LoggingConfig constructor
             </summary>
         </member>
-        <member name="M:Lurgle.Logging.LoggingConfig.#ctor(Lurgle.Logging.LoggingConfig,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.String,System.String,System.Collections.Generic.List{Lurgle.Logging.LogType},System.Collections.Generic.List{System.String},System.String,System.Nullable{Lurgle.Logging.MaskPolicy},System.String,System.String,System.Nullable{Lurgle.Logging.ConsoleThemeType},System.String,System.String,System.String,System.String,System.String,System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LogFileFormat},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:Lurgle.Logging.LoggingConfig.#ctor(Lurgle.Logging.LoggingConfig,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.String,System.String,System.Collections.Generic.List{Lurgle.Logging.LogType},System.Collections.Generic.List{System.String},System.String,System.Nullable{Lurgle.Logging.MaskPolicy},System.String,System.String,System.Nullable{Lurgle.Logging.ConsoleThemeType},System.String,System.String,System.String,System.String,System.String,System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LogFileFormat},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String,System.Nullable{System.Boolean},System.String,System.Nullable{System.Boolean},System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
                 Constructor that permits passing a config and optional overrides of any property
             </summary>
@@ -1281,9 +1292,15 @@
             <param name="logBuffered"></param>
             <param name="logSeqServer"></param>
             <param name="logSeqApiKey"></param>
+            <param name="logSeqProxyPassword"></param>
             <param name="logFormatConsole"></param>
             <param name="logFormatEvent"></param>
             <param name="logFormatFile"></param>
+            <param name="logSeqUseProxy"></param>
+            <param name="logSeqProxyServer"></param>
+            <param name="logSeqBypassProxyOnLocal"></param>
+            <param name="logSeqProxyBypass"></param>
+            <param name="logSeqProxyUser"></param>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.EnableMethodNameProperty">
             <summary>
@@ -1444,6 +1461,36 @@
         <member name="P:Lurgle.Logging.LoggingConfig.LogSeqApiKey">
             <summary>
                 API key for Seq. If empty, an API key will not be used.
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogSeqUseProxy">
+            <summary>
+                Enable or disable proxy server for Seq
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogSeqProxyServer">
+            <summary>
+                Configure proxy server for Seq if <see cref="P:Lurgle.Logging.LoggingConfig.LogSeqUseProxy" /> is enabled
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogSeqBypassProxyOnLocal">
+            <summary>
+                Bypass proxy for local addresses
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogSeqProxyBypass">
+            <summary>
+                Bypass proxy for these addresses
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogSeqProxyUser">
+            <summary>
+                Optional username for proxy authentication
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogSeqProxyPassword">
+            <summary>
+                Password for proxy authentication
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogFormatConsole">
