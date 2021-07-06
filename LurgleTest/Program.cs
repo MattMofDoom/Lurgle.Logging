@@ -78,7 +78,7 @@ namespace LurgleTest
             Log.Level().AddProperty("Mechagodzilla", "Godzilla123").AddProperty("password", "godzilla123").Add(
                 "Testing masking properties, send complaints to {Email:l}", "mechagodzilla123@monster.rargh");
             Log.Level().AddProperty("Test", new Test(), true).Add("Test passing a destructured class with alternate mask policy {Test}");
-            Logging.AddCommonProperty("TestCommonMask2", value:"1234mask", update: true);
+            Logging.AddCommonProperty("TestCommonMask2", "1234mask", update: true);
             Log.Level().Add("Test updating a common property");
             //Output the enabled log types
             Log.Level().Add("Configured Logs: {LogCount}, Enabled Logs: {EnabledCount}", Logging.Config.LogType.Count,

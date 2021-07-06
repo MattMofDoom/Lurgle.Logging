@@ -233,7 +233,7 @@ namespace Lurgle.Logging
                 property.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
             {
                 if (!update) return;
-                var isMask = Config.LogMaskProperties.Any(maskProperty =>
+                var isMask = Config != null && Config.LogMaskProperties.Any(maskProperty =>
                     maskProperty.Equals(name, StringComparison.OrdinalIgnoreCase));
                 property.Value = isMask ? MaskProperty(value) : value;
                 property.Destructure = destructure;
@@ -274,7 +274,7 @@ namespace Lurgle.Logging
                     }
                     else
                     {
-                        var isMask = Config.LogMaskProperties.Any(maskProperty =>
+                        var isMask = Config != null && Config.LogMaskProperties.Any(maskProperty =>
                             maskProperty.Equals(values.Key, StringComparison.OrdinalIgnoreCase));
 
                         CommonProperties.Add(
