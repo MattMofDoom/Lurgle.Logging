@@ -11,7 +11,7 @@
     <PackageIcon>Lurgle.png</PackageIcon>
     <RepositoryUrl>https://github.com/MattMofDoom/Lurgle.Logging</RepositoryUrl>
     <RepositoryType>Github</RepositoryType>
-    <PackageTags>Serilog,Log,Logging,Seq,File,EventLog,Console,data,masking,datamasking,correlationid,correlation,structured,properties</PackageTags>
+    <PackageTags>Lurgle Serilog Log Logging Seq File EventLog Console data masking datamasking correlationid correlation structured properties</PackageTags>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Version>1.2.3</Version>
     <PackageReleaseNotes>- Add data masking functionality
