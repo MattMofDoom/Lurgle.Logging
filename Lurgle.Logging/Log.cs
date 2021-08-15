@@ -16,7 +16,7 @@ namespace Lurgle.Logging
     ///     Log an event with Lurgle.Logging
     /// </summary>
     // ReSharper disable once UnusedType.Global
-    public sealed class Log : ILog, ILevel, IAddProperty, IDisposable
+    public sealed class Log : ILog, IExplicitLevel, ILevel, IAddProperty, IDisposable
     {
         // ReSharper disable UnusedMember.Global
         // ReSharper disable MemberCanBePrivate.Global
@@ -533,14 +533,13 @@ namespace Lurgle.Logging
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
-        /// <param name="args"></param>
         public static void Add(LurgLevel logLevel, string logTemplate, string correlationId = null,
             bool showMethod = false,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
-            [CallerLineNumber] int sourceLineNumber = 0, params object[] args)
+            [CallerLineNumber] int sourceLineNumber = 0)
         {
             Level(logLevel, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber)
-                .Add(logTemplate, args);
+                .Add(logTemplate);
         }
 
         /// <summary>
@@ -554,18 +553,17 @@ namespace Lurgle.Logging
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
-        /// <param name="args"></param>
         public static void Add(Exception ex, LurgLevel logLevel, string logTemplate, string correlationId = null,
             bool showMethod = false,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
-            [CallerLineNumber] int sourceLineNumber = 0, params object[] args)
+            [CallerLineNumber] int sourceLineNumber = 0)
         {
             Exception(ex, logLevel, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber)
-                .Add(logTemplate, args);
+                .Add(logTemplate);
         }
 
         /// <summary>
-        ///     Create a simple Information log entry and apply parameters to the template
+        ///     Create a simple Information log entry
         /// </summary>
         /// <param name="logTemplate"></param>
         /// <param name="correlationId"></param>
@@ -573,17 +571,16 @@ namespace Lurgle.Logging
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
-        /// <param name="args"></param>
         public static void Add(string logTemplate, string correlationId = null, bool showMethod = false,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
-            [CallerLineNumber] int sourceLineNumber = 0, params object[] args)
+            [CallerLineNumber] int sourceLineNumber = 0)
         {
             Level(LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber)
-                .Add(logTemplate, args);
+                .Add(logTemplate);
         }
 
         /// <summary>
-        ///     Create a simple Information log entry with exception and apply parameters to the template
+        ///     Create a simple Information log entry with exception
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="logTemplate"></param>
@@ -592,240 +589,209 @@ namespace Lurgle.Logging
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
-        /// <param name="args"></param>
         public static void Add(Exception ex, string logTemplate, string correlationId = null, bool showMethod = false,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
-            [CallerLineNumber] int sourceLineNumber = 0, params object[] args)
+            [CallerLineNumber] int sourceLineNumber = 0)
         {
             Exception(ex, LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
-                .Add(logTemplate, args);
+                .Add(logTemplate);
         }
 
         /// <summary>
-        ///     Log an Information event and apply parameters to the supplied log template
+        ///     Create an Information event
         /// </summary>
-        /// <param name="logTemplate"></param>
         /// <param name="correlationId"></param>
         /// <param name="showMethod"></param>
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
-        /// <param name="args"></param>
-        public static void Information(string logTemplate, string correlationId = null, bool showMethod = false,
+        public static IExplicitLevel Information(string correlationId = null, bool showMethod = false,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
-            [CallerLineNumber] int sourceLineNumber = 0, params object[] args)
-        {
-            Level(LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber)
-                .Add(logTemplate, args);
-        }
+            [CallerLineNumber] int sourceLineNumber = 0)
+                {
+                    return new Log(LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath,
+                        sourceLineNumber);
+                }
 
         /// <summary>
-        ///     Log an Information event with an exception and apply parameters to the supplied log template
+        ///     Create an Information event
         /// </summary>
         /// <param name="ex"></param>
-        /// <param name="logTemplate"></param>
         /// <param name="correlationId"></param>
         /// <param name="showMethod"></param>
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
-        /// <param name="args"></param>
-        public static void Information(Exception ex, string logTemplate, string correlationId = null,
+        public static IExplicitLevel Information(Exception ex, string correlationId = null,
             bool showMethod = false,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
-            [CallerLineNumber] int sourceLineNumber = 0, params object[] args)
+            [CallerLineNumber] int sourceLineNumber = 0)
         {
-            Exception(ex, LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath,
-                    sourceLineNumber)
-                .Add(logTemplate, args);
+            return new Log(ex, LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath,
+                    sourceLineNumber);
         }
 
         /// <summary>
-        ///     Log a Debug event and apply parameters to the supplied log template
+        ///     Create a Debug event
         /// </summary>
-        /// <param name="logTemplate"></param>
         /// <param name="correlationId"></param>
         /// <param name="showMethod"></param>
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
-        /// <param name="args"></param>
-        public static void Debug(string logTemplate, string correlationId = null, bool showMethod = false,
+        public static IExplicitLevel Debug(string correlationId = null, bool showMethod = false,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
-            [CallerLineNumber] int sourceLineNumber = 0, params object[] args)
+            [CallerLineNumber] int sourceLineNumber = 0)
         {
-            Level(LurgLevel.Debug, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber)
-                .Add(logTemplate, args);
+            return new Log(LurgLevel.Debug, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber);
         }
 
         /// <summary>
-        ///     Log a Debug event with an exception and apply parameters to the supplied log template
+        ///     Create a Debug event
         /// </summary>
         /// <param name="ex"></param>
-        /// <param name="logTemplate"></param>
         /// <param name="correlationId"></param>
         /// <param name="showMethod"></param>
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
-        /// <param name="args"></param>
-        public static void Debug(Exception ex, string logTemplate, string correlationId = null, bool showMethod = false,
+        public static IExplicitLevel Debug(Exception ex, string correlationId = null, bool showMethod = false,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
-            [CallerLineNumber] int sourceLineNumber = 0, params object[] args)
+            [CallerLineNumber] int sourceLineNumber = 0)
         {
-            Exception(ex, LurgLevel.Debug, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber)
-                .Add(logTemplate, args);
+            return new Log(ex, LurgLevel.Debug, correlationId, showMethod, methodName, sourceFilePath,
+                sourceLineNumber);
         }
 
         /// <summary>
-        ///     Log a Verbose event and apply parameters to the supplied log template
+        ///     Create a Verbose event
         /// </summary>
-        /// <param name="logTemplate"></param>
         /// <param name="correlationId"></param>
         /// <param name="showMethod"></param>
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
-        /// <param name="args"></param>
-        public static void Verbose(string logTemplate, string correlationId = null, bool showMethod = false,
+        public static IExplicitLevel Verbose(string correlationId = null, bool showMethod = false,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
-            [CallerLineNumber] int sourceLineNumber = 0, params object[] args)
+            [CallerLineNumber] int sourceLineNumber = 0)
         {
-            Level(LurgLevel.Verbose, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber)
-                .Add(logTemplate, args);
+            return new Log(LurgLevel.Verbose, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber);
         }
 
         /// <summary>
-        ///     Log a Verbose event with an exception and apply parameters to the supplied log template
+        ///     Create a Verbose event
         /// </summary>
         /// <param name="ex"></param>
-        /// <param name="logTemplate"></param>
         /// <param name="correlationId"></param>
         /// <param name="showMethod"></param>
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
-        /// <param name="args"></param>
-        public static void Verbose(Exception ex, string logTemplate, string correlationId = null,
+        public static IExplicitLevel Verbose(Exception ex, string correlationId = null,
             bool showMethod = false,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
-            [CallerLineNumber] int sourceLineNumber = 0, params object[] args)
+            [CallerLineNumber] int sourceLineNumber = 0)
         {
-            Exception(ex, LurgLevel.Verbose, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber)
-                .Add(logTemplate, args);
+            return new Log(ex, LurgLevel.Verbose, correlationId, showMethod, methodName, sourceFilePath,
+                sourceLineNumber);
         }
 
         /// <summary>
-        ///     Log a Warning event and apply parameters to the supplied log template
+        ///     Create a Warning event
         /// </summary>
-        /// <param name="logTemplate"></param>
         /// <param name="correlationId"></param>
         /// <param name="showMethod"></param>
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
-        /// <param name="args"></param>
-        public static void Warning(string logTemplate, string correlationId = null, bool showMethod = false,
+        public static IExplicitLevel Warning(string correlationId = null, bool showMethod = false,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
-            [CallerLineNumber] int sourceLineNumber = 0, params object[] args)
+            [CallerLineNumber] int sourceLineNumber = 0)
         {
-            Level(LurgLevel.Warning, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber)
-                .Add(logTemplate, args);
+            return new Log(LurgLevel.Warning, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber);
         }
 
         /// <summary>
-        ///     Log a Warning event with an exception and apply parameters to the supplied log template
+        ///     Create a Warning event
         /// </summary>
         /// <param name="ex"></param>
-        /// <param name="logTemplate"></param>
         /// <param name="correlationId"></param>
         /// <param name="showMethod"></param>
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
-        /// <param name="args"></param>
-        public static void Warning(Exception ex, string logTemplate, string correlationId = null,
+        public static IExplicitLevel Warning(Exception ex, string correlationId = null,
             bool showMethod = false,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
-            [CallerLineNumber] int sourceLineNumber = 0, params object[] args)
+            [CallerLineNumber] int sourceLineNumber = 0)
         {
-            Exception(ex, LurgLevel.Warning, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber)
-                .Add(logTemplate, args);
+            return new Log(ex, LurgLevel.Warning, correlationId, showMethod, methodName, sourceFilePath,
+                sourceLineNumber);
         }
 
         /// <summary>
-        ///     Log an Error event and apply parameters to the supplied log template
+        ///     Create an Error event
         /// </summary>
-        /// <param name="logTemplate"></param>
         /// <param name="correlationId"></param>
         /// <param name="showMethod"></param>
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
-        /// <param name="args"></param>
-        public static void Error(string logTemplate, string correlationId = null, bool showMethod = false,
+        public static IExplicitLevel Error(string correlationId = null, bool showMethod = false,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
-            [CallerLineNumber] int sourceLineNumber = 0, params object[] args)
+            [CallerLineNumber] int sourceLineNumber = 0)
         {
-            Level(LurgLevel.Error, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber)
-                .Add(logTemplate, args);
+            return new Log(LurgLevel.Error, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber);
         }
 
         /// <summary>
-        ///     Log an Error event with an exception and apply parameters to the supplied log template
+        ///     Create an Error event
         /// </summary>
         /// <param name="ex"></param>
-        /// <param name="logTemplate"></param>
         /// <param name="correlationId"></param>
         /// <param name="showMethod"></param>
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
-        /// <param name="args"></param>
-        public static void Error(Exception ex, string logTemplate, string correlationId = null, bool showMethod = false,
+        public static IExplicitLevel Error(Exception ex, string correlationId = null, bool showMethod = false,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
-            [CallerLineNumber] int sourceLineNumber = 0, params object[] args)
+            [CallerLineNumber] int sourceLineNumber = 0)
         {
-            Exception(ex, LurgLevel.Error, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber)
-                .Add(logTemplate, args);
+            return new Log(ex, LurgLevel.Error, correlationId, showMethod, methodName, sourceFilePath,
+                sourceLineNumber);
         }
 
         /// <summary>
-        ///     Log a Fatal event and apply parameters to the supplied log template
+        ///     Create a Fatal event
         /// </summary>
-        /// <param name="logTemplate"></param>
         /// <param name="correlationId"></param>
         /// <param name="showMethod"></param>
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
-        /// <param name="args"></param>
-        public static void Fatal(string logTemplate, string correlationId = null, bool showMethod = false,
+        public static IExplicitLevel Fatal(string correlationId = null, bool showMethod = false,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
-            [CallerLineNumber] int sourceLineNumber = 0, params object[] args)
+            [CallerLineNumber] int sourceLineNumber = 0)
         {
-            Level(LurgLevel.Fatal, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber)
-                .Add(logTemplate, args);
+            return new Log(LurgLevel.Fatal, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber);
         }
 
         /// <summary>
-        ///     Log a Fatal event with an exception and apply parameters to the supplied log template
+        ///     Create a Fatal event
         /// </summary>
         /// <param name="ex"></param>
-        /// <param name="logTemplate"></param>
         /// <param name="correlationId"></param>
         /// <param name="showMethod"></param>
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
-        /// <param name="args"></param>
-        public static void Fatal(Exception ex, string logTemplate, string correlationId = null, bool showMethod = false,
+        public static IExplicitLevel Fatal(Exception ex, string correlationId = null, bool showMethod = false,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
-            [CallerLineNumber] int sourceLineNumber = 0, params object[] args)
+            [CallerLineNumber] int sourceLineNumber = 0)
         {
-            Exception(ex, LurgLevel.Fatal, correlationId, showMethod, methodName, sourceFilePath, sourceLineNumber)
-                .Add(logTemplate, args);
+            return new Log(ex, LurgLevel.Fatal, correlationId, showMethod, methodName, sourceFilePath,
+                sourceLineNumber);
         }
     }
 }

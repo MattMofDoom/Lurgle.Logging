@@ -28,35 +28,28 @@ namespace LurgleTest
 
             //Add a start log
             Log.Level().Add("{AppName:l} v{AppVersion:l} starting ...");
-            Log.Level().Add("Seq Proxy: {Proxy}", Logging.Config.LogSeqUseProxy);
             Log.Add("Simple information log");
             Log.Add(LurgLevel.Debug, "Simple debug log");
-            Log.Add("Log with {Properties:l}", args: "Properties");
-            Log.Information("Information event");
-            Log.Information("Information event with {Properties:l}", args: "Properties");
-            Log.Verbose("Verbose event");
-            Log.Verbose("Verbose event with {Properties:l}", args: "Properties");
-            Log.Debug("Debug event");
-            Log.Debug("Debug event with {Properties:l}", args: "Properties");
-            Log.Warning("Warning event");
-            Log.Warning("Warning event with {Properties:l}", args: "Properties");
-            Log.Error("Error event");
-            Log.Error("Error event with {Properties:l}", args: "Properties");
-            Log.Fatal("Fatal event");
-            Log.Fatal("Fatal event with {Properties:l}", args: "Properties");
-            Log.AddProperty("TestClass1", new Test()).Add("Logging a test class without destructuring: {TestClass1}");
-            Log.AddProperty("TestClass2", new Test(), true).Add("Logging a test class with destructuring: {TestClass2}");
+            Log.Information().Add("Information event");
+            Log.Information().Add("Information event with {Properties:l}", args: "Properties");
+            Log.Verbose().Add("Verbose event");
+            Log.Verbose().Add("Verbose event with {Properties:l}", args: "Properties");
+            Log.Debug().Add("Debug event");
+            Log.Debug().Add("Debug event with {Properties:l}", args: "Properties");
+            Log.Warning().Add("Warning event");
+            Log.Warning().Add("Warning event with {Properties:l}", args: "Properties");
+            Log.Error().Add("Error event");
+            Log.Error().Add("Error event with {Properties:l}", args: "Properties");
+            Log.Fatal().Add("Fatal event");
+            Log.Fatal().Add("Fatal event with {Properties:l}", args: "Properties");
             Log.AddProperty("Barry", "Barry").Warning("Warning event with {Barry:l}");
-            Log.Error(new ArgumentOutOfRangeException(nameof(test)), "Exception: {Message:l}", args: "Error Message");
+            Log.Error(new ArgumentOutOfRangeException(nameof(test))).Add("Exception: {Message:l}", args: "Error Message");
             Log.AddProperty(LurgLevel.Error, "Barry", "Barry").Add("Log an {Error:l}", "Error");
             Log.AddProperty(LurgLevel.Debug, "Barry", "Barry").Add("Just pass the log template with {Barry:l}");
             Log.AddProperty(new ArgumentOutOfRangeException(nameof(test)), "Barry", "Barry")
                 .Add("Pass an exception with {Barry:l}");
-            Log.AddProperty(new ArgumentOutOfRangeException(nameof(test)), "Mechagodzilla", "Barry")
-                .Add("Pass an exception with a masked property: {Mechagodzilla:l}");
-            Log.Information("Logging a using a masked property: {Mechagodzilla:l}", args: "Test");
-            Log.AddProperty(test, true).AddProperty("Barry", "Barry").Add(
-                "{Barry:l} wants to pass a dictionary that results in the TestDictKey property having {TestDictKey} and TestClass having the destructured {TestClass}");
+            Log.AddProperty(test).AddProperty("Barry", "Barry").Add(
+                "{Barry:l} wants to pass a dictionary that results in the TestDictKey property having {TestDictKey}");
             Log.Level().Warning("Override the event level and specify params like {Test:l}", "Test");
 
             //Send an error log
@@ -75,12 +68,8 @@ namespace LurgleTest
             Logging.SetConfig(new LoggingConfig(Logging.Config, logWriteInit: true,
                 logMaskPolicy: MaskPolicy.MaskLettersAndNumbers));
             Logging.AddCommonProperty("TestCommonMask2", "mask1234");
-            Logging.Init();
             Log.Level().AddProperty("Mechagodzilla", "Godzilla123").AddProperty("password", "godzilla123").Add(
                 "Testing masking properties, send complaints to {Email:l}", "mechagodzilla123@monster.rargh");
-            Log.Level().AddProperty("Test", new Test(), true).Add("Test passing a destructured class with alternate mask policy {Test}");
-            Logging.AddCommonProperty("TestCommonMask2", "1234mask", update: true);
-            Log.Level().Add("Test updating a common property");
             //Output the enabled log types
             Log.Level().Add("Configured Logs: {LogCount}, Enabled Logs: {EnabledCount}", Logging.Config.LogType.Count,
                 Logging.EnabledLogs.Count);
@@ -92,6 +81,7 @@ namespace LurgleTest
             foreach (var logType in Logging.EnabledLogs) Log.Level().Add(" - {LogType}", logType);
 
             //Output any failure reasons
+            // ReSharper disable once UseDeconstruction
             foreach (var logFailure in Logging.LogFailures)
                 Log.Level(LurgLevel.Error)
                     .Add("Failure - {LogType}: {FailureReason}", logFailure.Key, logFailure.Value);
