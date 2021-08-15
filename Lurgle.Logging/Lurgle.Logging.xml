@@ -470,6 +470,35 @@
             <param name="logTemplate"></param>
             <param name="args"></param>
         </member>
+        <member name="T:Lurgle.Logging.Interfaces.IExplicitLevel">
+            <summary>
+            Explicit level interface
+            </summary>
+        </member>
+        <member name="M:Lurgle.Logging.Interfaces.IExplicitLevel.AddProperty(System.String,System.Object,System.Boolean)">
+            <summary>
+                Add an additional property for logging context
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+            <param name="destructure"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lurgle.Logging.Interfaces.IExplicitLevel.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean)">
+            <summary>
+                Add an additional set of properties for logging context
+            </summary>
+            <param name="propertyPairs"></param>
+            <param name="destructure"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lurgle.Logging.Interfaces.IExplicitLevel.Add(System.String,System.Object[])">
+            <summary>
+                Add a new log entry and apply parameters to the supplied log template
+            </summary>
+            <param name="logTemplate"></param>
+            <param name="args"></param>
+        </member>
         <member name="T:Lurgle.Logging.Interfaces.IHideObjectMembers">
             <summary>
                 Hide object members
@@ -903,7 +932,7 @@
             <param name="sourceLineNumber"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Log.Add(Lurgle.Logging.LurgLevel,System.String,System.String,System.Boolean,System.String,System.String,System.Int32,System.Object[])">
+        <member name="M:Lurgle.Logging.Log.Add(Lurgle.Logging.LurgLevel,System.String,System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
                 Create a simple log entry with the specified level
             </summary>
@@ -914,9 +943,8 @@
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
-            <param name="args"></param>
         </member>
-        <member name="M:Lurgle.Logging.Log.Add(System.Exception,Lurgle.Logging.LurgLevel,System.String,System.String,System.Boolean,System.String,System.String,System.Int32,System.Object[])">
+        <member name="M:Lurgle.Logging.Log.Add(System.Exception,Lurgle.Logging.LurgLevel,System.String,System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
                 Create a simple log entry with the specified level and exception
             </summary>
@@ -928,11 +956,10 @@
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
-            <param name="args"></param>
         </member>
-        <member name="M:Lurgle.Logging.Log.Add(System.String,System.String,System.Boolean,System.String,System.String,System.Int32,System.Object[])">
+        <member name="M:Lurgle.Logging.Log.Add(System.String,System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
-                Create a simple Information log entry and apply parameters to the template
+                Create a simple Information log entry
             </summary>
             <param name="logTemplate"></param>
             <param name="correlationId"></param>
@@ -940,11 +967,10 @@
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
-            <param name="args"></param>
         </member>
-        <member name="M:Lurgle.Logging.Log.Add(System.Exception,System.String,System.String,System.Boolean,System.String,System.String,System.Int32,System.Object[])">
+        <member name="M:Lurgle.Logging.Log.Add(System.Exception,System.String,System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
-                Create a simple Information log entry with exception and apply parameters to the template
+                Create a simple Information log entry with exception
             </summary>
             <param name="ex"></param>
             <param name="logTemplate"></param>
@@ -953,157 +979,132 @@
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
-            <param name="args"></param>
         </member>
-        <member name="M:Lurgle.Logging.Log.Information(System.String,System.String,System.Boolean,System.String,System.String,System.Int32,System.Object[])">
+        <member name="M:Lurgle.Logging.Log.Information(System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
-                Log an Information event and apply parameters to the supplied log template
+                Create an Information event
             </summary>
-            <param name="logTemplate"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
-            <param name="args"></param>
         </member>
-        <member name="M:Lurgle.Logging.Log.Information(System.Exception,System.String,System.String,System.Boolean,System.String,System.String,System.Int32,System.Object[])">
+        <member name="M:Lurgle.Logging.Log.Information(System.Exception,System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
-                Log an Information event with an exception and apply parameters to the supplied log template
+                Create an Information event
             </summary>
             <param name="ex"></param>
-            <param name="logTemplate"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
-            <param name="args"></param>
         </member>
-        <member name="M:Lurgle.Logging.Log.Debug(System.String,System.String,System.Boolean,System.String,System.String,System.Int32,System.Object[])">
+        <member name="M:Lurgle.Logging.Log.Debug(System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
-                Log a Debug event and apply parameters to the supplied log template
+                Create a Debug event
             </summary>
-            <param name="logTemplate"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
-            <param name="args"></param>
         </member>
-        <member name="M:Lurgle.Logging.Log.Debug(System.Exception,System.String,System.String,System.Boolean,System.String,System.String,System.Int32,System.Object[])">
+        <member name="M:Lurgle.Logging.Log.Debug(System.Exception,System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
-                Log a Debug event with an exception and apply parameters to the supplied log template
+                Create a Debug event
             </summary>
             <param name="ex"></param>
-            <param name="logTemplate"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
-            <param name="args"></param>
         </member>
-        <member name="M:Lurgle.Logging.Log.Verbose(System.String,System.String,System.Boolean,System.String,System.String,System.Int32,System.Object[])">
+        <member name="M:Lurgle.Logging.Log.Verbose(System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
-                Log a Verbose event and apply parameters to the supplied log template
+                Create a Verbose event
             </summary>
-            <param name="logTemplate"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
-            <param name="args"></param>
         </member>
-        <member name="M:Lurgle.Logging.Log.Verbose(System.Exception,System.String,System.String,System.Boolean,System.String,System.String,System.Int32,System.Object[])">
+        <member name="M:Lurgle.Logging.Log.Verbose(System.Exception,System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
-                Log a Verbose event with an exception and apply parameters to the supplied log template
+                Create a Verbose event
             </summary>
             <param name="ex"></param>
-            <param name="logTemplate"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
-            <param name="args"></param>
         </member>
-        <member name="M:Lurgle.Logging.Log.Warning(System.String,System.String,System.Boolean,System.String,System.String,System.Int32,System.Object[])">
+        <member name="M:Lurgle.Logging.Log.Warning(System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
-                Log a Warning event and apply parameters to the supplied log template
+                Create a Warning event
             </summary>
-            <param name="logTemplate"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
-            <param name="args"></param>
         </member>
-        <member name="M:Lurgle.Logging.Log.Warning(System.Exception,System.String,System.String,System.Boolean,System.String,System.String,System.Int32,System.Object[])">
+        <member name="M:Lurgle.Logging.Log.Warning(System.Exception,System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
-                Log a Warning event with an exception and apply parameters to the supplied log template
+                Create a Warning event
             </summary>
             <param name="ex"></param>
-            <param name="logTemplate"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
-            <param name="args"></param>
         </member>
-        <member name="M:Lurgle.Logging.Log.Error(System.String,System.String,System.Boolean,System.String,System.String,System.Int32,System.Object[])">
+        <member name="M:Lurgle.Logging.Log.Error(System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
-                Log an Error event and apply parameters to the supplied log template
+                Create an Error event
             </summary>
-            <param name="logTemplate"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
-            <param name="args"></param>
         </member>
-        <member name="M:Lurgle.Logging.Log.Error(System.Exception,System.String,System.String,System.Boolean,System.String,System.String,System.Int32,System.Object[])">
+        <member name="M:Lurgle.Logging.Log.Error(System.Exception,System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
-                Log an Error event with an exception and apply parameters to the supplied log template
+                Create an Error event
             </summary>
             <param name="ex"></param>
-            <param name="logTemplate"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
-            <param name="args"></param>
         </member>
-        <member name="M:Lurgle.Logging.Log.Fatal(System.String,System.String,System.Boolean,System.String,System.String,System.Int32,System.Object[])">
+        <member name="M:Lurgle.Logging.Log.Fatal(System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
-                Log a Fatal event and apply parameters to the supplied log template
+                Create a Fatal event
             </summary>
-            <param name="logTemplate"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
-            <param name="args"></param>
         </member>
-        <member name="M:Lurgle.Logging.Log.Fatal(System.Exception,System.String,System.String,System.Boolean,System.String,System.String,System.Int32,System.Object[])">
+        <member name="M:Lurgle.Logging.Log.Fatal(System.Exception,System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
-                Log a Fatal event with an exception and apply parameters to the supplied log template
+                Create a Fatal event
             </summary>
             <param name="ex"></param>
-            <param name="logTemplate"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
-            <param name="args"></param>
         </member>
         <member name="T:Lurgle.Logging.Logging">
             <summary>
