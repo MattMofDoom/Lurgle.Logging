@@ -118,8 +118,7 @@ namespace Lurgle.Logging
             if (exists) return this;
             if (Logging.Config.LogMaskPolicy.Equals(MaskPolicy.None))
             {
-                if (value.GetType() != typeof(string) || (value is string s &&
-                                                          (keepEmptyValue || !string.IsNullOrEmpty(s))))
+                if (keepEmptyValue || value != null && value.ToString() != string.Empty)
                     EventProperties.Add(new LogProperty(name, value, destructure));
             }
             else
@@ -127,8 +126,8 @@ namespace Lurgle.Logging
                 var isMask = Logging.Config.LogMaskProperties.Any(maskProperty =>
                     maskProperty.Equals(name, StringComparison.OrdinalIgnoreCase));
 
-                if (value.GetType() != typeof(string) || (value is string s &&
-                                                          (keepEmptyValue || !string.IsNullOrEmpty(s))))
+                // ReSharper disable once PossibleNullReferenceException
+                if (keepEmptyValue || value != null && value.ToString() != string.Empty)
                     EventProperties.Add(
                         new LogProperty(name, isMask ? Logging.MaskProperty(value) : value, destructure));
             }
@@ -154,8 +153,7 @@ namespace Lurgle.Logging
                 select values)
                 if (Logging.Config.LogMaskPolicy.Equals(MaskPolicy.None))
                 {
-                    if (values.Value.GetType() != typeof(string) || (values.Value is string value &&
-                                                                     (keepEmptyValue || !string.IsNullOrEmpty(value))))
+                    if (keepEmptyValue || values.Value != null && values.Value.ToString() != string.Empty)
                         EventProperties.Add(new LogProperty(values.Key, values.Value, destructure));
                 }
                 else
@@ -163,8 +161,7 @@ namespace Lurgle.Logging
                     var isMask = Logging.Config.LogMaskProperties.Any(maskProperty =>
                         maskProperty.Equals(values.Key, StringComparison.OrdinalIgnoreCase));
 
-                    if (values.Value.GetType() != typeof(string) || (values.Value is string value &&
-                                                                     (keepEmptyValue || !string.IsNullOrEmpty(value))))
+                    if (keepEmptyValue || values.Value != null && values.Value.ToString() != string.Empty)
                         EventProperties.Add(new LogProperty(values.Key,
                             isMask ? Logging.MaskProperty(values.Value) : values.Value, destructure));
                 }
