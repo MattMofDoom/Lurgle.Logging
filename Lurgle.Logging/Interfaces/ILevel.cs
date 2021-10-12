@@ -27,6 +27,13 @@ namespace Lurgle.Logging.Interfaces
         IAddProperty AddProperty(Dictionary<string, object> propertyPairs, bool destructure = false);
 
         /// <summary>
+        ///     Set the log timestamp
+        /// </summary>
+        /// <param name="timeStamp"></param>
+        /// <returns></returns>
+        IAddProperty SetTimestamp(DateTimeOffset timeStamp);
+
+        /// <summary>
         ///     Add a new log entry and apply parameters to the supplied log template
         /// </summary>
         /// <param name="logTemplate"></param>

@@ -373,6 +373,13 @@
             <param name="destructure"></param>
             <returns></returns>
         </member>
+        <member name="M:Lurgle.Logging.Interfaces.IAddProperty.SetTimestamp(System.DateTimeOffset)">
+            <summary>
+                Set the log timestamp
+            </summary>
+            <param name="timeStamp"></param>
+            <returns></returns>
+        </member>
         <member name="M:Lurgle.Logging.Interfaces.IAddProperty.Add(System.String,System.Object[])">
             <summary>
                 Add a new log entry and apply parameters to the supplied log template
@@ -472,7 +479,7 @@
         </member>
         <member name="T:Lurgle.Logging.Interfaces.IExplicitLevel">
             <summary>
-            Explicit level interface
+                Explicit level interface
             </summary>
         </member>
         <member name="M:Lurgle.Logging.Interfaces.IExplicitLevel.AddProperty(System.String,System.Object,System.Boolean)">
@@ -490,6 +497,13 @@
             </summary>
             <param name="propertyPairs"></param>
             <param name="destructure"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lurgle.Logging.Interfaces.IExplicitLevel.SetTimestamp(System.DateTimeOffset)">
+            <summary>
+                Set the log timestamp
+            </summary>
+            <param name="timeStamp"></param>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.Interfaces.IExplicitLevel.Add(System.String,System.Object[])">
@@ -549,6 +563,13 @@
             </summary>
             <param name="propertyPairs"></param>
             <param name="destructure"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lurgle.Logging.Interfaces.ILevel.SetTimestamp(System.DateTimeOffset)">
+            <summary>
+                Set the log timestamp
+            </summary>
+            <param name="timeStamp"></param>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.Interfaces.ILevel.Add(System.String,System.Object[])">
@@ -672,6 +693,25 @@
             <summary>
                 Ensure that we flush and dispose the log writer
             </summary>
+        </member>
+        <member name="M:Lurgle.Logging.Log.SetTimestamp(System.DateTimeOffset,System.String,System.Boolean,System.String,System.String,System.Int32)">
+            <summary>
+                Set the log timestamp
+            </summary>
+            <param name="timestamp"></param>
+            <param name="correlationId"></param>
+            <param name="showMethod"></param>
+            <param name="methodName"></param>
+            <param name="sourceFilePath"></param>
+            <param name="sourceLineNumber"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lurgle.Logging.Log.SetTimestamp(System.DateTimeOffset)">
+            <summary>
+                Set the log timestamp
+            </summary>
+            <param name="timestamp"></param>
+            <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.Log.AddProperty(System.String,System.Object,System.Boolean)">
             <summary>
