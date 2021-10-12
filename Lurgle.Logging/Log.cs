@@ -362,7 +362,6 @@ namespace Lurgle.Logging
 
             if (TimeStamp != null)
             {
-                Console.WriteLine(TimeStamp);
                 Logging.LogWriter.BindMessageTemplate(logText, args, out var msgTemplate, out var msgProperties);
                 //if (ErrorInfo != null)
                 Logging.LogWriter
