@@ -27,9 +27,12 @@ namespace LurgleTest
             };
 
             //Add a start log
-            Log.Error().SetTimestamp(DateTime.Today).AddProperty("TestProperty", "Oh hi there!")
-                .Add("Test {Testing}", "Message");
             Log.Level().Add("{AppName:l} v{AppVersion:l} starting ...");
+            Log.Error().SetTimestamp(DateTime.Today).AddProperty("TestProperty", "Oh hi there!", false, false)
+                .Add("Test {Testing}", "Message");
+            Log.Error().SetTimestamp(DateTime.Today.AddSeconds(10)).AddProperty("TestProperty", "", false, false)
+                .Add("Test {Testing}", "Message");
+
             Log.Add("Simple information log");
             Log.Add(LurgLevel.Debug, "Simple debug log");
             Log.Information().Add("Information event");

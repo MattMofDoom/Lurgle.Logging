@@ -13,7 +13,7 @@
     <RepositoryType>Github</RepositoryType>
     <PackageTags>Lurgle Serilog Log Logging Seq File EventLog Console data masking datamasking correlationid correlation structured properties</PackageTags>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Version>1.2.7</Version>
+    <Version>1.2.8</Version>
     <PackageReleaseNotes>- Add data masking functionality
 - Create a correlationid if one is not passed, provide functionality to switch correlationids
 - Update icons
