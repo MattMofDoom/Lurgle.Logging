@@ -356,21 +356,23 @@
                 Property interface
             </summary>
         </member>
-        <member name="M:Lurgle.Logging.Interfaces.IAddProperty.AddProperty(System.String,System.Object,System.Boolean)">
+        <member name="M:Lurgle.Logging.Interfaces.IAddProperty.AddProperty(System.String,System.Object,System.Boolean,System.Boolean)">
             <summary>
                 Add an additional property for logging context
             </summary>
             <param name="name"></param>
             <param name="value"></param>
             <param name="destructure"></param>
+            <param name="keepEmptyValue"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Interfaces.IAddProperty.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean)">
+        <member name="M:Lurgle.Logging.Interfaces.IAddProperty.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean,System.Boolean)">
             <summary>
                 Add an additional set of properties for logging context
             </summary>
             <param name="propertyPairs"></param>
             <param name="destructure"></param>
+            <param name="keepEmptyValue"></param>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.Interfaces.IAddProperty.SetTimestamp(System.DateTimeOffset)">
@@ -482,21 +484,23 @@
                 Explicit level interface
             </summary>
         </member>
-        <member name="M:Lurgle.Logging.Interfaces.IExplicitLevel.AddProperty(System.String,System.Object,System.Boolean)">
+        <member name="M:Lurgle.Logging.Interfaces.IExplicitLevel.AddProperty(System.String,System.Object,System.Boolean,System.Boolean)">
             <summary>
                 Add an additional property for logging context
             </summary>
             <param name="name"></param>
             <param name="value"></param>
             <param name="destructure"></param>
+            <param name="keepEmptyValue"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Interfaces.IExplicitLevel.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean)">
+        <member name="M:Lurgle.Logging.Interfaces.IExplicitLevel.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean,System.Boolean)">
             <summary>
                 Add an additional set of properties for logging context
             </summary>
             <param name="propertyPairs"></param>
             <param name="destructure"></param>
+            <param name="keepEmptyValue"></param>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.Interfaces.IExplicitLevel.SetTimestamp(System.DateTimeOffset)">
@@ -548,21 +552,23 @@
                 Level interface
             </summary>
         </member>
-        <member name="M:Lurgle.Logging.Interfaces.ILevel.AddProperty(System.String,System.Object,System.Boolean)">
+        <member name="M:Lurgle.Logging.Interfaces.ILevel.AddProperty(System.String,System.Object,System.Boolean,System.Boolean)">
             <summary>
                 Add an additional property for logging context
             </summary>
             <param name="name"></param>
             <param name="value"></param>
             <param name="destructure"></param>
+            <param name="keepEmptyValue"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Interfaces.ILevel.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean)">
+        <member name="M:Lurgle.Logging.Interfaces.ILevel.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean,System.Boolean)">
             <summary>
                 Add an additional set of properties for logging context
             </summary>
             <param name="propertyPairs"></param>
             <param name="destructure"></param>
+            <param name="keepEmptyValue"></param>
             <returns></returns>
         </member>
         <member name="M:Lurgle.Logging.Interfaces.ILevel.SetTimestamp(System.DateTimeOffset)">
@@ -713,24 +719,26 @@
             <param name="timestamp"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(System.String,System.Object,System.Boolean)">
+        <member name="M:Lurgle.Logging.Log.AddProperty(System.String,System.Object,System.Boolean,System.Boolean)">
             <summary>
                 Add an additional property for logging context
             </summary>
             <param name="name"></param>
             <param name="value"></param>
             <param name="destructure"></param>
+            <param name="keepEmptyValue"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean)">
+        <member name="M:Lurgle.Logging.Log.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean,System.Boolean)">
             <summary>
                 Add an additional set of properties for logging context
             </summary>
             <param name="propertyPairs"></param>
             <param name="destructure"></param>
+            <param name="keepEmptyValue"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(System.String,System.Object,System.Boolean,System.String,System.Boolean,System.String,System.String,System.Int32)">
+        <member name="M:Lurgle.Logging.Log.AddProperty(System.String,System.Object,System.Boolean,System.String,System.Boolean,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
                 Add an additional property for logging context
             </summary>
@@ -739,12 +747,13 @@
             <param name="destructure"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
+            <param name="keepEmptyValue"></param>
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean,System.String,System.Boolean,System.String,System.String,System.Int32)">
+        <member name="M:Lurgle.Logging.Log.AddProperty(System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean,System.String,System.Boolean,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
                 Add an additional set of properties for logging context
             </summary>
@@ -752,12 +761,13 @@
             <param name="destructure"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
+            <param name="keepEmptyValue"></param>
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(System.Exception,System.String,System.Object,System.Boolean,System.String,System.Boolean,System.String,System.String,System.Int32)">
+        <member name="M:Lurgle.Logging.Log.AddProperty(System.Exception,System.String,System.Object,System.Boolean,System.String,System.Boolean,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
                 Add an additional property for logging context and pass an exception
             </summary>
@@ -767,12 +777,13 @@
             <param name="destructure"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
+            <param name="keepEmptyValue"></param>
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(System.Exception,System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean,System.String,System.Boolean,System.String,System.String,System.Int32)">
+        <member name="M:Lurgle.Logging.Log.AddProperty(System.Exception,System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean,System.String,System.Boolean,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
                 Add an additional set of properties for logging context and pass an exception
             </summary>
@@ -781,12 +792,13 @@
             <param name="destructure"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
+            <param name="keepEmptyValue"></param>
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(Lurgle.Logging.LurgLevel,System.String,System.Object,System.Boolean,System.String,System.Boolean,System.String,System.String,System.Int32)">
+        <member name="M:Lurgle.Logging.Log.AddProperty(Lurgle.Logging.LurgLevel,System.String,System.Object,System.Boolean,System.String,System.Boolean,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
                 Set log level and add an additional property for logging context
             </summary>
@@ -796,12 +808,13 @@
             <param name="destructure"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
+            <param name="keepEmptyValue"></param>
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(Lurgle.Logging.LurgLevel,System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean,System.String,System.Boolean,System.String,System.String,System.Int32)">
+        <member name="M:Lurgle.Logging.Log.AddProperty(Lurgle.Logging.LurgLevel,System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean,System.String,System.Boolean,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
                 Set log level and add an additional set of properties for logging context
             </summary>
@@ -810,12 +823,13 @@
             <param name="destructure"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
+            <param name="keepEmptyValue"></param>
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(System.Exception,Lurgle.Logging.LurgLevel,System.String,System.Object,System.Boolean,System.String,System.Boolean,System.String,System.String,System.Int32)">
+        <member name="M:Lurgle.Logging.Log.AddProperty(System.Exception,Lurgle.Logging.LurgLevel,System.String,System.Object,System.Boolean,System.String,System.Boolean,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
                 Set log level and exception, and add an additional property for logging context
             </summary>
@@ -826,12 +840,13 @@
             <param name="destructure"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
+            <param name="keepEmptyValue"></param>
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>
             <returns></returns>
         </member>
-        <member name="M:Lurgle.Logging.Log.AddProperty(System.Exception,Lurgle.Logging.LurgLevel,System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean,System.String,System.Boolean,System.String,System.String,System.Int32)">
+        <member name="M:Lurgle.Logging.Log.AddProperty(System.Exception,Lurgle.Logging.LurgLevel,System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean,System.String,System.Boolean,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
                 Set log level and exception,  and add an additional set of properties for logging context
             </summary>
@@ -841,6 +856,7 @@
             <param name="destructure"></param>
             <param name="correlationId"></param>
             <param name="showMethod"></param>
+            <param name="keepEmptyValue"></param>
             <param name="methodName"></param>
             <param name="sourceFilePath"></param>
             <param name="sourceLineNumber"></param>

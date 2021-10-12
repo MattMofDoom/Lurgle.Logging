@@ -106,8 +106,9 @@ namespace Lurgle.Logging
         /// <param name="name"></param>
         /// <param name="value"></param>
         /// <param name="destructure"></param>
+        /// <param name="keepEmptyValue"></param>
         /// <returns></returns>
-        public IAddProperty AddProperty(string name, object value, bool destructure = false)
+        public IAddProperty AddProperty(string name, object value, bool destructure = false, bool keepEmptyValue = true)
         {
             var exists = false;
             if (string.IsNullOrEmpty(name)) return this;
@@ -117,14 +118,19 @@ namespace Lurgle.Logging
             if (exists) return this;
             if (Logging.Config.LogMaskPolicy.Equals(MaskPolicy.None))
             {
-                EventProperties.Add(new LogProperty(name, value, destructure));
+                if (value.GetType() != typeof(string) || (value is string s &&
+                                                          (keepEmptyValue || !string.IsNullOrEmpty(s))))
+                    EventProperties.Add(new LogProperty(name, value, destructure));
             }
             else
             {
                 var isMask = Logging.Config.LogMaskProperties.Any(maskProperty =>
                     maskProperty.Equals(name, StringComparison.OrdinalIgnoreCase));
 
-                EventProperties.Add(new LogProperty(name, isMask ? Logging.MaskProperty(value) : value, destructure));
+                if (value.GetType() != typeof(string) || (value is string s &&
+                                                          (keepEmptyValue || !string.IsNullOrEmpty(s))))
+                    EventProperties.Add(
+                        new LogProperty(name, isMask ? Logging.MaskProperty(value) : value, destructure));
             }
 
 
@@ -136,8 +142,9 @@ namespace Lurgle.Logging
         /// </summary>
         /// <param name="propertyPairs"></param>
         /// <param name="destructure"></param>
+        /// <param name="keepEmptyValue"></param>
         /// <returns></returns>
-        public IAddProperty AddProperty(Dictionary<string, object> propertyPairs, bool destructure = false)
+        public IAddProperty AddProperty(Dictionary<string, object> propertyPairs, bool destructure = false, bool keepEmptyValue = true)
         {
             foreach (var values in from values in propertyPairs
                 where !string.IsNullOrEmpty(values.Key)
@@ -147,15 +154,19 @@ namespace Lurgle.Logging
                 select values)
                 if (Logging.Config.LogMaskPolicy.Equals(MaskPolicy.None))
                 {
-                    EventProperties.Add(new LogProperty(values.Key, values.Value, destructure));
+                    if (values.Value.GetType() != typeof(string) || (values.Value is string value &&
+                                                                     (keepEmptyValue || !string.IsNullOrEmpty(value))))
+                        EventProperties.Add(new LogProperty(values.Key, values.Value, destructure));
                 }
                 else
                 {
                     var isMask = Logging.Config.LogMaskProperties.Any(maskProperty =>
                         maskProperty.Equals(values.Key, StringComparison.OrdinalIgnoreCase));
 
-                    EventProperties.Add(new LogProperty(values.Key,
-                        isMask ? Logging.MaskProperty(values.Value) : values.Value, destructure));
+                    if (values.Value.GetType() != typeof(string) || (values.Value is string value &&
+                                                                     (keepEmptyValue || !string.IsNullOrEmpty(value))))
+                        EventProperties.Add(new LogProperty(values.Key,
+                            isMask ? Logging.MaskProperty(values.Value) : values.Value, destructure));
                 }
 
             return this;
@@ -169,19 +180,20 @@ namespace Lurgle.Logging
         /// <param name="destructure"></param>
         /// <param name="correlationId"></param>
         /// <param name="showMethod"></param>
+        /// <param name="keepEmptyValue"></param>
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
         /// <returns></returns>
         public static ILevel AddProperty(string name, object value, bool destructure = false,
             string correlationId = null,
-            bool showMethod = false,
+            bool showMethod = false, bool keepEmptyValue = true,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
             return (ILevel)Level(LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
-                .AddProperty(name, value, destructure);
+                .AddProperty(name, value, destructure, keepEmptyValue);
         }
 
         /// <summary>
@@ -191,19 +203,20 @@ namespace Lurgle.Logging
         /// <param name="destructure"></param>
         /// <param name="correlationId"></param>
         /// <param name="showMethod"></param>
+        /// <param name="keepEmptyValue"></param>
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
         /// <returns></returns>
         public static ILevel AddProperty(Dictionary<string, object> propertyPairs, bool destructure = false,
             string correlationId = null,
-            bool showMethod = false,
+            bool showMethod = false,  bool keepEmptyValue = true,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
             return (ILevel)Level(LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
-                .AddProperty(propertyPairs, destructure);
+                .AddProperty(propertyPairs, destructure, keepEmptyValue);
         }
 
         /// <summary>
@@ -215,19 +228,20 @@ namespace Lurgle.Logging
         /// <param name="destructure"></param>
         /// <param name="correlationId"></param>
         /// <param name="showMethod"></param>
+        /// <param name="keepEmptyValue"></param>
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
         /// <returns></returns>
         public static ILevel AddProperty(Exception ex, string name, object value, bool destructure = false,
             string correlationId = null,
-            bool showMethod = false,
+            bool showMethod = false,  bool keepEmptyValue = true,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
             return (ILevel)Exception(ex, LurgLevel.Error, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
-                .AddProperty(name, value, destructure);
+                .AddProperty(name, value, destructure, keepEmptyValue);
         }
 
         /// <summary>
@@ -238,19 +252,20 @@ namespace Lurgle.Logging
         /// <param name="destructure"></param>
         /// <param name="correlationId"></param>
         /// <param name="showMethod"></param>
+        /// <param name="keepEmptyValue"></param>
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
         /// <returns></returns>
         public static ILevel AddProperty(Exception ex, Dictionary<string, object> propertyPairs,
             bool destructure = false, string correlationId = null,
-            bool showMethod = false,
+            bool showMethod = false,  bool keepEmptyValue = true,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
             return (ILevel)Exception(ex, LurgLevel.Error, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
-                .AddProperty(propertyPairs, destructure);
+                .AddProperty(propertyPairs, destructure, keepEmptyValue);
         }
 
         /// <summary>
@@ -262,19 +277,20 @@ namespace Lurgle.Logging
         /// <param name="destructure"></param>
         /// <param name="correlationId"></param>
         /// <param name="showMethod"></param>
+        /// <param name="keepEmptyValue"></param>
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
         /// <returns></returns>
         public static ILevel AddProperty(LurgLevel logLevel, string name, object value, bool destructure = false,
             string correlationId = null,
-            bool showMethod = false,
+            bool showMethod = false,  bool keepEmptyValue = true,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
             return (ILevel)Level(logLevel, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
-                .AddProperty(name, value, destructure);
+                .AddProperty(name, value, destructure, keepEmptyValue);
         }
 
         /// <summary>
@@ -285,19 +301,20 @@ namespace Lurgle.Logging
         /// <param name="destructure"></param>
         /// <param name="correlationId"></param>
         /// <param name="showMethod"></param>
+        /// <param name="keepEmptyValue"></param>
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
         /// <returns></returns>
         public static ILevel AddProperty(LurgLevel logLevel, Dictionary<string, object> propertyPairs,
             bool destructure = false, string correlationId = null,
-            bool showMethod = false,
+            bool showMethod = false,  bool keepEmptyValue = true,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
             return (ILevel)Level(logLevel, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
-                .AddProperty(propertyPairs, destructure);
+                .AddProperty(propertyPairs, destructure, keepEmptyValue);
         }
 
         /// <summary>
@@ -310,19 +327,20 @@ namespace Lurgle.Logging
         /// <param name="destructure"></param>
         /// <param name="correlationId"></param>
         /// <param name="showMethod"></param>
+        /// <param name="keepEmptyValue"></param>
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
         /// <returns></returns>
         public static ILevel AddProperty(Exception ex, LurgLevel logLevel, string name, object value,
             bool destructure = false, string correlationId = null,
-            bool showMethod = false,
+            bool showMethod = false,  bool keepEmptyValue = true,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
             return (ILevel)Exception(ex, logLevel, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
-                .AddProperty(name, value, destructure);
+                .AddProperty(name, value, destructure, keepEmptyValue);
         }
 
         /// <summary>
@@ -334,19 +352,20 @@ namespace Lurgle.Logging
         /// <param name="destructure"></param>
         /// <param name="correlationId"></param>
         /// <param name="showMethod"></param>
+        /// <param name="keepEmptyValue"></param>
         /// <param name="methodName"></param>
         /// <param name="sourceFilePath"></param>
         /// <param name="sourceLineNumber"></param>
         /// <returns></returns>
         public static ILevel AddProperty(Exception ex, LurgLevel logLevel, Dictionary<string, object> propertyPairs,
             bool destructure = false, string correlationId = null,
-            bool showMethod = false,
+            bool showMethod = false, bool keepEmptyValue = true,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
             return (ILevel)Exception(ex, logLevel, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
-                .AddProperty(propertyPairs, destructure);
+                .AddProperty(propertyPairs, destructure, keepEmptyValue);
         }
 
         /// <summary>
