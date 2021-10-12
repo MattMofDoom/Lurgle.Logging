@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+
 // ReSharper disable UnusedMemberInSuper.Global
 
 namespace Lurgle.Logging.Interfaces
 {
     /// <summary>
-    /// Explicit level interface
+    ///     Explicit level interface
     /// </summary>
     public interface IExplicitLevel : IHideObjectMembers
     {
@@ -25,6 +27,13 @@ namespace Lurgle.Logging.Interfaces
         /// <param name="destructure"></param>
         /// <returns></returns>
         IAddProperty AddProperty(Dictionary<string, object> propertyPairs, bool destructure = false);
+
+        /// <summary>
+        ///     Set the log timestamp
+        /// </summary>
+        /// <param name="timeStamp"></param>
+        /// <returns></returns>
+        IAddProperty SetTimestamp(DateTimeOffset timeStamp);
 
         /// <summary>
         ///     Add a new log entry and apply parameters to the supplied log template

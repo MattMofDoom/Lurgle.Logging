@@ -23,7 +23,7 @@ namespace Lurgle.Logging.Classes
                     Address = new Uri(Logging.Config.LogSeqProxyServer),
                     BypassProxyOnLocal = Logging.Config.LogSeqBypassProxyOnLocal,
                     BypassList = Logging.Config.LogSeqProxyBypass
-                        .Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
+                        .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                         .Select(t => t.Trim()).ToArray(),
                     UseDefaultCredentials = false
                 };

@@ -22,28 +22,30 @@ namespace LurgleTest
             //Populate a small dictionary for testing per-event properties
             var test = new Dictionary<string, object>
             {
-                {"TestDictKey", FailureReason.LogTestFailed},
-                {"TestClass", new Test()}
+                { "TestDictKey", FailureReason.LogTestFailed },
+                { "TestClass", new Test() }
             };
 
             //Add a start log
+            Log.Error().SetTimestamp(DateTime.Today).AddProperty("TestProperty", "Oh hi there!")
+                .Add("Test {Testing}", "Message");
             Log.Level().Add("{AppName:l} v{AppVersion:l} starting ...");
             Log.Add("Simple information log");
             Log.Add(LurgLevel.Debug, "Simple debug log");
             Log.Information().Add("Information event");
-            Log.Information().Add("Information event with {Properties:l}", args: "Properties");
+            Log.Information().Add("Information event with {Properties:l}", "Properties");
             Log.Verbose().Add("Verbose event");
-            Log.Verbose().Add("Verbose event with {Properties:l}", args: "Properties");
+            Log.Verbose().Add("Verbose event with {Properties:l}", "Properties");
             Log.Debug().Add("Debug event");
-            Log.Debug().Add("Debug event with {Properties:l}", args: "Properties");
+            Log.Debug().Add("Debug event with {Properties:l}", "Properties");
             Log.Warning().Add("Warning event");
-            Log.Warning().Add("Warning event with {Properties:l}", args: "Properties");
+            Log.Warning().Add("Warning event with {Properties:l}", "Properties");
             Log.Error().Add("Error event");
-            Log.Error().Add("Error event with {Properties:l}", args: "Properties");
+            Log.Error().Add("Error event with {Properties:l}", "Properties");
             Log.Fatal().Add("Fatal event");
-            Log.Fatal().Add("Fatal event with {Properties:l}", args: "Properties");
+            Log.Fatal().Add("Fatal event with {Properties:l}", "Properties");
             Log.AddProperty("Barry", "Barry").Warning("Warning event with {Barry:l}");
-            Log.Error(new ArgumentOutOfRangeException(nameof(test))).Add("Exception: {Message:l}", args: "Error Message");
+            Log.Error(new ArgumentOutOfRangeException(nameof(test))).Add("Exception: {Message:l}", "Error Message");
             Log.AddProperty(LurgLevel.Error, "Barry", "Barry").Add("Log an {Error:l}", "Error");
             Log.AddProperty(LurgLevel.Debug, "Barry", "Barry").Add("Just pass the log template with {Barry:l}");
             Log.AddProperty(new ArgumentOutOfRangeException(nameof(test)), "Barry", "Barry")

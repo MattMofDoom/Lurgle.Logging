@@ -22,23 +22,25 @@ namespace Lurgle.Logging
         // ReSharper disable MemberCanBePrivate.Global
         // ReSharper disable UnusedParameter.Global
         private Log(LurgLevel logLevel, string correlationId, bool showMethod, string methodName, string sourceFilePath,
-            int sourceLineNumber)
+            int sourceLineNumber, DateTimeOffset? timeStamp = null)
         {
             LogLevel = logLevel;
             IsMethod = showMethod;
             MethodName = methodName;
+            TimeStamp = timeStamp;
             if (Logging.LogWriter == null) Logging.Init(correlationId);
 
             EventProperties = Logging.GetBaseProperties(correlationId, methodName, sourceFilePath, sourceLineNumber);
         }
 
         private Log(Exception ex, LurgLevel logLevel, string correlationId, bool showMethod, string methodName,
-            string sourceFilePath, int sourceLineNumber)
+            string sourceFilePath, int sourceLineNumber, DateTimeOffset? timeStamp = null)
         {
             ErrorInfo = ex;
             LogLevel = logLevel;
             IsMethod = showMethod;
             MethodName = methodName;
+            TimeStamp = timeStamp;
 
             if (Logging.LogWriter == null) Logging.Init(correlationId);
             EventProperties = Logging.GetBaseProperties(correlationId, methodName, sourceFilePath, sourceLineNumber);
@@ -47,6 +49,7 @@ namespace Lurgle.Logging
         private bool IsMethod { get; }
         private string MethodName { get; }
         private List<LogProperty> EventProperties { get; }
+        private DateTimeOffset? TimeStamp { get; set; }
 
         /// <summary>
         ///     Log level for this log
@@ -65,6 +68,36 @@ namespace Lurgle.Logging
         public void Dispose()
         {
             Logging.Close();
+        }
+
+        /// <summary>
+        ///     Set the log timestamp
+        /// </summary>
+        /// <param name="timestamp"></param>
+        /// <param name="correlationId"></param>
+        /// <param name="showMethod"></param>
+        /// <param name="methodName"></param>
+        /// <param name="sourceFilePath"></param>
+        /// <param name="sourceLineNumber"></param>
+        /// <returns></returns>
+        public static ILevel SetTimestamp(DateTimeOffset timestamp, string correlationId = null,
+            bool showMethod = false,
+            [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
+            [CallerLineNumber] int sourceLineNumber = 0)
+        {
+            return new Log(LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath,
+                sourceLineNumber, timestamp);
+        }
+
+        /// <summary>
+        ///     Set the log timestamp
+        /// </summary>
+        /// <param name="timestamp"></param>
+        /// <returns></returns>
+        public IAddProperty SetTimestamp(DateTimeOffset timestamp)
+        {
+            TimeStamp = timestamp;
+            return this;
         }
 
         /// <summary>
@@ -146,7 +179,7 @@ namespace Lurgle.Logging
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            return (ILevel) Level(LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath,
+            return (ILevel)Level(LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
                 .AddProperty(name, value, destructure);
         }
@@ -168,7 +201,7 @@ namespace Lurgle.Logging
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            return (ILevel) Level(LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath,
+            return (ILevel)Level(LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
                 .AddProperty(propertyPairs, destructure);
         }
@@ -192,7 +225,7 @@ namespace Lurgle.Logging
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            return (ILevel) Exception(ex, LurgLevel.Error, correlationId, showMethod, methodName, sourceFilePath,
+            return (ILevel)Exception(ex, LurgLevel.Error, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
                 .AddProperty(name, value, destructure);
         }
@@ -215,7 +248,7 @@ namespace Lurgle.Logging
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            return (ILevel) Exception(ex, LurgLevel.Error, correlationId, showMethod, methodName, sourceFilePath,
+            return (ILevel)Exception(ex, LurgLevel.Error, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
                 .AddProperty(propertyPairs, destructure);
         }
@@ -239,7 +272,7 @@ namespace Lurgle.Logging
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            return (ILevel) Level(logLevel, correlationId, showMethod, methodName, sourceFilePath,
+            return (ILevel)Level(logLevel, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
                 .AddProperty(name, value, destructure);
         }
@@ -262,7 +295,7 @@ namespace Lurgle.Logging
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            return (ILevel) Level(logLevel, correlationId, showMethod, methodName, sourceFilePath,
+            return (ILevel)Level(logLevel, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
                 .AddProperty(propertyPairs, destructure);
         }
@@ -287,7 +320,7 @@ namespace Lurgle.Logging
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            return (ILevel) Exception(ex, logLevel, correlationId, showMethod, methodName, sourceFilePath,
+            return (ILevel)Exception(ex, logLevel, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
                 .AddProperty(name, value, destructure);
         }
@@ -311,7 +344,7 @@ namespace Lurgle.Logging
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            return (ILevel) Exception(ex, logLevel, correlationId, showMethod, methodName, sourceFilePath,
+            return (ILevel)Exception(ex, logLevel, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
                 .AddProperty(propertyPairs, destructure);
         }
@@ -326,16 +359,32 @@ namespace Lurgle.Logging
             var logText = IsMethod ? string.Format(Logging.LogMethod, MethodName, logTemplate) : logTemplate;
 
             if (Logging.LogWriter == null) return;
-            if (ErrorInfo != null)
+
+            if (TimeStamp != null)
+            {
+                Console.WriteLine(TimeStamp);
+                Logging.LogWriter.BindMessageTemplate(logText, args, out var msgTemplate, out var msgProperties);
+                //if (ErrorInfo != null)
                 Logging.LogWriter
                     .ForContext(new PropertyBagEnricher().Add(EventProperties))
                     .ForContext(new MaskingEnricher().Add(Logging.Config.LogMaskProperties))
-                    .Write((LogEventLevel) LogLevel, ErrorInfo, logText, args);
+                    .Write(new LogEvent((DateTimeOffset)TimeStamp, (LogEventLevel)LogLevel, ErrorInfo, msgTemplate,
+                        msgProperties));
+            }
+            else if (ErrorInfo != null)
+            {
+                Logging.LogWriter
+                    .ForContext(new PropertyBagEnricher().Add(EventProperties))
+                    .ForContext(new MaskingEnricher().Add(Logging.Config.LogMaskProperties))
+                    .Write((LogEventLevel)LogLevel, ErrorInfo, logText, args);
+            }
             else
+            {
                 Logging.LogWriter
                     .ForContext(new PropertyBagEnricher().Add(EventProperties))
                     .ForContext(new MaskingEnricher().Add(Logging.Config.LogMaskProperties))
-                    .Write((LogEventLevel) LogLevel, logText, args);
+                    .Write((LogEventLevel)LogLevel, logText, args);
+            }
         }
 
         /// <summary>
@@ -579,6 +628,7 @@ namespace Lurgle.Logging
                 .Add(logTemplate);
         }
 
+
         /// <summary>
         ///     Create a simple Information log entry with exception
         /// </summary>
@@ -598,6 +648,7 @@ namespace Lurgle.Logging
                 .Add(logTemplate);
         }
 
+
         /// <summary>
         ///     Create an Information event
         /// </summary>
@@ -609,10 +660,10 @@ namespace Lurgle.Logging
         public static IExplicitLevel Information(string correlationId = null, bool showMethod = false,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
-                {
-                    return new Log(LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath,
-                        sourceLineNumber);
-                }
+        {
+            return new Log(LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath,
+                sourceLineNumber);
+        }
 
         /// <summary>
         ///     Create an Information event
@@ -629,7 +680,7 @@ namespace Lurgle.Logging
             [CallerLineNumber] int sourceLineNumber = 0)
         {
             return new Log(ex, LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath,
-                    sourceLineNumber);
+                sourceLineNumber);
         }
 
         /// <summary>
