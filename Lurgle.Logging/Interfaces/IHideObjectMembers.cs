@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 
+// ReSharper disable UnusedMember.Global
+
 namespace Lurgle.Logging.Interfaces
 {
     /// <summary>

@@ -32,7 +32,6 @@ namespace Lurgle.Logging.Tests
         /// </summary>
         /// <param name="level"></param>
         /// <param name="correlationId"></param>
-        // ReSharper disable once UnusedMethodReturnValue.Local
         private static ILevel CreateLog(LurgLevel level = LurgLevel.Information, string correlationId = null)
         {
             //We don't actually need to output to the console

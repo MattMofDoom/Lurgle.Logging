@@ -1,6 +1,8 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
+// ReSharper disable InconsistentNaming
+
 namespace Lurgle.Logging.Classes
 {
     /// <summary>

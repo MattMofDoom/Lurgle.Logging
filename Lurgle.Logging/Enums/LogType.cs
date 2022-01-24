@@ -1,5 +1,8 @@
 ﻿using System.ComponentModel;
 
+// ReSharper disable InconsistentNaming
+// ReSharper disable UnusedMember.Global
+
 namespace Lurgle.Logging
 {
     /// <summary>
@@ -30,7 +33,6 @@ namespace Lurgle.Logging
         /// <summary>
         ///     All logs - can be used to return all logs being disabled
         /// </summary>
-        // ReSharper disable once UnusedMember.Global
         [Description("All")] All = -1
     }
 }

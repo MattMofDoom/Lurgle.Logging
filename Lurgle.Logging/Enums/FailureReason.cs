@@ -1,4 +1,6 @@
-﻿namespace Lurgle.Logging
+﻿// ReSharper disable InconsistentNaming
+
+namespace Lurgle.Logging
 {
     /// <summary>
     ///     Return a reason why a given log type failed

@@ -22,8 +22,8 @@ namespace LurgleTest
             //Populate a small dictionary for testing per-event properties
             var test = new Dictionary<string, object>
             {
-                { "TestDictKey", FailureReason.LogTestFailed },
-                { "TestClass", new Test() }
+                {"TestDictKey", FailureReason.LogTestFailed},
+                {"TestClass", new Test()}
             };
 
             //Add a start log
@@ -86,7 +86,6 @@ namespace LurgleTest
             foreach (var logType in Logging.EnabledLogs) Log.Level().Add(" - {LogType}", logType);
 
             //Output any failure reasons
-            // ReSharper disable once UseDeconstruction
             foreach (var logFailure in Logging.LogFailures)
                 Log.Level(LurgLevel.Error)
                     .Add("Failure - {LogType}: {FailureReason}", logFailure.Key, logFailure.Value);

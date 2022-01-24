@@ -14,6 +14,8 @@ using Serilog.Core;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
 
+// ReSharper disable InconsistentNaming
+
 namespace Lurgle.Logging
 {
     /// <summary>
@@ -31,7 +33,6 @@ namespace Lurgle.Logging
         /// <summary>
         ///     Correlation ID cache for individual threads
         /// </summary>
-        // ReSharper disable once MemberCanBePrivate.Global
         public static CorrelationCache Cache;
 
         // ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
@@ -230,7 +231,7 @@ namespace Lurgle.Logging
         {
             if (string.IsNullOrEmpty(name)) return;
             foreach (var property in CommonProperties.Where(property =>
-                property.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
+                         property.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
             {
                 if (!update) return;
                 var isMask = Config != null && Config.LogMaskProperties.Any(maskProperty =>
@@ -267,7 +268,7 @@ namespace Lurgle.Logging
                 var exists = false;
                 if (string.IsNullOrEmpty(values.Key)) continue;
                 foreach (var property in CommonProperties.Where(property =>
-                    property.Name.Equals(values.Key, StringComparison.OrdinalIgnoreCase)))
+                             property.Name.Equals(values.Key, StringComparison.OrdinalIgnoreCase)))
                     if (!update)
                     {
                         exists = true;
