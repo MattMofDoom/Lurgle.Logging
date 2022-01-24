@@ -23,7 +23,7 @@ namespace Lurgle.Logging.Classes
         {
             _cache = new MemoryCache("CorrelationCache");
             _policy = new CacheItemPolicy
-                { SlidingExpiration = TimeSpan.FromSeconds(expiration), Priority = CacheItemPriority.Default };
+                {SlidingExpiration = TimeSpan.FromSeconds(expiration), Priority = CacheItemPriority.Default};
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Lurgle.Logging.Classes
         /// <returns></returns>
         public string Get(int threadId)
         {
-            return (string)_cache.Get(threadId.ToString());
+            return (string) _cache.Get(threadId.ToString());
         }
 
         /// <summary>

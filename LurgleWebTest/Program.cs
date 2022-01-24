@@ -13,7 +13,7 @@ namespace LurgleWebTest
             Logging.AddCommonProperty("TestCommonProperty", "Common property for all log events");
 
             //Populate a small dictionary for testing per-event properties
-            var test = new Dictionary<string, object> { { "TestDictKey", FailureReason.LogTestFailed } };
+            var test = new Dictionary<string, object> {{"TestDictKey", FailureReason.LogTestFailed}};
 
             //Add a start log
             Log.Error().SetTimestamp(DateTime.Today).AddProperty("TestProperty", "Oh hi there!")
@@ -72,7 +72,6 @@ namespace LurgleWebTest
             foreach (var logType in Logging.EnabledLogs) Log.Level().Add(" - {LogType}", logType);
 
             //Output any failure reasons
-            // ReSharper disable once UseDeconstruction
             foreach (var logFailure in Logging.LogFailures)
                 Log.Level(LurgLevel.Error)
                     .Add("Failure - {LogType}: {FailureReason}", logFailure.Key, logFailure.Value);
@@ -82,7 +81,6 @@ namespace LurgleWebTest
             CreateWebHostBuilder(args).Build().Run();
         }
 
-        // ReSharper disable once MemberCanBePrivate.Global
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)

@@ -633,8 +633,7 @@ namespace Lurgle.Logging
         /// </summary>
         /// <param name="themeType"></param>
         /// <returns></returns>
-        // ReSharper disable once MemberCanBePrivate.Global
-        public static ConsoleTheme GetConsoleTheme(ConsoleThemeType themeType)
+        private static ConsoleTheme GetConsoleTheme(ConsoleThemeType themeType)
         {
             switch (themeType)
             {

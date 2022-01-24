@@ -7,6 +7,8 @@ using Lurgle.Logging.Enrichers;
 using Lurgle.Logging.Interfaces;
 using Serilog.Events;
 
+// ReSharper disable UnusedType.Global
+
 // ReSharper disable ExplicitCallerInfoArgument
 // ReSharper disable MethodOverloadWithOptionalParameter
 
@@ -15,7 +17,6 @@ namespace Lurgle.Logging
     /// <summary>
     ///     Log an event with Lurgle.Logging
     /// </summary>
-    // ReSharper disable once UnusedType.Global
     public sealed class Log : ILog, IExplicitLevel, ILevel, IAddProperty, IDisposable
     {
         // ReSharper disable UnusedMember.Global
@@ -59,7 +60,6 @@ namespace Lurgle.Logging
         /// <summary>
         ///     Exception attached to this log
         /// </summary>
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public Exception ErrorInfo { get; private set; }
 
         /// <summary>
@@ -126,7 +126,6 @@ namespace Lurgle.Logging
                 var isMask = Logging.Config.LogMaskProperties.Any(maskProperty =>
                     maskProperty.Equals(name, StringComparison.OrdinalIgnoreCase));
 
-                // ReSharper disable once PossibleNullReferenceException
                 if (keepEmptyValue || value != null && value.ToString() != string.Empty)
                     EventProperties.Add(
                         new LogProperty(name, isMask ? Logging.MaskProperty(value) : value, destructure));
@@ -143,14 +142,15 @@ namespace Lurgle.Logging
         /// <param name="destructure"></param>
         /// <param name="keepEmptyValue"></param>
         /// <returns></returns>
-        public IAddProperty AddProperty(Dictionary<string, object> propertyPairs, bool destructure = false, bool keepEmptyValue = true)
+        public IAddProperty AddProperty(Dictionary<string, object> propertyPairs, bool destructure = false,
+            bool keepEmptyValue = true)
         {
             foreach (var values in from values in propertyPairs
-                where !string.IsNullOrEmpty(values.Key)
-                let exists = EventProperties.Any(property =>
-                    property.Name.Equals(values.Key, StringComparison.OrdinalIgnoreCase))
-                where !exists
-                select values)
+                     where !string.IsNullOrEmpty(values.Key)
+                     let exists = EventProperties.Any(property =>
+                         property.Name.Equals(values.Key, StringComparison.OrdinalIgnoreCase))
+                     where !exists
+                     select values)
                 if (Logging.Config.LogMaskPolicy.Equals(MaskPolicy.None))
                 {
                     if (keepEmptyValue || values.Value != null && values.Value.ToString() != string.Empty)
@@ -188,7 +188,7 @@ namespace Lurgle.Logging
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            return (ILevel)Level(LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath,
+            return (ILevel) Level(LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
                 .AddProperty(name, value, destructure, keepEmptyValue);
         }
@@ -207,11 +207,11 @@ namespace Lurgle.Logging
         /// <returns></returns>
         public static ILevel AddProperty(Dictionary<string, object> propertyPairs, bool destructure = false,
             string correlationId = null,
-            bool showMethod = false,  bool keepEmptyValue = true,
+            bool showMethod = false, bool keepEmptyValue = true,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            return (ILevel)Level(LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath,
+            return (ILevel) Level(LurgLevel.Information, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
                 .AddProperty(propertyPairs, destructure, keepEmptyValue);
         }
@@ -232,11 +232,11 @@ namespace Lurgle.Logging
         /// <returns></returns>
         public static ILevel AddProperty(Exception ex, string name, object value, bool destructure = false,
             string correlationId = null,
-            bool showMethod = false,  bool keepEmptyValue = true,
+            bool showMethod = false, bool keepEmptyValue = true,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            return (ILevel)Exception(ex, LurgLevel.Error, correlationId, showMethod, methodName, sourceFilePath,
+            return (ILevel) Exception(ex, LurgLevel.Error, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
                 .AddProperty(name, value, destructure, keepEmptyValue);
         }
@@ -256,11 +256,11 @@ namespace Lurgle.Logging
         /// <returns></returns>
         public static ILevel AddProperty(Exception ex, Dictionary<string, object> propertyPairs,
             bool destructure = false, string correlationId = null,
-            bool showMethod = false,  bool keepEmptyValue = true,
+            bool showMethod = false, bool keepEmptyValue = true,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            return (ILevel)Exception(ex, LurgLevel.Error, correlationId, showMethod, methodName, sourceFilePath,
+            return (ILevel) Exception(ex, LurgLevel.Error, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
                 .AddProperty(propertyPairs, destructure, keepEmptyValue);
         }
@@ -281,11 +281,11 @@ namespace Lurgle.Logging
         /// <returns></returns>
         public static ILevel AddProperty(LurgLevel logLevel, string name, object value, bool destructure = false,
             string correlationId = null,
-            bool showMethod = false,  bool keepEmptyValue = true,
+            bool showMethod = false, bool keepEmptyValue = true,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            return (ILevel)Level(logLevel, correlationId, showMethod, methodName, sourceFilePath,
+            return (ILevel) Level(logLevel, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
                 .AddProperty(name, value, destructure, keepEmptyValue);
         }
@@ -305,11 +305,11 @@ namespace Lurgle.Logging
         /// <returns></returns>
         public static ILevel AddProperty(LurgLevel logLevel, Dictionary<string, object> propertyPairs,
             bool destructure = false, string correlationId = null,
-            bool showMethod = false,  bool keepEmptyValue = true,
+            bool showMethod = false, bool keepEmptyValue = true,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            return (ILevel)Level(logLevel, correlationId, showMethod, methodName, sourceFilePath,
+            return (ILevel) Level(logLevel, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
                 .AddProperty(propertyPairs, destructure, keepEmptyValue);
         }
@@ -331,11 +331,11 @@ namespace Lurgle.Logging
         /// <returns></returns>
         public static ILevel AddProperty(Exception ex, LurgLevel logLevel, string name, object value,
             bool destructure = false, string correlationId = null,
-            bool showMethod = false,  bool keepEmptyValue = true,
+            bool showMethod = false, bool keepEmptyValue = true,
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            return (ILevel)Exception(ex, logLevel, correlationId, showMethod, methodName, sourceFilePath,
+            return (ILevel) Exception(ex, logLevel, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
                 .AddProperty(name, value, destructure, keepEmptyValue);
         }
@@ -360,7 +360,7 @@ namespace Lurgle.Logging
             [CallerMemberName] string methodName = null, [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            return (ILevel)Exception(ex, logLevel, correlationId, showMethod, methodName, sourceFilePath,
+            return (ILevel) Exception(ex, logLevel, correlationId, showMethod, methodName, sourceFilePath,
                     sourceLineNumber)
                 .AddProperty(propertyPairs, destructure, keepEmptyValue);
         }
@@ -383,7 +383,7 @@ namespace Lurgle.Logging
                 Logging.LogWriter
                     .ForContext(new PropertyBagEnricher().Add(EventProperties))
                     .ForContext(new MaskingEnricher().Add(Logging.Config.LogMaskProperties))
-                    .Write(new LogEvent((DateTimeOffset)TimeStamp, (LogEventLevel)LogLevel, ErrorInfo, msgTemplate,
+                    .Write(new LogEvent((DateTimeOffset) TimeStamp, (LogEventLevel) LogLevel, ErrorInfo, msgTemplate,
                         msgProperties));
             }
             else if (ErrorInfo != null)
@@ -391,14 +391,14 @@ namespace Lurgle.Logging
                 Logging.LogWriter
                     .ForContext(new PropertyBagEnricher().Add(EventProperties))
                     .ForContext(new MaskingEnricher().Add(Logging.Config.LogMaskProperties))
-                    .Write((LogEventLevel)LogLevel, ErrorInfo, logText, args);
+                    .Write((LogEventLevel) LogLevel, ErrorInfo, logText, args);
             }
             else
             {
                 Logging.LogWriter
                     .ForContext(new PropertyBagEnricher().Add(EventProperties))
                     .ForContext(new MaskingEnricher().Add(Logging.Config.LogMaskProperties))
-                    .Write((LogEventLevel)LogLevel, logText, args);
+                    .Write((LogEventLevel) LogLevel, logText, args);
             }
         }
 

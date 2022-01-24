@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;net47;net48;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>net461;net47;net48;netcoreapp3.1</TargetFrameworks>
     <DebugType>full</DebugType>
     <Version>1.2.1</Version>
     <Description>Simple web scaffolding to perform basic testing of Lurgle.Logging initialisation</Description>
