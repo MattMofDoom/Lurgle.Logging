@@ -211,7 +211,7 @@ namespace Lurgle.Logging
                 propertyValues.Add(new LogProperty("MethodName", methodName));
 
             if (Config.EnableSourceFileProperty && !string.IsNullOrEmpty(sourceFilePath))
-                propertyValues.Add(new LogProperty("SourceFile", sourceFilePath));
+                propertyValues.Add(new LogProperty("SourceFile", Config.IncludeSourceFilePath ? sourceFilePath : Path.GetFileName(sourceFilePath)));
 
             if (Config.EnableLineNumberProperty && sourceLineNumber > 0)
                 propertyValues.Add(new LogProperty("LineNumber", sourceLineNumber));
