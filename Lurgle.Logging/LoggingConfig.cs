@@ -27,6 +27,7 @@ namespace Lurgle.Logging
         /// <param name="config"></param>
         /// <param name="enableMethodNameProperty"></param>
         /// <param name="enableSourceFileProperty"></param>
+        /// <param name="includeSourceFilePath"></param>
         /// <param name="enableLineNumberProperty"></param>
         /// <param name="enableCorrelationCache"></param>
         /// <param name="logWriteInit"></param>
@@ -67,7 +68,7 @@ namespace Lurgle.Logging
         /// <param name="logSeqProxyBypass"></param>
         /// <param name="logSeqProxyUser"></param>
         public LoggingConfig(LoggingConfig config = null, bool? enableMethodNameProperty = null,
-            bool? enableSourceFileProperty = null,
+            bool? enableSourceFileProperty = null, bool? includeSourceFilePath = null,
             bool? enableLineNumberProperty = null, bool? logWriteInit = null, bool? enableCorrelationCache = null,
             int? correlationCacheExpiry = null, string appName = null,
             string appVersion = null,
@@ -89,6 +90,7 @@ namespace Lurgle.Logging
             {
                 EnableMethodNameProperty = config.EnableMethodNameProperty;
                 EnableSourceFileProperty = config.EnableSourceFileProperty;
+                IncludeSourceFilePath = config.IncludeSourceFilePath;
                 EnableLineNumberProperty = config.EnableLineNumberProperty;
                 LogWriteInit = config.LogWriteInit;
                 EnableCorrelationCache = config.EnableCorrelationCache;
@@ -134,6 +136,8 @@ namespace Lurgle.Logging
                 EnableMethodNameProperty = (bool) enableMethodNameProperty;
             if (enableSourceFileProperty != null)
                 EnableSourceFileProperty = (bool) enableSourceFileProperty;
+            if (includeSourceFilePath != null)
+                IncludeSourceFilePath = (bool)includeSourceFilePath;
             if (enableLineNumberProperty != null)
                 EnableLineNumberProperty = (bool) enableLineNumberProperty;
             if (logWriteInit != null)
@@ -223,6 +227,11 @@ namespace Lurgle.Logging
         ///     Set to false to disable the SourceFile property
         /// </summary>
         public bool EnableSourceFileProperty { get; private set; } = true;
+
+        /// <summary>
+        /// Set to false to disable including the full path
+        /// </summary>
+        public bool IncludeSourceFilePath { get; private set; } = true;
 
         /// <summary>
         ///     Set to false to disable the LineNumber property
@@ -435,6 +444,7 @@ namespace Lurgle.Logging
                         GetBool(ConfigurationManager.AppSettings["EnableMethodNameProperty"], true),
                     EnableSourceFileProperty =
                         GetBool(ConfigurationManager.AppSettings["EnableSourceFileProperty"], true),
+                    IncludeSourceFilePath = GetBool(ConfigurationManager.AppSettings["IncludeSourceFilePath"], true),
                     EnableLineNumberProperty =
                         GetBool(ConfigurationManager.AppSettings["EnableLineNumberProperty"], true),
                     LogWriteInit =

@@ -13,15 +13,13 @@
     <RepositoryType>Github</RepositoryType>
     <PackageTags>Lurgle Serilog Log Logging Seq File EventLog Console data masking datamasking correlationid correlation structured properties</PackageTags>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Version>1.2.9</Version>
+    <Version>1.2.10</Version>
     <PackageReleaseNotes>- Update Serilog.Sinks.Console and Serilog.Sinks.Seq
-
 - Update System.Configuration.Manager for supported frameworks
-
 - Update System.Runtime.Caching for supported frameworks
-
 - Updated Microsoft.Windows.Compatibility for supported frameworks
-- Code cleanup</PackageReleaseNotes>
+- Code cleanup
+- Add IncludeSourceFilePath config option to filter out captured source path</PackageReleaseNotes>
     <ApplicationIcon>Lurgle.ico</ApplicationIcon>
   </PropertyGroup>
 
