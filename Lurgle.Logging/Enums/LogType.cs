@@ -31,6 +31,11 @@ namespace Lurgle.Logging
         [Description("Seq")] Seq = 8,
 
         /// <summary>
+        ///     Seq
+        /// </summary>
+        [Description("Seq")] Splunk = 16,
+
+        /// <summary>
         ///     All logs - can be used to return all logs being disabled
         /// </summary>
         [Description("All")] All = -1

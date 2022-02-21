@@ -80,7 +80,7 @@ namespace Lurgle.Logging.Enrichers
             {
                 var match = false;
                 foreach (var unused in _properties.Where(property =>
-                    property.Key.Equals(value.Name, StringComparison.OrdinalIgnoreCase)))
+                             property.Key.Equals(value.Name, StringComparison.OrdinalIgnoreCase)))
                     match = true;
                 if (!match)
                     _properties.Add(value.Name, Tuple.Create(value.Value, value.Destructure));

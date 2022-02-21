@@ -211,7 +211,8 @@ namespace Lurgle.Logging
                 propertyValues.Add(new LogProperty("MethodName", methodName));
 
             if (Config.EnableSourceFileProperty && !string.IsNullOrEmpty(sourceFilePath))
-                propertyValues.Add(new LogProperty("SourceFile", Config.IncludeSourceFilePath ? sourceFilePath : Path.GetFileName(sourceFilePath)));
+                propertyValues.Add(new LogProperty("SourceFile",
+                    Config.IncludeSourceFilePath ? sourceFilePath : Path.GetFileName(sourceFilePath)));
 
             if (Config.EnableLineNumberProperty && sourceLineNumber > 0)
                 propertyValues.Add(new LogProperty("LineNumber", sourceLineNumber));
@@ -411,6 +412,15 @@ namespace Lurgle.Logging
                                     messageHandler: new SeqClient());
 
                         break;
+                    case LogType.Splunk:
+                        testConfig
+                            .WriteTo
+                            .EventCollector(Config.LogSplunkHost,
+                                !string.IsNullOrEmpty(Config.LogSplunkToken) ? Config.LogSplunkToken : string.Empty,
+                                restrictedToMinimumLevel: (LogEventLevel) Config.LogLevelSplunk,
+                                messageHandler: new SeqClient());
+
+                        break;
                 }
 
                 var testWriter = testConfig.CreateLogger();
@@ -518,6 +528,12 @@ namespace Lurgle.Logging
                 logTypes.Remove(LogType.Seq);
             }
 
+            if (logTypes.Contains(LogType.Splunk) && !TestLogConfig(LogType.Splunk, correlationId))
+            {
+                LogFailures.Add(LogType.Splunk, FailureReason.LogTestFailed);
+                logTypes.Remove(LogType.Splunk);
+            }
+
             //With all that out of the way, we can create the final log config
             if (!logTypes.Count.Equals(0))
             {
@@ -543,6 +559,14 @@ namespace Lurgle.Logging
                             .Seq(Config.LogSeqServer, (LogEventLevel) Config.LogLevelSeq,
                                 messageHandler: new SeqClient());
                 }
+
+                if (logTypes.Contains(LogType.Splunk))
+                    logConfig
+                        .WriteTo
+                        .EventCollector(Config.LogSplunkHost,
+                            !string.IsNullOrEmpty(Config.LogSplunkToken) ? Config.LogSplunkToken : string.Empty,
+                            restrictedToMinimumLevel: (LogEventLevel) Config.LogLevelSplunk,
+                            messageHandler: new SeqClient());
 
                 if (logTypes.Contains(LogType.File))
                 {

@@ -17,7 +17,7 @@ namespace Lurgle.Logging.Interfaces
         /// <param name="destructure"></param>
         /// <param name="keepEmptyValue"></param>
         /// <returns></returns>
-        IAddProperty AddProperty(string name, object value, bool destructure = false,  bool keepEmptyValue = true);
+        IAddProperty AddProperty(string name, object value, bool destructure = false, bool keepEmptyValue = true);
 
         /// <summary>
         ///     Add an additional set of properties for logging context
@@ -26,7 +26,8 @@ namespace Lurgle.Logging.Interfaces
         /// <param name="destructure"></param>
         /// <param name="keepEmptyValue"></param>
         /// <returns></returns>
-        IAddProperty AddProperty(Dictionary<string, object> propertyPairs, bool destructure = false,  bool keepEmptyValue = true);
+        IAddProperty AddProperty(Dictionary<string, object> propertyPairs, bool destructure = false,
+            bool keepEmptyValue = true);
 
         /// <summary>
         ///     Set the log timestamp

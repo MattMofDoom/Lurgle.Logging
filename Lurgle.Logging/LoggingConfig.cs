@@ -51,6 +51,7 @@ namespace Lurgle.Logging
         /// <param name="logLevelFile"></param>
         /// <param name="logLevelEvent"></param>
         /// <param name="logLevelSeq"></param>
+        /// <param name="logLevelSplunk"></param>
         /// <param name="logFileType"></param>
         /// <param name="logDays"></param>
         /// <param name="logFlush"></param>
@@ -59,6 +60,8 @@ namespace Lurgle.Logging
         /// <param name="logSeqServer"></param>
         /// <param name="logSeqApiKey"></param>
         /// <param name="logSeqProxyPassword"></param>
+        /// <param name="logSplunkHost"></param>
+        /// <param name="logSplunkToken"></param>
         /// <param name="logFormatConsole"></param>
         /// <param name="logFormatEvent"></param>
         /// <param name="logFormatFile"></param>
@@ -79,10 +82,12 @@ namespace Lurgle.Logging
             string logEventName = null,
             LurgLevel? logLevel = null, LurgLevel? logLevelConsole = null,
             LurgLevel? logLevelFile = null, LurgLevel? logLevelEvent = null, LurgLevel? logLevelSeq = null,
+            LurgLevel? logLevelSplunk = null,
             LogFileFormat? logFileType = null, int? logDays = null, int? logFlush = null, bool? logShared = null,
             bool? logBuffered = null, string logSeqServer = null, string logSeqApiKey = null,
             bool? logSeqUseProxy = null, string logSeqProxyServer = null, bool? logSeqBypassProxyOnLocal = null,
             string logSeqProxyBypass = null, string logSeqProxyUser = null, string logSeqProxyPassword = null,
+            string logSplunkHost = null, string logSplunkToken = null,
             string logFormatConsole = null, string logFormatEvent = null, string logFormatFile = null)
 
         {
@@ -114,6 +119,7 @@ namespace Lurgle.Logging
                 LogLevelFile = config.LogLevelFile;
                 LogLevelEvent = config.LogLevelEvent;
                 LogLevelSeq = config.LogLevelSeq;
+                LogLevelSplunk = config.LogLevelSplunk;
                 LogFileType = config.LogFileType;
                 LogDays = config.LogDays;
                 LogFlush = config.LogFlush;
@@ -127,6 +133,8 @@ namespace Lurgle.Logging
                 LogSeqProxyBypass = config.LogSeqProxyBypass;
                 LogSeqProxyUser = config.LogSeqProxyUser;
                 LogSeqProxyPassword = config.LogSeqProxyPassword;
+                LogSplunkHost = config.LogSplunkHost;
+                LogSplunkToken = config.LogSplunkToken;
                 LogFormatConsole = config.LogFormatConsole;
                 LogFormatEvent = config.LogFormatEvent;
                 LogFormatFile = config.LogFormatFile;
@@ -137,7 +145,7 @@ namespace Lurgle.Logging
             if (enableSourceFileProperty != null)
                 EnableSourceFileProperty = (bool) enableSourceFileProperty;
             if (includeSourceFilePath != null)
-                IncludeSourceFilePath = (bool)includeSourceFilePath;
+                IncludeSourceFilePath = (bool) includeSourceFilePath;
             if (enableLineNumberProperty != null)
                 EnableLineNumberProperty = (bool) enableLineNumberProperty;
             if (logWriteInit != null)
@@ -184,6 +192,8 @@ namespace Lurgle.Logging
                 LogLevelEvent = (LurgLevel) logLevelEvent;
             if (logLevelSeq != null)
                 LogLevelSeq = (LurgLevel) logLevelSeq;
+            if (logLevelSplunk != null)
+                LogLevelSplunk = (LurgLevel) logLevelSplunk;
             if (logFileType != null)
                 LogFileType = (LogFileFormat) logFileType;
             if (logDays != null)
@@ -210,6 +220,12 @@ namespace Lurgle.Logging
                 LogSeqProxyUser = logSeqProxyUser;
             if (!string.IsNullOrEmpty(logSeqProxyPassword))
                 LogSeqProxyPassword = logSeqProxyPassword;
+            if (!string.IsNullOrEmpty(logSplunkHost))
+                LogSplunkHost = logSplunkHost;
+            if (!string.IsNullOrEmpty(logSplunkHost))
+                LogSplunkHost = logSplunkHost;
+            if (!string.IsNullOrEmpty(logSplunkToken))
+                LogSplunkToken = logSplunkToken;
             if (!string.IsNullOrEmpty(logFormatConsole))
                 LogFormatConsole = logFormatConsole;
             if (!string.IsNullOrEmpty(logFormatFile))
@@ -229,7 +245,7 @@ namespace Lurgle.Logging
         public bool EnableSourceFileProperty { get; private set; } = true;
 
         /// <summary>
-        /// Set to false to disable including the full path
+        ///     Set to false to disable including the full path
         /// </summary>
         public bool IncludeSourceFilePath { get; private set; } = true;
 
@@ -349,6 +365,11 @@ namespace Lurgle.Logging
         public LurgLevel LogLevelSeq { get; private set; }
 
         /// <summary>
+        ///     Minimum log level accepted by the Splunk sink
+        /// </summary>
+        public LurgLevel LogLevelSplunk { get; private set; }
+
+        /// <summary>
         ///     Output files as text or Compact Json - defaults to text. If set to Json, <see cref="LogFormatFile" /> will not be
         ///     used/>
         /// </summary>
@@ -415,6 +436,16 @@ namespace Lurgle.Logging
         public string LogSeqProxyPassword { get; private set; }
 
         /// <summary>
+        ///     URL for the Splunk server, eg. http://splunk.domain.com:8088/services/collector
+        /// </summary>
+        public string LogSplunkHost { get; private set; }
+
+        /// <summary>
+        ///     Event collector token for Splunk.
+        /// </summary>
+        public string LogSplunkToken { get; private set; }
+
+        /// <summary>
         ///     Logging format for the Console. Default is {Message}{NewLine}
         /// </summary>
         public string LogFormatConsole { get; private set; }
@@ -472,6 +503,7 @@ namespace Lurgle.Logging
                     LogLevelFile = GetEventLevel(ConfigurationManager.AppSettings["LogLevelFile"]),
                     LogLevelEvent = GetEventLevel(ConfigurationManager.AppSettings["LogLevelEvent"]),
                     LogLevelSeq = GetEventLevel(ConfigurationManager.AppSettings["LogLevelSeq"]),
+                    LogLevelSplunk = GetEventLevel(ConfigurationManager.AppSettings["LogLevelSplunk"]),
                     LogFileType = GetLogFileType(ConfigurationManager.AppSettings["LogFileType"]),
                     LogDays = GetInt(ConfigurationManager.AppSettings["LogDays"]),
                     LogFlush = GetInt(ConfigurationManager.AppSettings["LogFlush"]),
@@ -485,6 +517,8 @@ namespace Lurgle.Logging
                     LogSeqProxyBypass = ConfigurationManager.AppSettings["LogSeqProxyBypass"],
                     LogSeqProxyUser = ConfigurationManager.AppSettings["LogSeqProxyUser"],
                     LogSeqProxyPassword = ConfigurationManager.AppSettings["LogSeqProxyPassword"],
+                    LogSplunkHost = ConfigurationManager.AppSettings["LogSplunkHost"],
+                    LogSplunkToken = ConfigurationManager.AppSettings["LogSplunkToken"],
                     LogFormatConsole = ConfigurationManager.AppSettings["LogFormatConsole"],
                     LogFormatEvent = ConfigurationManager.AppSettings["LogFormatEvent"],
                     LogFormatFile = ConfigurationManager.AppSettings["LogFormatFile"]
