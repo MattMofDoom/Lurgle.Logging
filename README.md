@@ -8,7 +8,7 @@
 
 **Lurgle.Logging** is an implementation of Serilog that can help to save time in getting up and running, and provides some useful functionality.
 
-- Includes sinks for Console, Windows Event Log, File, and Seq, with configurable properties exposed via config
+- Includes sinks for Console, Windows Event Log, File, Seq, and Splunk with configurable properties exposed via config
 - Includes enrichers for log context, thread id, environment user name, machine name, process id, process name, memory usage
 - Includes AppName and AppVersion properties which can use the executing assembly name/version, or set appname via config
 - Test enabled sinks at initialisation and return a FailureReason if an error occurs
@@ -23,4 +23,4 @@
 - Configuration via app config or passing a config class to the library
   - Default settings supplied where it's sane to do so, allowing only essential properties to be configured
 
-This implementation is at its most useful with a Seq or Json file implementation, where a common log library is needed in multiple projects and a common set of standards is required (such as implementing common properties, data masking, and correlation ids).
+This implementation is at its most useful with a Seq, Splunk, or Json file implementation (or all of the above!), where a common log library is needed in multiple projects and a common set of standards is required (such as implementing common properties, data masking, and correlation ids).
