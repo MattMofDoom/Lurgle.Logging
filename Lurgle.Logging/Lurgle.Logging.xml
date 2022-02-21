@@ -1571,7 +1571,7 @@
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogSplunkHost">
             <summary>
-                URL for the Splunk server, eg. http://splunk.domain.com:8088
+                URL for the Splunk server, eg. http://splunk.domain.com:8088/services/collector
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogSplunkToken">

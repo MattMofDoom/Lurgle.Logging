@@ -436,7 +436,7 @@ namespace Lurgle.Logging
         public string LogSeqProxyPassword { get; private set; }
 
         /// <summary>
-        ///     URL for the Splunk server, eg. http://splunk.domain.com:8088
+        ///     URL for the Splunk server, eg. http://splunk.domain.com:8088/services/collector
         /// </summary>
         public string LogSplunkHost { get; private set; }
 
