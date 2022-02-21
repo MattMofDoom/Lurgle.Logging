@@ -89,7 +89,7 @@
         </member>
         <member name="T:Lurgle.Logging.Classes.SeqClient">
             <summary>
-                HTTP Client handler for Seq
+                HTTP Client handler for Seq or Splunk
             </summary>
         </member>
         <member name="M:Lurgle.Logging.Classes.SeqClient.#ctor">
@@ -286,6 +286,11 @@
             </summary>
         </member>
         <member name="F:Lurgle.Logging.LogType.Seq">
+            <summary>
+                Seq
+            </summary>
+        </member>
+        <member name="F:Lurgle.Logging.LogType.Splunk">
             <summary>
                 Seq
             </summary>
@@ -1312,7 +1317,7 @@
                 LoggingConfig constructor
             </summary>
         </member>
-        <member name="M:Lurgle.Logging.LoggingConfig.#ctor(Lurgle.Logging.LoggingConfig,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.String,System.String,System.Collections.Generic.List{Lurgle.Logging.LogType},System.Collections.Generic.List{System.String},System.String,System.Nullable{Lurgle.Logging.MaskPolicy},System.String,System.String,System.Nullable{Lurgle.Logging.ConsoleThemeType},System.String,System.String,System.String,System.String,System.String,System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LogFileFormat},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String,System.Nullable{System.Boolean},System.String,System.Nullable{System.Boolean},System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:Lurgle.Logging.LoggingConfig.#ctor(Lurgle.Logging.LoggingConfig,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.String,System.String,System.Collections.Generic.List{Lurgle.Logging.LogType},System.Collections.Generic.List{System.String},System.String,System.Nullable{Lurgle.Logging.MaskPolicy},System.String,System.String,System.Nullable{Lurgle.Logging.ConsoleThemeType},System.String,System.String,System.String,System.String,System.String,System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LogFileFormat},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String,System.Nullable{System.Boolean},System.String,System.Nullable{System.Boolean},System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
                 Constructor that permits passing a config and optional overrides of any property
             </summary>
@@ -1343,6 +1348,7 @@
             <param name="logLevelFile"></param>
             <param name="logLevelEvent"></param>
             <param name="logLevelSeq"></param>
+            <param name="logLevelSplunk"></param>
             <param name="logFileType"></param>
             <param name="logDays"></param>
             <param name="logFlush"></param>
@@ -1351,6 +1357,8 @@
             <param name="logSeqServer"></param>
             <param name="logSeqApiKey"></param>
             <param name="logSeqProxyPassword"></param>
+            <param name="logSplunkHost"></param>
+            <param name="logSplunkToken"></param>
             <param name="logFormatConsole"></param>
             <param name="logFormatEvent"></param>
             <param name="logFormatFile"></param>
@@ -1372,7 +1380,7 @@
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.IncludeSourceFilePath">
             <summary>
-            Set to false to disable including the full path
+                Set to false to disable including the full path
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.EnableLineNumberProperty">
@@ -1490,6 +1498,11 @@
                 Minimum log level accepted by the Seq sink
             </summary>
         </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogLevelSplunk">
+            <summary>
+                Minimum log level accepted by the Splunk sink
+            </summary>
+        </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogFileType">
             <summary>
                 Output files as text or Compact Json - defaults to text. If set to Json, <see cref="P:Lurgle.Logging.LoggingConfig.LogFormatFile" /> will not be
@@ -1554,6 +1567,16 @@
         <member name="P:Lurgle.Logging.LoggingConfig.LogSeqProxyPassword">
             <summary>
                 Password for proxy authentication
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogSplunkHost">
+            <summary>
+                URL for the Splunk server, eg. http://splunk.domain.com:8088
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogSplunkToken">
+            <summary>
+                Event collector token for Splunk.
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogFormatConsole">
