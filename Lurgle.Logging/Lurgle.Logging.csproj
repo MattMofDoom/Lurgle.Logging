@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45;net46;net461;net47;net48;net5.0;netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net45;net46;net461;net47;net48;net5.0;netcoreapp3.1</TargetFrameworks>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>Matt Marlor</Authors>
     <Company>Matt Marlor</Company>
@@ -13,7 +13,7 @@
     <RepositoryType>Github</RepositoryType>
     <PackageTags>Lurgle Serilog Log Logging Seq Splunk File EventLog Console data masking datamasking correlationid correlation structured properties</PackageTags>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Version>1.2.11</Version>
+    <Version>1.2.12</Version>
     <PackageReleaseNotes>
       - Update Serilog.Sinks.Console and Serilog.Sinks.Seq
       - Update System.Configuration.Manager for supported frameworks
@@ -22,6 +22,7 @@
       - Code cleanup
       - Add IncludeSourceFilePath config option to filter out captured source path
       - Add Splunk HTTP Event Collector support
+      - Update dependencies, remove .NET Core 2.1 due to deprecation
     </PackageReleaseNotes>
     <ApplicationIcon>Lurgle.ico</ApplicationIcon>
   </PropertyGroup>
@@ -39,7 +40,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog" Version="2.11.0" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0" />
     <PackageReference Include="Serilog.Enrichers.Memory" Version="1.0.4" />
     <PackageReference Include="Serilog.Enrichers.Process" Version="2.0.2" />
