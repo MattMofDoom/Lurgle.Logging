@@ -52,6 +52,7 @@ namespace Lurgle.Logging
         /// <param name="logLevelEvent"></param>
         /// <param name="logLevelSeq"></param>
         /// <param name="logLevelSplunk"></param>
+        /// <param name="logLevelAws"></param>
         /// <param name="logFileType"></param>
         /// <param name="logDays"></param>
         /// <param name="logFlush"></param>
@@ -62,6 +63,13 @@ namespace Lurgle.Logging
         /// <param name="logSeqProxyPassword"></param>
         /// <param name="logSplunkHost"></param>
         /// <param name="logSplunkToken"></param>
+        /// <param name="logAwsProfile"></param>
+        /// <param name="logAwsProfileLocation"></param>
+        /// <param name="logAwsKey"></param>
+        /// <param name="logAwsSecret"></param>
+        /// <param name="logAwsLogGroup"></param>
+        /// <param name="logAwsRegion"></param>
+        /// <param name="logAwsCreateLogGroup"></param>
         /// <param name="logFormatConsole"></param>
         /// <param name="logFormatEvent"></param>
         /// <param name="logFormatFile"></param>
@@ -82,12 +90,12 @@ namespace Lurgle.Logging
             string logEventName = null,
             LurgLevel? logLevel = null, LurgLevel? logLevelConsole = null,
             LurgLevel? logLevelFile = null, LurgLevel? logLevelEvent = null, LurgLevel? logLevelSeq = null,
-            LurgLevel? logLevelSplunk = null,
+            LurgLevel? logLevelSplunk = null, LurgLevel? logLevelAws = null,
             LogFileFormat? logFileType = null, int? logDays = null, int? logFlush = null, bool? logShared = null,
             bool? logBuffered = null, string logSeqServer = null, string logSeqApiKey = null,
             bool? logSeqUseProxy = null, string logSeqProxyServer = null, bool? logSeqBypassProxyOnLocal = null,
             string logSeqProxyBypass = null, string logSeqProxyUser = null, string logSeqProxyPassword = null,
-            string logSplunkHost = null, string logSplunkToken = null,
+            string logSplunkHost = null, string logSplunkToken = null, string logAwsProfile = null, string logAwsProfileLocation = null, string logAwsKey = null, string logAwsSecret = null, string logAwsLogGroup = null, string logAwsRegion = null, bool? logAwsCreateLogGroup = null,
             string logFormatConsole = null, string logFormatEvent = null, string logFormatFile = null)
 
         {
@@ -120,6 +128,7 @@ namespace Lurgle.Logging
                 LogLevelEvent = config.LogLevelEvent;
                 LogLevelSeq = config.LogLevelSeq;
                 LogLevelSplunk = config.LogLevelSplunk;
+                LogLevelAws = config.LogLevelAws;
                 LogFileType = config.LogFileType;
                 LogDays = config.LogDays;
                 LogFlush = config.LogFlush;
@@ -135,6 +144,13 @@ namespace Lurgle.Logging
                 LogSeqProxyPassword = config.LogSeqProxyPassword;
                 LogSplunkHost = config.LogSplunkHost;
                 LogSplunkToken = config.LogSplunkToken;
+                LogAwsProfile = config.LogAwsProfile;
+                LogAwsProfileLocation = config.LogAwsProfileLocation;
+                LogAwsKey = config.LogAwsKey;
+                LogAwsSecret = config.LogAwsSecret;
+                LogAwsLogGroup = config.LogAwsLogGroup;
+                LogAwsRegion = config.LogAwsRegion;
+                LogAwsCreateLogGroup = config.LogAwsCreateLogGroup;
                 LogFormatConsole = config.LogFormatConsole;
                 LogFormatEvent = config.LogFormatEvent;
                 LogFormatFile = config.LogFormatFile;
@@ -194,6 +210,8 @@ namespace Lurgle.Logging
                 LogLevelSeq = (LurgLevel) logLevelSeq;
             if (logLevelSplunk != null)
                 LogLevelSplunk = (LurgLevel) logLevelSplunk;
+            if (logLevelAws != null)
+                LogLevelAws = (LurgLevel)logLevelAws;
             if (logFileType != null)
                 LogFileType = (LogFileFormat) logFileType;
             if (logDays != null)
@@ -226,6 +244,20 @@ namespace Lurgle.Logging
                 LogSplunkHost = logSplunkHost;
             if (!string.IsNullOrEmpty(logSplunkToken))
                 LogSplunkToken = logSplunkToken;
+            if (!string.IsNullOrEmpty(logAwsProfile))
+                LogAwsProfile = logAwsProfile;
+            if (!string.IsNullOrEmpty(logAwsProfileLocation))
+                LogAwsProfileLocation = logAwsProfileLocation;
+            if (!string.IsNullOrEmpty(logAwsKey))
+                LogAwsKey = logAwsKey;
+            if (!string.IsNullOrEmpty(logAwsSecret))
+                LogAwsSecret = logAwsSecret;
+            if (!string.IsNullOrEmpty(logAwsLogGroup))
+                LogAwsLogGroup = logAwsLogGroup;
+            if (!string.IsNullOrEmpty(logAwsRegion))
+                LogAwsRegion = logAwsRegion;
+            if (logAwsCreateLogGroup != null)
+                LogAwsCreateLogGroup = (bool)logAwsCreateLogGroup;            
             if (!string.IsNullOrEmpty(logFormatConsole))
                 LogFormatConsole = logFormatConsole;
             if (!string.IsNullOrEmpty(logFormatFile))
@@ -370,6 +402,11 @@ namespace Lurgle.Logging
         public LurgLevel LogLevelSplunk { get; private set; }
 
         /// <summary>
+        /// Minimum log level accepted by AWS Cloudwatch sink
+        /// </summary>
+        public LurgLevel LogLevelAws { get; private set; }
+
+        /// <summary>
         ///     Output files as text or Compact Json - defaults to text. If set to Json, <see cref="LogFormatFile" /> will not be
         ///     used/>
         /// </summary>
@@ -446,6 +483,42 @@ namespace Lurgle.Logging
         public string LogSplunkToken { get; private set; }
 
         /// <summary>
+        /// AWS Profile config
+        /// </summary>
+        public string LogAwsProfile { get; private set; }
+
+        /// <summary>
+        /// AWS Profile Location
+        /// </summary>
+        public string LogAwsProfileLocation { get; private set; }
+
+        /// <summary>
+        /// AWS Credentials - Key
+        /// </summary>
+        public string LogAwsKey { get; private set; }
+
+        /// <summary>
+        /// AWS Credentials - S3 Secret
+        /// </summary>
+        public string LogAwsSecret { get; private set; }
+
+        /// <summary>
+        /// Log group for AWS Cloudwatch
+        /// </summary>
+        public string LogAwsLogGroup { get; private set; }
+                
+        /// <summary>
+        /// Region for AWS Cloudwatch
+        /// </summary>
+        public string LogAwsRegion { get; private set; }
+
+        /// <summary>
+        /// Create AWS Cloudwatch Log Group if it doesn't exist
+        /// </summary>
+        public bool LogAwsCreateLogGroup { get; private set; }
+
+
+        /// <summary>
         ///     Logging format for the Console. Default is {Message}{NewLine}
         /// </summary>
         public string LogFormatConsole { get; private set; }
@@ -519,6 +592,13 @@ namespace Lurgle.Logging
                     LogSeqProxyPassword = ConfigurationManager.AppSettings["LogSeqProxyPassword"],
                     LogSplunkHost = ConfigurationManager.AppSettings["LogSplunkHost"],
                     LogSplunkToken = ConfigurationManager.AppSettings["LogSplunkToken"],
+                    LogAwsProfile = ConfigurationManager.AppSettings["LogAwsProfile"],
+                    LogAwsProfileLocation = ConfigurationManager.AppSettings["LogAwsProfileLocation"],
+                    LogAwsKey = ConfigurationManager.AppSettings["LogAwsKey"],
+                    LogAwsSecret = ConfigurationManager.AppSettings["LogAwsSecret"],
+                    LogAwsLogGroup = ConfigurationManager.AppSettings["LogAwsLogGroup"],
+                    LogAwsRegion = ConfigurationManager.AppSettings["LogAwsRegion"],
+                    LogAwsCreateLogGroup = GetBool(ConfigurationManager.AppSettings["LogAwsCreateLogGroup"]),
                     LogFormatConsole = ConfigurationManager.AppSettings["LogFormatConsole"],
                     LogFormatEvent = ConfigurationManager.AppSettings["LogFormatEvent"],
                     LogFormatFile = ConfigurationManager.AppSettings["LogFormatFile"]
