@@ -95,7 +95,7 @@ namespace Lurgle.Logging
             bool? logBuffered = null, string logSeqServer = null, string logSeqApiKey = null,
             bool? logSeqUseProxy = null, string logSeqProxyServer = null, bool? logSeqBypassProxyOnLocal = null,
             string logSeqProxyBypass = null, string logSeqProxyUser = null, string logSeqProxyPassword = null,
-            string logSplunkHost = null, string logSplunkToken = null, string logAwsProfile = null, string logAwsProfileLocation = null, string logAwsKey = null, string logAwsSecret = null, string logAwsLogGroup = null, string logAwsRegion = null, bool? logAwsCreateLogGroup = null,
+            string logSplunkHost = null, string logSplunkToken = null, string logAwsProfile = null, string logAwsProfileLocation = null, string logAwsKey = null, string logAwsSecret = null, string logAwsLogGroup = null, string logAwsRegion = null, bool? logAwsCreateLogGroup = null, string logAwsStreamPrefix = null, string logAwsStreamSuffix = null, 
             string logFormatConsole = null, string logFormatEvent = null, string logFormatFile = null)
 
         {
@@ -138,6 +138,7 @@ namespace Lurgle.Logging
                 LogSeqApiKey = config.LogSeqApiKey;
                 LogSeqUseProxy = config.LogSeqUseProxy;
                 LogSeqProxyServer = config.LogSeqProxyServer;
+                LogSeqProxyPort = config.LogSeqProxyPort;
                 LogSeqBypassProxyOnLocal = config.LogSeqBypassProxyOnLocal;
                 LogSeqProxyBypass = config.LogSeqProxyBypass;
                 LogSeqProxyUser = config.LogSeqProxyUser;
@@ -151,6 +152,8 @@ namespace Lurgle.Logging
                 LogAwsLogGroup = config.LogAwsLogGroup;
                 LogAwsRegion = config.LogAwsRegion;
                 LogAwsCreateLogGroup = config.LogAwsCreateLogGroup;
+                LogAwsStreamPrefix = config.LogAwsStreamPrefix;
+                LogAwsStreamSuffix = config.LogAwsStreamSuffix;
                 LogFormatConsole = config.LogFormatConsole;
                 LogFormatEvent = config.LogFormatEvent;
                 LogFormatFile = config.LogFormatFile;
@@ -257,7 +260,11 @@ namespace Lurgle.Logging
             if (!string.IsNullOrEmpty(logAwsRegion))
                 LogAwsRegion = logAwsRegion;
             if (logAwsCreateLogGroup != null)
-                LogAwsCreateLogGroup = (bool)logAwsCreateLogGroup;            
+                LogAwsCreateLogGroup = (bool)logAwsCreateLogGroup;
+            if (!string.IsNullOrEmpty(logAwsStreamPrefix))
+                LogAwsStreamPrefix = logAwsStreamPrefix;
+            if (!string.IsNullOrEmpty(logAwsStreamSuffix))
+                LogAwsStreamSuffix = logAwsStreamSuffix;
             if (!string.IsNullOrEmpty(logFormatConsole))
                 LogFormatConsole = logFormatConsole;
             if (!string.IsNullOrEmpty(logFormatFile))
@@ -453,6 +460,11 @@ namespace Lurgle.Logging
         public string LogSeqProxyServer { get; private set; }
 
         /// <summary>
+        /// Configure proxy port for Seq if <see cref="LogSeqUseProxy" /> is enabled
+        /// </summary>
+        public int LogSeqProxyPort { get; private set; }
+
+        /// <summary>
         ///     Bypass proxy for local addresses
         /// </summary>
         public bool LogSeqBypassProxyOnLocal { get; private set; }
@@ -517,6 +529,15 @@ namespace Lurgle.Logging
         /// </summary>
         public bool LogAwsCreateLogGroup { get; private set; }
 
+        /// <summary>
+        /// Optional AWS Cloudwatch Stream prefix
+        /// </summary>
+        public string LogAwsStreamPrefix { get; private set; }
+
+        /// <summary>
+        /// Optional AWS Cloudwatch Stream prefix
+        /// </summary>
+        public string LogAwsStreamSuffix { get; private set; }
 
         /// <summary>
         ///     Logging format for the Console. Default is {Message}{NewLine}
@@ -599,6 +620,8 @@ namespace Lurgle.Logging
                     LogAwsLogGroup = ConfigurationManager.AppSettings["LogAwsLogGroup"],
                     LogAwsRegion = ConfigurationManager.AppSettings["LogAwsRegion"],
                     LogAwsCreateLogGroup = GetBool(ConfigurationManager.AppSettings["LogAwsCreateLogGroup"]),
+                    LogAwsStreamPrefix = ConfigurationManager.AppSettings["LogAwsStreamPrefix"],
+                    LogAwsStreamSuffix = ConfigurationManager.AppSettings["LogAwsStreamSuffix"],
                     LogFormatConsole = ConfigurationManager.AppSettings["LogFormatConsole"],
                     LogFormatEvent = ConfigurationManager.AppSettings["LogFormatEvent"],
                     LogFormatFile = ConfigurationManager.AppSettings["LogFormatFile"]

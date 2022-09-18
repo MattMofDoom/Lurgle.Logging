@@ -16,6 +16,7 @@ using Serilog.Formatting.Compact;
 using AWS.Logger.SeriLog;
 using AWS.Logger;
 using Amazon.Runtime;
+using Serilog.Formatting.Json;
 
 // ReSharper disable InconsistentNaming
 
@@ -424,7 +425,7 @@ namespace Lurgle.Logging
                                 messageHandler: new SeqClient());
 
                         break;
-                    case LogType.Aws:
+                    case LogType.Aws:                    
                         var awsConfig = new AWSLoggerConfig();
                         if (!string.IsNullOrEmpty(Config.LogAwsProfile) && !string.IsNullOrEmpty(Config.LogAwsProfileLocation))
                         {
@@ -439,10 +440,12 @@ namespace Lurgle.Logging
                         awsConfig.Region = Config.LogAwsRegion;
                         awsConfig.LogGroup = Config.LogAwsLogGroup;
                         awsConfig.DisableLogGroupCreation = !Config.LogAwsCreateLogGroup;
+                        awsConfig.LogStreamNamePrefix = Config.LogAwsStreamPrefix;
+                        awsConfig.LogStreamNameSuffix = Config.LogAwsStreamSuffix;
 
                         testConfig
                             .WriteTo
-                            .AWSSeriLog(awsConfig);
+                            .AWSSeriLog(awsConfig, restrictedToMinimumLevel: (LogEventLevel)Config.LogLevelAws, textFormatter: new JsonFormatter(renderMessage: true));
                         break;
                 }
                             
@@ -614,10 +617,12 @@ namespace Lurgle.Logging
                     awsConfig.Region = Config.LogAwsRegion;
                     awsConfig.LogGroup = Config.LogAwsLogGroup;
                     awsConfig.DisableLogGroupCreation = !Config.LogAwsCreateLogGroup;
+                    awsConfig.LogStreamNamePrefix = Config.LogAwsStreamPrefix;
+                    awsConfig.LogStreamNameSuffix = Config.LogAwsStreamSuffix;
 
                     logConfig
                         .WriteTo
-                        .AWSSeriLog(awsConfig);
+                        .AWSSeriLog(awsConfig, restrictedToMinimumLevel: (LogEventLevel)Config.LogLevelAws, textFormatter: new JsonFormatter(renderMessage: true));
                 }
 
                 if (logTypes.Contains(LogType.File))

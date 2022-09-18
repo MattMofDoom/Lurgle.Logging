@@ -36,7 +36,7 @@ namespace Lurgle.Logging
         [Description("Seq")] Splunk = 16,
 
         /// <summary>
-        ///     AWS Cloudwatch
+        ///     AWS Cloudwatch Sink
         /// </summary>
         [Description("AWS Cloudwatch")] Aws = 32,
 

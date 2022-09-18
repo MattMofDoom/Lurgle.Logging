@@ -297,7 +297,7 @@
         </member>
         <member name="F:Lurgle.Logging.LogType.Aws">
             <summary>
-                AWS Cloudwatch
+                AWS Cloudwatch Sink
             </summary>
         </member>
         <member name="F:Lurgle.Logging.LogType.All">
@@ -1322,7 +1322,7 @@
                 LoggingConfig constructor
             </summary>
         </member>
-        <member name="M:Lurgle.Logging.LoggingConfig.#ctor(Lurgle.Logging.LoggingConfig,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.String,System.String,System.Collections.Generic.List{Lurgle.Logging.LogType},System.Collections.Generic.List{System.String},System.String,System.Nullable{Lurgle.Logging.MaskPolicy},System.String,System.String,System.Nullable{Lurgle.Logging.ConsoleThemeType},System.String,System.String,System.String,System.String,System.String,System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LogFileFormat},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String,System.Nullable{System.Boolean},System.String,System.Nullable{System.Boolean},System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Nullable{System.Boolean},System.String,System.String,System.String)">
+        <member name="M:Lurgle.Logging.LoggingConfig.#ctor(Lurgle.Logging.LoggingConfig,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.String,System.String,System.Collections.Generic.List{Lurgle.Logging.LogType},System.Collections.Generic.List{System.String},System.String,System.Nullable{Lurgle.Logging.MaskPolicy},System.String,System.String,System.Nullable{Lurgle.Logging.ConsoleThemeType},System.String,System.String,System.String,System.String,System.String,System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LogFileFormat},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String,System.Nullable{System.Boolean},System.String,System.Nullable{System.Boolean},System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Nullable{System.Boolean},System.String,System.String,System.String,System.String,System.String)">
             <summary>
                 Constructor that permits passing a config and optional overrides of any property
             </summary>
@@ -1567,6 +1567,11 @@
                 Configure proxy server for Seq if <see cref="P:Lurgle.Logging.LoggingConfig.LogSeqUseProxy" /> is enabled
             </summary>
         </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogSeqProxyPort">
+            <summary>
+            Configure proxy port for Seq if <see cref="P:Lurgle.Logging.LoggingConfig.LogSeqUseProxy" /> is enabled
+            </summary>
+        </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogSeqBypassProxyOnLocal">
             <summary>
                 Bypass proxy for local addresses
@@ -1630,6 +1635,16 @@
         <member name="P:Lurgle.Logging.LoggingConfig.LogAwsCreateLogGroup">
             <summary>
             Create AWS Cloudwatch Log Group if it doesn't exist
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogAwsStreamPrefix">
+            <summary>
+            Optional AWS Cloudwatch Stream prefix
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogAwsStreamSuffix">
+            <summary>
+            Optional AWS Cloudwatch Stream prefix
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogFormatConsole">
