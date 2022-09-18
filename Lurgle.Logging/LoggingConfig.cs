@@ -6,6 +6,8 @@ using System.Linq;
 using System.Reflection;
 using Serilog.Sinks.SystemConsole.Themes;
 
+// ReSharper disable InconsistentNaming
+
 namespace Lurgle.Logging
 {
     // ReSharper disable UnusedMember.Global
@@ -70,6 +72,7 @@ namespace Lurgle.Logging
         /// <param name="logAwsLogGroup"></param>
         /// <param name="logAwsRegion"></param>
         /// <param name="logAwsCreateLogGroup"></param>
+        /// <param name="logAwsStreamSuffix"></param>
         /// <param name="logFormatConsole"></param>
         /// <param name="logFormatEvent"></param>
         /// <param name="logFormatFile"></param>
@@ -78,6 +81,7 @@ namespace Lurgle.Logging
         /// <param name="logSeqBypassProxyOnLocal"></param>
         /// <param name="logSeqProxyBypass"></param>
         /// <param name="logSeqProxyUser"></param>
+        /// <param name="logAwsStreamPrefix"></param>
         public LoggingConfig(LoggingConfig config = null, bool? enableMethodNameProperty = null,
             bool? enableSourceFileProperty = null, bool? includeSourceFilePath = null,
             bool? enableLineNumberProperty = null, bool? logWriteInit = null, bool? enableCorrelationCache = null,
@@ -95,7 +99,10 @@ namespace Lurgle.Logging
             bool? logBuffered = null, string logSeqServer = null, string logSeqApiKey = null,
             bool? logSeqUseProxy = null, string logSeqProxyServer = null, bool? logSeqBypassProxyOnLocal = null,
             string logSeqProxyBypass = null, string logSeqProxyUser = null, string logSeqProxyPassword = null,
-            string logSplunkHost = null, string logSplunkToken = null, string logAwsProfile = null, string logAwsProfileLocation = null, string logAwsKey = null, string logAwsSecret = null, string logAwsLogGroup = null, string logAwsRegion = null, bool? logAwsCreateLogGroup = null, string logAwsStreamPrefix = null, string logAwsStreamSuffix = null, 
+            string logSplunkHost = null, string logSplunkToken = null, string logAwsProfile = null,
+            string logAwsProfileLocation = null, string logAwsKey = null, string logAwsSecret = null,
+            string logAwsLogGroup = null, string logAwsRegion = null, bool? logAwsCreateLogGroup = null,
+            string logAwsStreamPrefix = null, string logAwsStreamSuffix = null,
             string logFormatConsole = null, string logFormatEvent = null, string logFormatFile = null)
 
         {
@@ -138,7 +145,6 @@ namespace Lurgle.Logging
                 LogSeqApiKey = config.LogSeqApiKey;
                 LogSeqUseProxy = config.LogSeqUseProxy;
                 LogSeqProxyServer = config.LogSeqProxyServer;
-                LogSeqProxyPort = config.LogSeqProxyPort;
                 LogSeqBypassProxyOnLocal = config.LogSeqBypassProxyOnLocal;
                 LogSeqProxyBypass = config.LogSeqProxyBypass;
                 LogSeqProxyUser = config.LogSeqProxyUser;
@@ -214,7 +220,7 @@ namespace Lurgle.Logging
             if (logLevelSplunk != null)
                 LogLevelSplunk = (LurgLevel) logLevelSplunk;
             if (logLevelAws != null)
-                LogLevelAws = (LurgLevel)logLevelAws;
+                LogLevelAws = (LurgLevel) logLevelAws;
             if (logFileType != null)
                 LogFileType = (LogFileFormat) logFileType;
             if (logDays != null)
@@ -260,7 +266,7 @@ namespace Lurgle.Logging
             if (!string.IsNullOrEmpty(logAwsRegion))
                 LogAwsRegion = logAwsRegion;
             if (logAwsCreateLogGroup != null)
-                LogAwsCreateLogGroup = (bool)logAwsCreateLogGroup;
+                LogAwsCreateLogGroup = (bool) logAwsCreateLogGroup;
             if (!string.IsNullOrEmpty(logAwsStreamPrefix))
                 LogAwsStreamPrefix = logAwsStreamPrefix;
             if (!string.IsNullOrEmpty(logAwsStreamSuffix))
@@ -409,7 +415,7 @@ namespace Lurgle.Logging
         public LurgLevel LogLevelSplunk { get; private set; }
 
         /// <summary>
-        /// Minimum log level accepted by AWS Cloudwatch sink
+        ///     Minimum log level accepted by AWS Cloudwatch sink
         /// </summary>
         public LurgLevel LogLevelAws { get; private set; }
 
@@ -460,11 +466,6 @@ namespace Lurgle.Logging
         public string LogSeqProxyServer { get; private set; }
 
         /// <summary>
-        /// Configure proxy port for Seq if <see cref="LogSeqUseProxy" /> is enabled
-        /// </summary>
-        public int LogSeqProxyPort { get; private set; }
-
-        /// <summary>
         ///     Bypass proxy for local addresses
         /// </summary>
         public bool LogSeqBypassProxyOnLocal { get; private set; }
@@ -495,47 +496,47 @@ namespace Lurgle.Logging
         public string LogSplunkToken { get; private set; }
 
         /// <summary>
-        /// AWS Profile config
+        ///     AWS Profile config
         /// </summary>
         public string LogAwsProfile { get; private set; }
 
         /// <summary>
-        /// AWS Profile Location
+        ///     AWS Profile Location
         /// </summary>
         public string LogAwsProfileLocation { get; private set; }
 
         /// <summary>
-        /// AWS Credentials - Key (Use only for testing)
+        ///     AWS Credentials - Key (Use only for testing)
         /// </summary>
         public string LogAwsKey { get; private set; }
 
         /// <summary>
-        /// AWS Credentials - S3 Secret (Use only for testing)
+        ///     AWS Credentials - S3 Secret (Use only for testing)
         /// </summary>
         public string LogAwsSecret { get; private set; }
 
         /// <summary>
-        /// Log group for AWS Cloudwatch
+        ///     Log group for AWS Cloudwatch
         /// </summary>
         public string LogAwsLogGroup { get; private set; }
-                
+
         /// <summary>
-        /// Region for AWS Cloudwatch
+        ///     Region for AWS Cloudwatch
         /// </summary>
         public string LogAwsRegion { get; private set; }
 
         /// <summary>
-        /// Create AWS Cloudwatch Log Group if it doesn't exist
+        ///     Create AWS Cloudwatch Log Group if it doesn't exist
         /// </summary>
         public bool LogAwsCreateLogGroup { get; private set; }
 
         /// <summary>
-        /// Optional AWS Cloudwatch Stream prefix
+        ///     Optional AWS Cloudwatch Stream prefix
         /// </summary>
         public string LogAwsStreamPrefix { get; private set; }
 
         /// <summary>
-        /// Optional AWS Cloudwatch Stream prefix
+        ///     Optional AWS Cloudwatch Stream prefix
         /// </summary>
         public string LogAwsStreamSuffix { get; private set; }
 
@@ -598,6 +599,7 @@ namespace Lurgle.Logging
                     LogLevelEvent = GetEventLevel(ConfigurationManager.AppSettings["LogLevelEvent"]),
                     LogLevelSeq = GetEventLevel(ConfigurationManager.AppSettings["LogLevelSeq"]),
                     LogLevelSplunk = GetEventLevel(ConfigurationManager.AppSettings["LogLevelSplunk"]),
+                    LogLevelAws = GetEventLevel(ConfigurationManager.AppSettings["LogLevelAws"]),
                     LogFileType = GetLogFileType(ConfigurationManager.AppSettings["LogFileType"]),
                     LogDays = GetInt(ConfigurationManager.AppSettings["LogDays"]),
                     LogFlush = GetInt(ConfigurationManager.AppSettings["LogFlush"]),

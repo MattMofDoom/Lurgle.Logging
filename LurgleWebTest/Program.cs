@@ -4,6 +4,8 @@ using Lurgle.Logging;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
+// ReSharper disable InconsistentNaming
+
 namespace LurgleWebTest
 {
     public static class Program

@@ -20,7 +20,7 @@ namespace Lurgle.Logging.Classes
             {
                 var proxy = new WebProxy
                 {
-                    Address = new Uri(Logging.Config.LogSeqProxyServer),                   
+                    Address = new Uri(Logging.Config.LogSeqProxyServer),
                     BypassProxyOnLocal = Logging.Config.LogSeqBypassProxyOnLocal,
                     BypassList = Logging.Config.LogSeqProxyBypass
                         .Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
@@ -36,7 +36,7 @@ namespace Lurgle.Logging.Classes
                     proxy.UseDefaultCredentials = true;
 
                 UseProxy = true;
-                Proxy = proxy;                      
+                Proxy = proxy;
                 UseDefaultCredentials = false;
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             }

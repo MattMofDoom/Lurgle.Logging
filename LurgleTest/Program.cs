@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Lurgle.Logging;
 
+// ReSharper disable InconsistentNaming
+
 // ReSharper disable UnusedMember.Global
 
 namespace LurgleTest

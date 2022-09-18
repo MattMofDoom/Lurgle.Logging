@@ -7,6 +7,8 @@ using Serilog.Core;
 using Serilog.Debugging;
 using Serilog.Events;
 
+// ReSharper disable InconsistentNaming
+
 // ReSharper disable UnusedMember.Local
 
 namespace Lurgle.Logging.Destructurers
