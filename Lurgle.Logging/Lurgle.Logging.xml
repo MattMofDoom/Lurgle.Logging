@@ -1614,12 +1614,12 @@
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogAwsKey">
             <summary>
-            AWS Credentials - Key
+            AWS Credentials - Key (Use only for testing)
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogAwsSecret">
             <summary>
-            AWS Credentials - S3 Secret
+            AWS Credentials - S3 Secret (Use only for testing)
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogAwsLogGroup">

@@ -505,12 +505,12 @@ namespace Lurgle.Logging
         public string LogAwsProfileLocation { get; private set; }
 
         /// <summary>
-        /// AWS Credentials - Key
+        /// AWS Credentials - Key (Use only for testing)
         /// </summary>
         public string LogAwsKey { get; private set; }
 
         /// <summary>
-        /// AWS Credentials - S3 Secret
+        /// AWS Credentials - S3 Secret (Use only for testing)
         /// </summary>
         public string LogAwsSecret { get; private set; }
 
