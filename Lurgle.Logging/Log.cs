@@ -7,6 +7,8 @@ using Lurgle.Logging.Enrichers;
 using Lurgle.Logging.Interfaces;
 using Serilog.Events;
 
+// ReSharper disable InconsistentNaming
+
 // ReSharper disable UnusedType.Global
 
 // ReSharper disable ExplicitCallerInfoArgument
@@ -118,7 +120,7 @@ namespace Lurgle.Logging
             if (exists) return this;
             if (Logging.Config.LogMaskPolicy.Equals(MaskPolicy.None))
             {
-                if (keepEmptyValue || value != null && value.ToString() != string.Empty)
+                if (keepEmptyValue || (value != null && value.ToString() != string.Empty))
                     EventProperties.Add(new LogProperty(name, value, destructure));
             }
             else
@@ -126,7 +128,7 @@ namespace Lurgle.Logging
                 var isMask = Logging.Config.LogMaskProperties.Any(maskProperty =>
                     maskProperty.Equals(name, StringComparison.OrdinalIgnoreCase));
 
-                if (keepEmptyValue || value != null && value.ToString() != string.Empty)
+                if (keepEmptyValue || (value != null && value.ToString() != string.Empty))
                     EventProperties.Add(
                         new LogProperty(name, isMask ? Logging.MaskProperty(value) : value, destructure));
             }
@@ -153,7 +155,7 @@ namespace Lurgle.Logging
                      select values)
                 if (Logging.Config.LogMaskPolicy.Equals(MaskPolicy.None))
                 {
-                    if (keepEmptyValue || values.Value != null && values.Value.ToString() != string.Empty)
+                    if (keepEmptyValue || (values.Value != null && values.Value.ToString() != string.Empty))
                         EventProperties.Add(new LogProperty(values.Key, values.Value, destructure));
                 }
                 else
@@ -161,7 +163,7 @@ namespace Lurgle.Logging
                     var isMask = Logging.Config.LogMaskProperties.Any(maskProperty =>
                         maskProperty.Equals(values.Key, StringComparison.OrdinalIgnoreCase));
 
-                    if (keepEmptyValue || values.Value != null && values.Value.ToString() != string.Empty)
+                    if (keepEmptyValue || (values.Value != null && values.Value.ToString() != string.Empty))
                         EventProperties.Add(new LogProperty(values.Key,
                             isMask ? Logging.MaskProperty(values.Value) : values.Value, destructure));
                 }
@@ -383,8 +385,9 @@ namespace Lurgle.Logging
                 Logging.LogWriter
                     .ForContext(new PropertyBagEnricher().Add(EventProperties))
                     .ForContext(new MaskingEnricher().Add(Logging.Config.LogMaskProperties))
-                    .Write(new LogEvent((DateTimeOffset) TimeStamp, (LogEventLevel) LogLevel, ErrorInfo, msgTemplate,
-                        msgProperties));
+                    .Write(new LogEvent((DateTimeOffset) TimeStamp, (LogEventLevel) LogLevel, ErrorInfo,
+                        msgTemplate ?? MessageTemplate.Empty,
+                        msgProperties ?? new List<LogEventProperty>()));
             }
             else if (ErrorInfo != null)
             {

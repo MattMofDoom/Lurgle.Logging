@@ -295,6 +295,11 @@
                 Seq
             </summary>
         </member>
+        <member name="F:Lurgle.Logging.LogType.Aws">
+            <summary>
+                AWS Cloudwatch Sink
+            </summary>
+        </member>
         <member name="F:Lurgle.Logging.LogType.All">
             <summary>
                 All logs - can be used to return all logs being disabled
@@ -1317,7 +1322,7 @@
                 LoggingConfig constructor
             </summary>
         </member>
-        <member name="M:Lurgle.Logging.LoggingConfig.#ctor(Lurgle.Logging.LoggingConfig,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.String,System.String,System.Collections.Generic.List{Lurgle.Logging.LogType},System.Collections.Generic.List{System.String},System.String,System.Nullable{Lurgle.Logging.MaskPolicy},System.String,System.String,System.Nullable{Lurgle.Logging.ConsoleThemeType},System.String,System.String,System.String,System.String,System.String,System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LogFileFormat},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String,System.Nullable{System.Boolean},System.String,System.Nullable{System.Boolean},System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:Lurgle.Logging.LoggingConfig.#ctor(Lurgle.Logging.LoggingConfig,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.String,System.String,System.Collections.Generic.List{Lurgle.Logging.LogType},System.Collections.Generic.List{System.String},System.String,System.Nullable{Lurgle.Logging.MaskPolicy},System.String,System.String,System.Nullable{Lurgle.Logging.ConsoleThemeType},System.String,System.String,System.String,System.String,System.String,System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LurgLevel},System.Nullable{Lurgle.Logging.LogFileFormat},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String,System.Nullable{System.Boolean},System.String,System.Nullable{System.Boolean},System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Nullable{System.Boolean},System.String,System.String,System.String,System.String,System.String)">
             <summary>
                 Constructor that permits passing a config and optional overrides of any property
             </summary>
@@ -1349,6 +1354,7 @@
             <param name="logLevelEvent"></param>
             <param name="logLevelSeq"></param>
             <param name="logLevelSplunk"></param>
+            <param name="logLevelAws"></param>
             <param name="logFileType"></param>
             <param name="logDays"></param>
             <param name="logFlush"></param>
@@ -1359,6 +1365,14 @@
             <param name="logSeqProxyPassword"></param>
             <param name="logSplunkHost"></param>
             <param name="logSplunkToken"></param>
+            <param name="logAwsProfile"></param>
+            <param name="logAwsProfileLocation"></param>
+            <param name="logAwsKey"></param>
+            <param name="logAwsSecret"></param>
+            <param name="logAwsLogGroup"></param>
+            <param name="logAwsRegion"></param>
+            <param name="logAwsCreateLogGroup"></param>
+            <param name="logAwsStreamSuffix"></param>
             <param name="logFormatConsole"></param>
             <param name="logFormatEvent"></param>
             <param name="logFormatFile"></param>
@@ -1367,6 +1381,7 @@
             <param name="logSeqBypassProxyOnLocal"></param>
             <param name="logSeqProxyBypass"></param>
             <param name="logSeqProxyUser"></param>
+            <param name="logAwsStreamPrefix"></param>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.EnableMethodNameProperty">
             <summary>
@@ -1503,6 +1518,11 @@
                 Minimum log level accepted by the Splunk sink
             </summary>
         </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogLevelAws">
+            <summary>
+                Minimum log level accepted by AWS Cloudwatch sink
+            </summary>
+        </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogFileType">
             <summary>
                 Output files as text or Compact Json - defaults to text. If set to Json, <see cref="P:Lurgle.Logging.LoggingConfig.LogFormatFile" /> will not be
@@ -1577,6 +1597,51 @@
         <member name="P:Lurgle.Logging.LoggingConfig.LogSplunkToken">
             <summary>
                 Event collector token for Splunk.
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogAwsProfile">
+            <summary>
+                AWS Profile config
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogAwsProfileLocation">
+            <summary>
+                AWS Profile Location
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogAwsKey">
+            <summary>
+                AWS Credentials - Key (Use only for testing)
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogAwsSecret">
+            <summary>
+                AWS Credentials - S3 Secret (Use only for testing)
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogAwsLogGroup">
+            <summary>
+                Log group for AWS Cloudwatch
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogAwsRegion">
+            <summary>
+                Region for AWS Cloudwatch
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogAwsCreateLogGroup">
+            <summary>
+                Create AWS Cloudwatch Log Group if it doesn't exist
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogAwsStreamPrefix">
+            <summary>
+                Optional AWS Cloudwatch Stream prefix
+            </summary>
+        </member>
+        <member name="P:Lurgle.Logging.LoggingConfig.LogAwsStreamSuffix">
+            <summary>
+                Optional AWS Cloudwatch Stream prefix
             </summary>
         </member>
         <member name="P:Lurgle.Logging.LoggingConfig.LogFormatConsole">

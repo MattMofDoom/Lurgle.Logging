@@ -36,6 +36,11 @@ namespace Lurgle.Logging
         [Description("Seq")] Splunk = 16,
 
         /// <summary>
+        ///     AWS Cloudwatch Sink
+        /// </summary>
+        [Description("AWS Cloudwatch")] Aws = 32,
+
+        /// <summary>
         ///     All logs - can be used to return all logs being disabled
         /// </summary>
         [Description("All")] All = -1

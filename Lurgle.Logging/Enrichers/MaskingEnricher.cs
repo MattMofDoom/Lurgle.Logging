@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Serilog.Core;
 using Serilog.Events;
 
+// ReSharper disable InconsistentNaming
+
 namespace Lurgle.Logging.Enrichers
 {
     /// <summary>

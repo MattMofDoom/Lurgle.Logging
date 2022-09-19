@@ -6,6 +6,9 @@ using System.Runtime.CompilerServices;
 using System.Security;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Amazon.Runtime;
+using AWS.Logger;
+using AWS.Logger.SeriLog;
 using Lurgle.Logging.Classes;
 using Lurgle.Logging.Destructurers;
 using Lurgle.Logging.Enrichers;
@@ -13,6 +16,7 @@ using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
+using Serilog.Formatting.Json;
 
 // ReSharper disable InconsistentNaming
 
@@ -421,7 +425,35 @@ namespace Lurgle.Logging
                                 messageHandler: new SeqClient());
 
                         break;
+                    case LogType.Aws:
+                        var awsConfig = new AWSLoggerConfig();
+                        switch (string.IsNullOrEmpty(Config.LogAwsProfile))
+                        {
+                            case false when !string.IsNullOrEmpty(Config.LogAwsProfileLocation):
+                                awsConfig.Profile = Config.LogAwsProfile;
+                                awsConfig.ProfilesLocation = Config.LogAwsProfileLocation;
+                                break;
+                            case false:
+                                awsConfig.Profile = Config.LogAwsProfile;
+                                break;
+                            default:
+                                awsConfig.Credentials = new BasicAWSCredentials(Config.LogAwsKey, Config.LogAwsSecret);
+                                break;
+                        }
+
+                        awsConfig.Region = Config.LogAwsRegion;
+                        awsConfig.LogGroup = Config.LogAwsLogGroup;
+                        awsConfig.DisableLogGroupCreation = !Config.LogAwsCreateLogGroup;
+                        awsConfig.LogStreamNamePrefix = Config.LogAwsStreamPrefix;
+                        awsConfig.LogStreamNameSuffix = Config.LogAwsStreamSuffix;
+
+                        testConfig
+                            .WriteTo
+                            .AWSSeriLog(awsConfig, restrictedToMinimumLevel: (LogEventLevel) Config.LogLevelAws,
+                                textFormatter: new JsonFormatter(renderMessage: true));
+                        break;
                 }
+
 
                 var testWriter = testConfig.CreateLogger();
                 // Only write the Initialising event if enabled
@@ -534,6 +566,12 @@ namespace Lurgle.Logging
                 logTypes.Remove(LogType.Splunk);
             }
 
+            if (logTypes.Contains(LogType.Aws) && !TestLogConfig(LogType.Aws, correlationId))
+            {
+                LogFailures.Add(LogType.Aws, FailureReason.LogTestFailed);
+                logTypes.Remove(LogType.Aws);
+            }
+
             //With all that out of the way, we can create the final log config
             if (!logTypes.Count.Equals(0))
             {
@@ -567,6 +605,35 @@ namespace Lurgle.Logging
                             !string.IsNullOrEmpty(Config.LogSplunkToken) ? Config.LogSplunkToken : string.Empty,
                             restrictedToMinimumLevel: (LogEventLevel) Config.LogLevelSplunk,
                             messageHandler: new SeqClient());
+
+                if (logTypes.Contains(LogType.Aws))
+                {
+                    var awsConfig = new AWSLoggerConfig();
+                    switch (string.IsNullOrEmpty(Config.LogAwsProfile))
+                    {
+                        case false when !string.IsNullOrEmpty(Config.LogAwsProfileLocation):
+                            awsConfig.Profile = Config.LogAwsProfile;
+                            awsConfig.ProfilesLocation = Config.LogAwsProfileLocation;
+                            break;
+                        case false:
+                            awsConfig.Profile = Config.LogAwsProfile;
+                            break;
+                        default:
+                            awsConfig.Credentials = new BasicAWSCredentials(Config.LogAwsKey, Config.LogAwsSecret);
+                            break;
+                    }
+
+                    awsConfig.Region = Config.LogAwsRegion;
+                    awsConfig.LogGroup = Config.LogAwsLogGroup;
+                    awsConfig.DisableLogGroupCreation = !Config.LogAwsCreateLogGroup;
+                    awsConfig.LogStreamNamePrefix = Config.LogAwsStreamPrefix;
+                    awsConfig.LogStreamNameSuffix = Config.LogAwsStreamSuffix;
+
+                    logConfig
+                        .WriteTo
+                        .AWSSeriLog(awsConfig, restrictedToMinimumLevel: (LogEventLevel) Config.LogLevelAws,
+                            textFormatter: new JsonFormatter(renderMessage: true));
+                }
 
                 if (logTypes.Contains(LogType.File))
                 {
